@@ -12,6 +12,7 @@ window.Game = new Phaser.Class({
 
       this.player;
       this.gameMusic;
+      this.coinMusic;
       this.cursors;
       this.up;
       this.coin;
@@ -29,6 +30,7 @@ window.Game = new Phaser.Class({
     });
     this.load.image("coin", "../assets/coin.png");
     this.load.audio('gameMusic', 'assets/game.wav');
+    this.load.audio('coinMusic', 'assets/coin.wav');
   },
 
   createMap: function() {
@@ -89,7 +91,11 @@ window.Game = new Phaser.Class({
   },
 
   createAudio: function() {
+    this.coinMusic = this.sound.add('coinMusic');
+    this.coinMusic.volume = 0.5;
+
     this.gameMusic = this.sound.add('gameMusic');
+    this.gameMusic.volume = 0.5;
     this.gameMusic.loop = true;
     this.gameMusic.play();
   },
@@ -182,6 +188,7 @@ window.Game = new Phaser.Class({
     this.coin.y = coords.y;
     this.score += 1;
     this.scoreText.setText('Score: ' + this.score);
+    this.coinMusic.play();
   },
 
   update: function() {
