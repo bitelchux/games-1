@@ -23,14 +23,17 @@ window.Game = new Phaser.Class({
       transitions: [
         { name: 'seePlayer', from: 'idle', to: 'walk' },
         { name: 'nearPlayer', from: 'walk', to: 'attack' },
-        { name: 'useSpecial', from: '*', to: 'teleport' },
-        { name: 'die', from: '*', to: 'die' }
+        { name: 'playerBehind', from: 'walk', to: 'idle' },
+        { name: 'useSpecial', from: 'walk', to: 'teleport' },
+        { name: 'die', from: ['idle', 'walk', 'turn', 'attack', 'teleport'], to: 'die' },
+        { name: 'goto', from: '*', to: function(s) { return s } }
       ],
       methods: {
         onSeePlayer: function() { that.bossWalk() },
-        onNearPlayer: function() { that.bossSlash() },
-        onUseSpecial: function() { that.bossTeleport(); },
-        onDie: function() { that.bossDies(); }
+        onNearPlayer: function() { that.bossAttack() },
+        onPlayerBehind: function() { that.bossTurn() },
+        onUseSpecial: function() { that.bossTeleport() },
+        onDie: function() { that.bossDie() }
       }
     });
   },
@@ -183,8 +186,7 @@ window.Game = new Phaser.Class({
     this.boss.setScale(5);
     this.boss.setGravityY(300);
     this.boss.setCollideWorldBounds(true);
-    this.boss["isTeleporting"] = false;
-    this.boss["isSlashing"] = false;
+    this.boss['speed'] = 10;
 
     this.boss["healthBar"] = this.add.graphics({
       x: this.boss.body.x,
@@ -209,7 +211,7 @@ window.Game = new Phaser.Class({
         this.value / 100, 4);
     };
 
-    this.boss.healthBar.setValue(10);
+    this.boss.healthBar.setValue(100);
 
     this.anims.create({
       key: 'boss-idle',
@@ -255,24 +257,29 @@ window.Game = new Phaser.Class({
       var key = animation.key;
       if(key == 'boss-die') {
         setTimeout(function(){this.win();}.bind(this), 1000);
-      } else if(key == 'boss-teleport' && this.boss.isTeleporting) {
+      } else if(key == 'boss-teleport' && this.boss.anims.forward) {
         this.boss.x = this.player.x;
-        this.boss.y = this.player.y;
         this.boss.anims.play('boss-teleport');
         this.boss.anims.forward = false;
-        this.boss.isTeleporting = false;
+      } else if(key == 'boss-teleport') {
+        this.bossFSM.goto('idle');
       } else if(key.includes('slash')) {
         if(key == 'boss-beforeslash') {
           this.boss.anims.play('boss-slash');
         } else if(key == 'boss-slash') {
           this.boss.anims.play('boss-afterslash');
-        } else if(key == 'boss-afterslash') {
-          this.boss.isSlashing = false;
+          this.bossFSM.goto('idle');
         }
       }
     }, this);
 
     this.bossIdle();
+
+    setInterval(function() {
+      if(this.bossFSM.is('walk') && this.boss.healthBar.value < 50) {
+        this.bossFSM.useSpecial();
+      }
+    }.bind(this), Math.round(Math.random() * 7000) + 3000);
   },
 
   createAudio: function() {
@@ -398,16 +405,18 @@ window.Game = new Phaser.Class({
   updateBoss: function() {
     this.boss.healthBar.x = this.boss.body.x;
     this.boss.healthBar.y = this.boss.body.y - 16;
-    this.bossPlan();
-  },
 
-  bossPlan: function() {
-    if(this.bossFSM.is("die")) {
-      return;
+    if(this.bossFSM.is('idle') && Phaser.Math.Difference(this.player.x, this.boss.x) < 200) {
+      this.bossFSM.seePlayer();
     }
 
-    if(!this.boss.isSlashing) {
-      this.bossWalk();
+    if(this.bossFSM.is('walk') && Phaser.Math.Difference(this.player.x, this.boss.x) < 50) {
+      this.bossFSM.nearPlayer();
+    }
+
+    if(this.bossFSM.is('walk') && ((this.player.x < this.boss.x && this.boss.speed > 0)
+        || (this.player.x > this.boss.x && this.boss.speed < 0))) {
+      this.bossFSM.playerBehind();
     }
 
     if(this.boss.anims.currentAnim.key == "boss-slash") {
@@ -425,35 +434,24 @@ window.Game = new Phaser.Class({
   bossTurn: function() {
     if(this.player.x < this.boss.x) {
       this.boss.resetFlip();
+      this.boss.speed = -10;
     } else {
       this.boss.setFlip(-1,0);
+      this.boss.speed = 10;
     }
   },
 
   bossWalk: function() {
-    if(Phaser.Math.Difference(this.player.x, this.boss.x) > 50) {
-      var speed = 10;
-      if(this.player.x < this.boss.x) {
-        this.boss.setVelocityX(-speed);
-      } else {
-        this.boss.setVelocityX(speed);
-      }
-      this.boss.anims.play('boss-walk', true);
-      this.bossTurn();
-    } else {
-      this.boss.setVelocityX(0);
-      this.bossSlash();
-    }
+    this.boss.anims.play('boss-walk', true);
+    this.boss.setVelocityX(this.boss.speed);
   },
 
-  bossSlash: function() {
+  bossAttack: function() {
     this.boss.anims.play('boss-beforeslash', true);
-    this.boss.isSlashing = true;
   },
 
   bossTeleport: function() {
     this.boss.anims.play('boss-teleport', true);
-    this.boss.isTeleporting = true;
   },
 
   bossIsHit: function() {
@@ -463,7 +461,7 @@ window.Game = new Phaser.Class({
     }
   },
 
-  bossDies: function() {
+  bossDie: function() {
     this.boss.anims.play('boss-die', true);
     this.boss.setVelocityX(0);
   },
