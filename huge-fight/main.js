@@ -4,7 +4,7 @@ var config = {
   height: 256,
   zoom: 1.3,
   pixelArt: true,
-  scene: [ window.Menu, window.Game, window.Gameover ],
+  scene: [ window.Menu, window.Game, window.Win, window.Lose ],
   physics: {
     default: 'arcade',
     arcade: {
