@@ -8,7 +8,13 @@ window.Game = new Phaser.Class({
 
     this.backgroundLayer;
     this.collideLayer;
+
     this.gameMusic;
+    this.dashMusic;
+    this.slashMusic;
+    this.bossAttackMusic;
+    this.teleportMusic;
+
     this.cursors;
     this.up;
     this.doubleTap = {enabled: true, time: 0, key: ""};
@@ -33,7 +39,8 @@ window.Game = new Phaser.Class({
         onNearPlayer: function() { that.bossAttack() },
         onPlayerBehind: function() { that.bossTurn() },
         onUseSpecial: function() { that.bossTeleport() },
-        onDie: function() { that.bossDie() }
+        onDie: function() { that.bossDie() },
+        onLeaveWalk: function() { that.boss.setVelocityX(0) }
       }
     });
   },
@@ -51,6 +58,10 @@ window.Game = new Phaser.Class({
       frameWidth: 16, frameHeight: 16
     });
     this.load.audio('gameMusic', 'assets/game.wav');
+    this.load.audio('dashMusic', 'assets/dash.wav');
+    this.load.audio('slashMusic', 'assets/slash.wav');
+    this.load.audio('bossAttackMusic', 'assets/boss-attack.wav');
+    this.load.audio('teleportMusic', 'assets/teleport.wav')
   },
 
   createMap: function() {
@@ -165,6 +176,7 @@ window.Game = new Phaser.Class({
     this.dash.x = this.player.x;
     this.dash.y = this.player.y + 8;
     this.dash.anims.play('dash-up', true);
+    this.dashMusic.play();
   },
 
   dashLeft: function() {
@@ -172,6 +184,7 @@ window.Game = new Phaser.Class({
     this.dash.x = this.player.x + 8;
     this.dash.y = this.player.y;
     this.dash.anims.play('dash-left', true);
+    this.dashMusic.play();
   },
 
   dashRight: function() {
@@ -179,6 +192,7 @@ window.Game = new Phaser.Class({
     this.dash.x = this.player.x - 8;
     this.dash.y = this.player.y;
     this.dash.anims.play('dash-right', true);
+    this.dashMusic.play();
   },
 
   createBoss: function() {
@@ -240,7 +254,7 @@ window.Game = new Phaser.Class({
     this.anims.create({
       key: 'boss-afterslash',
       frames: this.anims.generateFrameNumbers('boss', {start:12, end:14}),
-      frameRate: 3
+      frameRate: 2
     });
     this.anims.create({
       key: 'boss-teleport',
@@ -268,6 +282,8 @@ window.Game = new Phaser.Class({
           this.boss.anims.play('boss-slash');
         } else if(key == 'boss-slash') {
           this.boss.anims.play('boss-afterslash');
+          this.bossAttackMusic.play();
+        } else if(key == 'boss-afterslash') {
           this.bossFSM.goto('idle');
         }
       }
@@ -284,9 +300,17 @@ window.Game = new Phaser.Class({
 
   createAudio: function() {
     this.gameMusic = this.sound.add('gameMusic');
-    this.gameMusic.volume = 0.5;
+    this.gameMusic.volume = 0.2;
     this.gameMusic.loop = true;
     this.gameMusic.play();
+
+    this.dashMusic = this.sound.add('dashMusic');
+    this.slashMusic = this.sound.add('slashMusic');
+    this.slashMusic.volume = 0.5;
+
+    this.bossAttackMusic = this.sound.add('bossAttackMusic');
+    this.teleportMusic = this.sound.add('teleportMusic');
+    this.teleportMusic.volume = 0.5;
   },
 
   createCursors: function() {
@@ -427,7 +451,6 @@ window.Game = new Phaser.Class({
   },
 
   bossIdle: function() {
-    this.boss.setVelocityX(0);
     this.boss.anims.play('boss-idle', true);
   },
 
@@ -452,6 +475,7 @@ window.Game = new Phaser.Class({
 
   bossTeleport: function() {
     this.boss.anims.play('boss-teleport', true);
+    this.teleportMusic.play();
   },
 
   bossIsHit: function() {
@@ -463,7 +487,6 @@ window.Game = new Phaser.Class({
 
   bossDie: function() {
     this.boss.anims.play('boss-die', true);
-    this.boss.setVelocityX(0);
   },
 
   getPointRelativeToBoss: function(x, y) {
@@ -495,6 +518,7 @@ window.Game = new Phaser.Class({
   },
 
   playerSlash: function() {
+    this.slashMusic.play();
     this.player.anims.play('slash', true);
     this.player.isSlashing = true;
     this.player.canSlash = false;
