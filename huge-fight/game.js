@@ -283,6 +283,7 @@ window.Game = new Phaser.Class({
         } else if(key == 'boss-slash') {
           this.boss.anims.play('boss-afterslash');
           this.bossAttackMusic.play();
+          this.cameras.main.shake();
         } else if(key == 'boss-afterslash') {
           this.bossFSM.goto('idle');
         }
