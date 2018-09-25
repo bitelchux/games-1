@@ -5,6 +5,7 @@ class Player {
     this.sprite = scene.physics.add.sprite(128, 128, 'player');
     this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
+    this.direction = "up";
 
     this.scene.anims.create({
       key: 'walk',
@@ -13,8 +14,32 @@ class Player {
       yoyo: true
     });
     this.scene.anims.create({
+      key: 'walk-pistol',
+      frames: this.scene.anims.generateFrameNumbers('player', {start:3, end:5}),
+      frameRate: 12,
+      yoyo: true
+    });
+    this.scene.anims.create({
+      key: 'walk-shotgun',
+      frames: this.scene.anims.generateFrameNumbers('player', {start:6, end:8}),
+      frameRate: 12,
+      yoyo: true
+    });
+    this.scene.anims.create({
+      key: 'walk-uzi',
+      frames: this.scene.anims.generateFrameNumbers('player', {start:9, end:11}),
+      frameRate: 12,
+      yoyo: true
+    });
+    this.scene.anims.create({
+      key: 'walk-grenade',
+      frames: this.scene.anims.generateFrameNumbers('player', {start:12, end:14}),
+      frameRate: 12,
+      yoyo: true
+    });
+    this.scene.anims.create({
       key: 'die',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:4, end:6}),
+      frames: this.scene.anims.generateFrameNumbers('player', {start:15, end:17}),
       frameRate: 12
     });
 
@@ -31,49 +56,65 @@ class Player {
 
   update() {
     this.move();
+    this.shoot();
   }
 
   move() {
     this.sprite.setVelocity(0,0);
 
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
+      this.direction = "upleft";
       this.sprite.setVelocity(-2*this.speed/3,-2*this.speed/3);
       this.sprite.setAngle(-45);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
+      this.direction = "upright";
       this.sprite.setVelocity(2*this.speed/3,-2*this.speed/3);
       this.sprite.setAngle(45);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
+      this.direction = "downleft";
       this.sprite.setVelocity(-2*this.speed/3,2*this.speed/3);
       this.sprite.setAngle(-135);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
+      this.direction = "downright";
       this.sprite.setVelocity(2*this.speed/3,2*this.speed/3);
       this.sprite.setAngle(135);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.up.isDown) {
+      this.direction = "up";
       this.sprite.setVelocityY(-this.speed);
       this.sprite.setAngle(0);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.down.isDown) {
+      this.direction = "down";
       this.sprite.setVelocityY(this.speed);
       this.sprite.setAngle(180);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.left.isDown) {
+      this.direction = "left";
       this.sprite.setVelocityX(-this.speed);
       this.sprite.setAngle(-90);
-      this.sprite.anims.play('walk', true);
+      this.walk();
     } else if(this.cursors.right.isDown) {
+      this.direction = "right";
       this.sprite.setVelocityX(this.speed);
       this.sprite.setAngle(90);
+      this.walk();
+    }
+  }
+
+  walk() {
+    if(this.weapon != null) {
+      this.sprite.anims.play('walk-' + this.weapon.name, true);
+    } else {
       this.sprite.anims.play('walk', true);
     }
   }
 
   interact() {
-    console.log(this.scene.tilemap.getLayer("objectsLayer"));
-    var tile = this.scene.tilemap.getTileAtWorldXY(this.sprite.x, this.sprite.y, false, this.scene.cameras.main, this.scene.tilemap.getLayer("objectsLayer"));
+    var tile = this.scene.tilemap.getTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, 1);
     if(tile) {
       var weapon = this.weapon;
       this.pick_weapon(tile);
@@ -84,25 +125,30 @@ class Player {
   }
 
   pick_weapon(tile) {
-    console.log(tile);
     switch(tile.index) {
       case Pistol.index:
-        this.weapon = new Pistol(this);
+        this.weapon = new Pistol(this.scene);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this);
+        this.weapon = new Shotgun(this.scene);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this);
+        this.weapon = new Uzi(this.scene);
         break;
       case Grenade.index:
-        this.weapon = new Grenade(this);
+        this.weapon = new Grenade(this.scene);
         break;
     }
-    this.scene.tilemap.removeTileAtWorldXY(this.sprite.x, this.sprite.y);
+    this.scene.tilemap.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
   }
 
   drop_weapon(weapon) {
-    this.scene.tilemap.putTileAtWorldXY(weapon.index, this.sprite.x, this.sprite.y);
+    this.scene.tilemap.putTileAtWorldXY(weapon.index, this.sprite.x, this.sprite.y, undefined, undefined, 1);
+  }
+
+  shoot() {
+    if(this.cursors.space.isDown && this.weapon) {
+      this.weapon.shoot();
+    }
   }
 }

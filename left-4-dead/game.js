@@ -11,9 +11,12 @@ window.Game = new Phaser.Class({
   },
 
   preload: function() {
-    this.load.image("forest", "assets/forest.png");
+    this.load.image("forest", ["assets/forest.png", "assets/forest-n.png"]);
     this.load.tilemapTiledJSON("forestTilemap", "assets/forest.json");
     this.load.spritesheet('player', 'assets/player.png', {
+      frameWidth: 16, frameHeight: 16
+    });
+    this.load.spritesheet('enemy', 'assets/enemy.png', {
       frameWidth: 16, frameHeight: 16
     });
   },
@@ -21,7 +24,8 @@ window.Game = new Phaser.Class({
   create: function () {
     this.player = new Player(this);
     this.forest = new Forest(this);
-    this.flashlight = new FlashLight(this);
+    this.lights = new Lights(this);
+    this.enemies = new Enemies(this);
 
     this.tilemap = this.forest.tilemap;
 
@@ -29,10 +33,10 @@ window.Game = new Phaser.Class({
 
     this.cameras.main.startFollow(this.player.sprite);
     this.cameras.main.setZoom(1);
-
   },
 
   update: function() {
     this.player.update();
+    this.lights.update();
   }
 });
