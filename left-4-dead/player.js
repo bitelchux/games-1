@@ -2,7 +2,7 @@ class Player {
   constructor(scene) {
     this.scene = scene;
 
-    this.sprite = scene.physics.add.sprite(128, 128, 'player');
+    this.sprite = scene.physics.add.sprite(128, 128, 'player');//.setPipeline("Light2D");
     this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
     this.direction = "up";
@@ -127,16 +127,16 @@ class Player {
   pick_weapon(tile) {
     switch(tile.index) {
       case Pistol.index:
-        this.weapon = new Pistol(this.scene);
+        this.weapon = new Pistol(this.scene, 200, 100);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this.scene);
+        this.weapon = new Shotgun(this.scene, 1000, 35);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this.scene);
+        this.weapon = new Uzi(this.scene, 70, 50);
         break;
       case Grenade.index:
-        this.weapon = new Grenade(this.scene);
+        this.weapon = new Grenade(this.scene, 2000, 100);
         break;
     }
     this.scene.tilemap.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);

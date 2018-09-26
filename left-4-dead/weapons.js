@@ -1,30 +1,46 @@
 class Weapon {
-  constructor(scene) {
+  constructor(scene, rate, damage) {
     this.scene = scene;
+    this.rate = rate;
+    this.damage = damage;
+    this.lastShotTime = scene.time.now;
   }
 
   // to override
   getHitZone() {}
+  showImpacts(hitZone) {}
 
   shoot() {
-    var hitZone = this.getHitZone();
+    if((this.scene.time.now - this.lastShotTime) > this.rate) {
 
-    // show hitzone
-    var graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
-    graphics.strokePoints(hitZone.points, true);
+      this.lastShotTime = this.scene.time.now;
 
-    for(var i=0; i<this.scene.enemies.group.length; i++) {
-      var enemy = this.scene.enemies.group[i];
-      if(hitZone.contains(enemy.sprite.x, enemy.sprite.y)) {
-        enemy.isHit();
-      }
-    };
+      var hitZone = this.getHitZone();
+
+      // show hitzone
+      /*var graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
+      if(hitZone.constructor.name == "Circle") {
+        graphics.strokeCircleShape(hitZone)
+      } else {
+        graphics.strokePoints(hitZone.points, true);
+      }*/
+
+      // show random bullet impacts inside hitZone
+      this.showImpacts(hitZone);
+
+      for(var i=0; i<this.scene.enemies.group.length; i++) {
+        var enemy = this.scene.enemies.group[i];
+        if(hitZone.contains(enemy.sprite.x, enemy.sprite.y)) {
+          enemy.isHit(this.damage);
+        }
+      };
+    }
   }
 }
 
 class Pistol extends Weapon {
-  constructor(scene) {
-    super(scene);
+  constructor(scene, rate, damage) {
+    super(scene, rate, damage);
     this.name = "pistol";
     this.index = Pistol.index;
   }
@@ -97,12 +113,20 @@ class Pistol extends Weapon {
 
     return hitZone;
   }
+
+  showImpacts(hitZone) {
+    var rect = Phaser.Geom.Polygon.GetAABB(hitZone);
+    var p1 = rect.getRandomPoint()
+    var p2 = rect.getRandomPoint()
+    new Impact(this.scene, p1.x, p1.y);
+    new Impact(this.scene, p2.x, p2.y);
+  }
 }
 Pistol.index = 5;
 
 class Shotgun extends Weapon {
-  constructor(scene) {
-    super(scene);
+  constructor(scene, rate, damage) {
+    super(scene, rate, damage);
     this.name = "shotgun";
     this.index = Shotgun.index;
   }
@@ -160,12 +184,22 @@ class Shotgun extends Weapon {
 
     return hitZone;
   }
+
+  showImpacts(hitZone) {
+    var triangle = new Phaser.Geom.Triangle(hitZone.points[0].x, hitZone.points[0].y,
+      hitZone.points[1].x, hitZone.points[1].y, hitZone.points[2].x, hitZone.points[2].y);
+
+    for(var i=0; i<5; i++) {
+      var point = triangle.getRandomPoint()
+      var impact = new Impact(this.scene, point.x, point.y);
+    }
+  }
 }
 Shotgun.index = 10;
 
 class Uzi extends Weapon {
-  constructor(scene) {
-    super(scene);
+  constructor(scene, rate, damage) {
+    super(scene, rate, damage);
     this.name = "uzi";
     this.index = Uzi.index;
   }
@@ -238,18 +272,103 @@ class Uzi extends Weapon {
 
     return hitZone;
   }
+
+  showImpacts(hitZone) {
+    var rect = Phaser.Geom.Polygon.GetAABB(hitZone);
+    var point = rect.getRandomPoint()
+    var impact = new Impact(this.scene, point.x, point.y);
+  }
 }
 Uzi.index = 15;
 
 class Grenade extends Weapon {
-  constructor(scene) {
-    super(scene);
+  constructor(scene, rate, damage) {
+    super(scene, rate, damage);
     this.name = "grenade";
     this.index = Grenade.index;
   }
 
-  shoot() {
-    console.log("shooting a grenade");
+  getHitZone() {
+    var hitZone;
+    var x = this.scene.player.sprite.x;
+    var y = this.scene.player.sprite.y;
+    var h = 16*10
+    var r = 16*3;
+
+    switch(this.scene.player.direction) {
+      case "up":
+        hitZone = new Phaser.Geom.Circle(x, y-h, r);
+        break;
+      case "down":
+        hitZone = new Phaser.Geom.Circle(x, y+h, r);
+        break;
+      case "left":
+        hitZone = new Phaser.Geom.Circle(x-h, y, r);
+        break;
+      case "right":
+        hitZone = new Phaser.Geom.Circle(x+h, y, r);
+        break;
+      case "upleft":
+        hitZone = new Phaser.Geom.Circle(x-h*2/3, y-h*2/3, r);
+        break;
+      case "upright":
+        hitZone = new Phaser.Geom.Circle(x+h*2/3, y-h*2/3, r);
+        break;
+      case "downleft":
+        hitZone = new Phaser.Geom.Circle(x-h*2/3, y+h*2/3, r);
+        break;
+      case "downright":
+        hitZone = new Phaser.Geom.Circle(x+h*2/3, y+h*2/3, r);
+        break;
+    }
+
+    return hitZone;
+  }
+
+  showImpacts(hitZone) {
+    this.sprite = this.scene.physics.add.sprite(hitZone.x, hitZone.y, 'grenade');
+    this.sprite.setDepth(3);
+
+    if(!this.scene.anims.anims.has('grenade-explosion')) {
+      this.scene.anims.create({
+        key: 'grenade-explosion',
+        frames: this.scene.anims.generateFrameNumbers('grenade', {start:0, end:3}),
+        frameRate: 6
+      });
+    }
+
+    this.sprite.on('animationcomplete', function(animation) {
+      if(animation.key == "grenade-explosion") {
+          this.sprite.destroy();
+      }
+    }, this);
+
+    this.sprite.anims.play('grenade-explosion', true);
   }
 }
 Grenade.index = 20;
+
+class Impact {
+  constructor(scene, x, y) {
+    this.scene = scene;
+
+    this.sprite = scene.physics.add.sprite(x, y, 'impact');
+    this.sprite.setDepth(3);
+
+    if(!this.scene.anims.anims.has('impact-anim')) {
+      this.scene.anims.create({
+        key: 'impact-anim',
+        frames: this.scene.anims.generateFrameNumbers('impact', {start:0, end:2}),
+        frameRate: 12
+      });
+    }
+
+    this.sprite.on('animationcomplete', function(animation) {
+      if(animation.key == "impact-anim") {
+          this.sprite.destroy();
+      }
+    }, this);
+
+    this.sprite.anims.play('impact-anim', true);
+  }
+}

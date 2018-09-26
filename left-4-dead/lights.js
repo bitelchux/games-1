@@ -3,7 +3,7 @@ class Lights {
     this.scene = scene;
 
     this.main = scene.lights.addLight(scene.player.sprite.x, scene.player.sprite.y, 100);
-    this.main.setColor(0xffffff).setIntensity(1.7);
+    this.main.setColor(0xffffff).setIntensity(1);
 
     scene.lights.enable().setAmbientColor(0x111111);
   }

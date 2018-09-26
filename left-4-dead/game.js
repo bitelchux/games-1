@@ -13,11 +13,17 @@ window.Game = new Phaser.Class({
   preload: function() {
     this.load.image("forest", ["assets/forest.png", "assets/forest-n.png"]);
     this.load.tilemapTiledJSON("forestTilemap", "assets/forest.json");
-    this.load.spritesheet('player', 'assets/player.png', {
+    this.load.spritesheet('player', ['assets/player.png', 'assets/player-n.png'], {
       frameWidth: 16, frameHeight: 16
     });
-    this.load.spritesheet('enemy', 'assets/enemy.png', {
+    this.load.spritesheet('enemy', ['assets/enemy.png', 'assets/enemy-n.png'], {
       frameWidth: 16, frameHeight: 16
+    });
+    this.load.spritesheet('impact', 'assets/impact.png', {
+      frameWidth: 16, frameHeight: 16
+    });
+    this.load.spritesheet('grenade', 'assets/grenade.png', {
+      frameWidth: 64, frameHeight: 64
     });
   },
 
