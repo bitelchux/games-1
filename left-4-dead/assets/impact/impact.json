@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "impact-1.png",
+	"frame": {"x":16,"y":7,"w":7,"h":5},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":6,"w":7,"h":5},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "impact-2.png",
+	"frame": {"x":1,"y":1,"w":13,"h":9},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":13,"h":9},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "impact-3.png",
+	"frame": {"x":16,"y":1,"w":8,"h":4},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":7,"w":8,"h":4},
+	"sourceSize": {"w":16,"h":16}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "impact.png",
+	"format": "RGBA8888",
+	"size": {"w":25,"h":13},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:14027f1ac946e08918bb74031586c93a:86d0570a793b6c6d0467a03f4fbfcb3e:0ae39fbe7013636eb056103b29b9855f$"
+}
+}

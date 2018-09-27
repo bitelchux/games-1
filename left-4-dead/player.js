@@ -2,46 +2,10 @@ class Player {
   constructor(scene) {
     this.scene = scene;
 
-    this.sprite = scene.physics.add.sprite(128, 128, 'player');//.setPipeline("Light2D");
+    this.sprite = scene.physics.add.sprite(100, 200, 'player').setPipeline("Light2D");
     this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
     this.direction = "up";
-
-    this.scene.anims.create({
-      key: 'walk',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:0, end:2}),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.scene.anims.create({
-      key: 'walk-pistol',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:3, end:5}),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.scene.anims.create({
-      key: 'walk-shotgun',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:6, end:8}),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.scene.anims.create({
-      key: 'walk-uzi',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:9, end:11}),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.scene.anims.create({
-      key: 'walk-grenade',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:12, end:14}),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.scene.anims.create({
-      key: 'die',
-      frames: this.scene.anims.generateFrameNumbers('player', {start:15, end:17}),
-      frameRate: 12
-    });
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 

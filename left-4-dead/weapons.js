@@ -328,14 +328,7 @@ class Grenade extends Weapon {
   showImpacts(hitZone) {
     this.sprite = this.scene.physics.add.sprite(hitZone.x, hitZone.y, 'grenade');
     this.sprite.setDepth(3);
-
-    if(!this.scene.anims.anims.has('grenade-explosion')) {
-      this.scene.anims.create({
-        key: 'grenade-explosion',
-        frames: this.scene.anims.generateFrameNumbers('grenade', {start:0, end:3}),
-        frameRate: 6
-      });
-    }
+    this.scene.myLights.addTempLight(hitZone.x, hitZone.y, 75, 0xffffff, .5, 500)
 
     this.sprite.on('animationcomplete', function(animation) {
       if(animation.key == "grenade-explosion") {
@@ -352,16 +345,8 @@ class Impact {
   constructor(scene, x, y) {
     this.scene = scene;
 
-    this.sprite = scene.physics.add.sprite(x, y, 'impact');
+    this.sprite = scene.physics.add.sprite(x, y, 'impact').setPipeline("Light2D");
     this.sprite.setDepth(3);
-
-    if(!this.scene.anims.anims.has('impact-anim')) {
-      this.scene.anims.create({
-        key: 'impact-anim',
-        frames: this.scene.anims.generateFrameNumbers('impact', {start:0, end:2}),
-        frameRate: 12
-      });
-    }
 
     this.sprite.on('animationcomplete', function(animation) {
       if(animation.key == "impact-anim") {

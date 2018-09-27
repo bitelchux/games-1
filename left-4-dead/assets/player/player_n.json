@@ -1,0 +1,156 @@
+{"frames": [
+
+{
+	"filename": "player-die-1_n.png",
+	"frame": {"x":37,"y":17,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-die-2_n.png",
+	"frame": {"x":19,"y":1,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-die-3_n.png",
+	"frame": {"x":1,"y":1,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-1_n.png",
+	"frame": {"x":1,"y":78,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-2_n.png",
+	"frame": {"x":19,"y":77,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-3_n.png",
+	"frame": {"x":37,"y":77,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-grenade-1_n.png",
+	"frame": {"x":37,"y":32,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-grenade-2_n.png",
+	"frame": {"x":19,"y":33,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-grenade-3_n.png",
+	"frame": {"x":37,"y":47,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-pistol-1_n.png",
+	"frame": {"x":1,"y":50,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-pistol-2_n.png",
+	"frame": {"x":19,"y":63,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-pistol-3_n.png",
+	"frame": {"x":1,"y":64,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-shotgun-1_n.png",
+	"frame": {"x":37,"y":1,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-shotgun-2_n.png",
+	"frame": {"x":19,"y":17,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-shotgun-3_n.png",
+	"frame": {"x":1,"y":19,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-uzi-1_n.png",
+	"frame": {"x":1,"y":35,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-uzi-2_n.png",
+	"frame": {"x":19,"y":48,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "player-walk-uzi-3_n.png",
+	"frame": {"x":37,"y":62,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "player_n.png",
+	"format": "RGBA8888",
+	"size": {"w":54,"h":89},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e7a739a6dbbea34ea3e01f797e78772b:05c266c5281d35ffc098b45e93322202:392725018ccb6aece05b1518ce4e8b31$"
+}
+}
