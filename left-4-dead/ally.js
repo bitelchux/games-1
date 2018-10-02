@@ -12,22 +12,14 @@ class Ally {
     this.hp = 100;
     this.speed = 0.035;
     this.weapon = null;
-    this.start();
-
-    this.goals = {
-      IDLE: 0,
-      PICK_WEAPON: 1,
-      FOLLOW_PLAYER: 2
-    }
-    this.goal = this.goals.PICK_WEAPON;
 
     var that = this;
     this.fsm = new StateMachine({
       init: 'unweaponed',
       transitions: [
         { name: 'pickWeapon', from: 'unweaponed', to: 'weaponed' },
-        { name: 'goNearPlayer', from: ['*'], to: 'idle' },
-        { name: 'wait', from: ['*'], to: 'idle' },
+        { name: 'goNearPlayer', from: ['*'], to: 'near' },
+        { name: 'wait', from: ['near'], to: 'idle' },
         { name: 'goto', from: '*', to: function(s) { return s } }
       ],
       methods: {
@@ -36,6 +28,8 @@ class Ally {
         onWait: function() { that.wait() }
       }
     });
+
+    this.start();
   }
 
   start() {
@@ -107,18 +101,16 @@ class Ally {
   atEndOfPath() {
     this.path = null;
 
-    if(this.goal == this.goals.IDLE) {
-      this.wait();
+    if(this.fsm.is('unweaponed')) {
+      this.fsm.pickWeapon();
     }
 
-    if(this.goal == this.goals.PICK_WEAPON) {
-      this.pickWeapon();
-      this.goal = this.goals.FOLLOW_PLAYER;
+    if(this.fsm.is('weaponed')) {
+      this.fsm.goNearPlayer();
     }
 
-    if(this.goal == this.goals.FOLLOW_PLAYER) {
-      this.goNearPlayer();
-      this.goal = this.goals.IDLE;
+    if(this.fsm.is('near')) {
+      this.fsm.wait();
     }
   }
 
@@ -154,11 +146,11 @@ class Ally {
       this.followPath(delta);
     }
 
-    if(this.goal == this.goals.IDLE) {
+    if(this.fsm.is('idle')) {
       var myCoord = this.sprite.getCenter();
       var playerCoord = this.scene.player.sprite.getCenter();
       if(myCoord.distance(playerCoord) > 60) {
-        this.goNearPlayer();
+        this.fsm.goNearPlayer();
       }
     }
   }
