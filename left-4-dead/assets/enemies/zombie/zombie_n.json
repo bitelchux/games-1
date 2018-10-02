@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "zombie-walk-1_n.png",
+	"frame": {"x":0,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "zombie-walk-2_n.png",
+	"frame": {"x":16,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "zombie-walk-3_n.png",
+	"frame": {"x":32,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "zombie_n.png",
+	"format": "RGBA8888",
+	"size": {"w":48,"h":16},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:55ff4bb7fe25d743a2044f55986b4ab3:492de28efd476a432663c13c6e91dffc:8decf27f0dd95616adf8b7ddeda803a3$"
+}
+}

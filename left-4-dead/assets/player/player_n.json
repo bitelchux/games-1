@@ -73,7 +73,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-walk-pistol-1_n.png",
+	"filename": "player-walk-pistols-1_n.png",
 	"frame": {"x":1,"y":50,"w":16,"h":12},
 	"rotated": false,
 	"trimmed": true,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-walk-pistol-2_n.png",
+	"filename": "player-walk-pistols-2_n.png",
 	"frame": {"x":19,"y":63,"w":16,"h":12},
 	"rotated": false,
 	"trimmed": true,
@@ -89,7 +89,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-walk-pistol-3_n.png",
+	"filename": "player-walk-pistols-3_n.png",
 	"frame": {"x":1,"y":64,"w":16,"h":12},
 	"rotated": false,
 	"trimmed": true,
@@ -151,6 +151,6 @@
 	"format": "RGBA8888",
 	"size": {"w":54,"h":89},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e7a739a6dbbea34ea3e01f797e78772b:05c266c5281d35ffc098b45e93322202:392725018ccb6aece05b1518ce4e8b31$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c07d4f970f3a9a6fbbd9485188f0d59d:05c266c5281d35ffc098b45e93322202:392725018ccb6aece05b1518ce4e8b31$"
 }
 }

@@ -9,13 +9,16 @@ class Player {
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-    this.speed = 32;
+    this.normalspeed = 32;
+    this.halfspeed = 16;
+    this.speed = this.normalspeed;
 
     this.scene.input.keyboard.on('keydown_CTRL', function(){
       this.interact();
     }, this);
 
     this.weapon == null;
+    this.isInjured = false;
   }
 
   update() {
@@ -78,41 +81,59 @@ class Player {
   }
 
   interact() {
-    var tile = this.scene.tilemap.getTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, 1);
+    var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, 1);
     if(tile) {
-      var weapon = this.weapon;
-      this.pick_weapon(tile);
-      if(weapon != null) {
-        this.drop_weapon(weapon);
+      switch(tile.index) {
+        case 18:
+          this.speed = this.normalspeed;
+          this.scene.healthbar.gainHp(50);
+          this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
+          break;
+        default:
+          var weapon = this.weapon;
+          this.pick_weapon(tile);
+          if(weapon != null) {
+            this.drop_weapon(weapon);
+          }
       }
     }
   }
 
   pick_weapon(tile) {
     switch(tile.index) {
-      case Pistol.index:
-        this.weapon = new Pistol(this.scene, 200, 100);
+      case Pistols.index:
+        this.weapon = new Pistols(this.scene, 200, 100);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this.scene, 1000, 35);
+        this.weapon = new Shotgun(this.scene, 1000, 100);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this.scene, 70, 50);
+        this.weapon = new Uzi(this.scene, 70, 100);
         break;
       case Grenade.index:
         this.weapon = new Grenade(this.scene, 2000, 100);
         break;
     }
-    this.scene.tilemap.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
+    this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
   }
 
   drop_weapon(weapon) {
-    this.scene.tilemap.putTileAtWorldXY(weapon.index, this.sprite.x, this.sprite.y, undefined, undefined, 1);
+    this.scene.forest.objectsLayer.putTileAtWorldXY(weapon.index, this.sprite.x, this.sprite.y, undefined, undefined, 1);
   }
 
   shoot() {
     if(this.cursors.space.isDown && this.weapon) {
       this.weapon.shoot();
+    }
+  }
+
+  isHit(damage) {
+    this.scene.healthbar.loseHp(damage);
+    if(this.scene.healthbar.isOneThird()){
+      this.speed = this.halfspeed;
+    }
+    if(this.scene.healthbar.isEmpty()) {
+      location.href = location.href;
     }
   }
 }

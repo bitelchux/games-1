@@ -190,9 +190,9 @@
             <key type="filename">player-walk-grenade-1.png</key>
             <key type="filename">player-walk-grenade-2.png</key>
             <key type="filename">player-walk-grenade-3.png</key>
-            <key type="filename">player-walk-pistol-1.png</key>
-            <key type="filename">player-walk-pistol-2.png</key>
-            <key type="filename">player-walk-pistol-3.png</key>
+            <key type="filename">player-walk-pistols-1.png</key>
+            <key type="filename">player-walk-pistols-2.png</key>
+            <key type="filename">player-walk-pistols-3.png</key>
             <key type="filename">player-walk-shotgun-1.png</key>
             <key type="filename">player-walk-shotgun-2.png</key>
             <key type="filename">player-walk-shotgun-3.png</key>
@@ -223,15 +223,15 @@
             <filename>player-walk-grenade-1.png</filename>
             <filename>player-walk-grenade-2.png</filename>
             <filename>player-walk-grenade-3.png</filename>
-            <filename>player-walk-pistol-1.png</filename>
-            <filename>player-walk-pistol-2.png</filename>
-            <filename>player-walk-pistol-3.png</filename>
             <filename>player-walk-shotgun-1.png</filename>
             <filename>player-walk-shotgun-2.png</filename>
             <filename>player-walk-shotgun-3.png</filename>
             <filename>player-walk-uzi-1.png</filename>
             <filename>player-walk-uzi-2.png</filename>
             <filename>player-walk-uzi-3.png</filename>
+            <filename>player-walk-pistols-1.png</filename>
+            <filename>player-walk-pistols-2.png</filename>
+            <filename>player-walk-pistols-3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

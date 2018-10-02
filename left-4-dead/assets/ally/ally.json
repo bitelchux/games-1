@@ -1,0 +1,156 @@
+{"frames": [
+
+{
+	"filename": "ally-die-1.png",
+	"frame": {"x":37,"y":17,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-die-2.png",
+	"frame": {"x":19,"y":1,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-die-3.png",
+	"frame": {"x":1,"y":1,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-1.png",
+	"frame": {"x":1,"y":78,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-2.png",
+	"frame": {"x":19,"y":77,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-3.png",
+	"frame": {"x":37,"y":77,"w":16,"h":10},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":16,"h":10},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-grenade-1.png",
+	"frame": {"x":37,"y":32,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-grenade-2.png",
+	"frame": {"x":19,"y":33,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-grenade-3.png",
+	"frame": {"x":37,"y":47,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-pistols-1.png",
+	"frame": {"x":1,"y":50,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-pistols-2.png",
+	"frame": {"x":19,"y":63,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-pistols-3.png",
+	"frame": {"x":1,"y":64,"w":16,"h":12},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":16,"h":12},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-shotgun-1.png",
+	"frame": {"x":37,"y":1,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-shotgun-2.png",
+	"frame": {"x":19,"y":17,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-shotgun-3.png",
+	"frame": {"x":1,"y":19,"w":16,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-uzi-1.png",
+	"frame": {"x":1,"y":35,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-uzi-2.png",
+	"frame": {"x":19,"y":48,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-uzi-3.png",
+	"frame": {"x":37,"y":62,"w":16,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":16,"h":13},
+	"sourceSize": {"w":16,"h":16}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ally.png",
+	"format": "RGBA8888",
+	"size": {"w":54,"h":89},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:323addb05eac1525ec6cfcd255ac7992:75535d3b4dabfc3f31af50810b8ff914:86d5339b780aedd87b35e2b7c0a7e11b$"
+}
+}
