@@ -103,13 +103,8 @@ class Ally {
 
     if(this.fsm.is('unweaponed')) {
       this.fsm.pickWeapon();
-    }
-
-    if(this.fsm.is('weaponed')) {
       this.fsm.goNearPlayer();
-    }
-
-    if(this.fsm.is('near')) {
+    } else if(this.fsm.is('near')) {
       this.fsm.wait();
     }
   }
@@ -147,6 +142,7 @@ class Ally {
   }
 
   update(time, delta) {
+
     var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
     if(enemies.length > 0) {
       this.shootWeaponAt(enemies[0].sprite.getCenter());
@@ -156,7 +152,7 @@ class Ally {
       this.followPath(delta);
     }
 
-    if(this.fsm.is('idle')) {
+    if(this.fsm.is('idle') || this.fsm.is('near')) {
       var myCoord = this.sprite.getCenter();
       var playerCoord = this.scene.player.sprite.getCenter();
       if(myCoord.distance(playerCoord) > 60) {
