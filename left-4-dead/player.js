@@ -32,42 +32,42 @@ class Player {
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
       this.direction = "upleft";
       this.sprite.setVelocity(-2*this.speed/3,-2*this.speed/3);
-      this.sprite.setAngle(-45);
+      this.sprite.setAngle(-135);
       this.walk();
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
       this.direction = "upright";
       this.sprite.setVelocity(2*this.speed/3,-2*this.speed/3);
-      this.sprite.setAngle(45);
+      this.sprite.setAngle(-45);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
       this.direction = "downleft";
       this.sprite.setVelocity(-2*this.speed/3,2*this.speed/3);
-      this.sprite.setAngle(-135);
+      this.sprite.setAngle(135);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
       this.direction = "downright";
       this.sprite.setVelocity(2*this.speed/3,2*this.speed/3);
-      this.sprite.setAngle(135);
+      this.sprite.setAngle(45);
       this.walk();
     } else if(this.cursors.up.isDown) {
       this.direction = "up";
       this.sprite.setVelocityY(-this.speed);
-      this.sprite.setAngle(0);
+      this.sprite.setAngle(-90);
       this.walk();
     } else if(this.cursors.down.isDown) {
       this.direction = "down";
       this.sprite.setVelocityY(this.speed);
-      this.sprite.setAngle(180);
+      this.sprite.setAngle(90);
       this.walk();
     } else if(this.cursors.left.isDown) {
       this.direction = "left";
       this.sprite.setVelocityX(-this.speed);
-      this.sprite.setAngle(-90);
+      this.sprite.setAngle(-180);
       this.walk();
     } else if(this.cursors.right.isDown) {
       this.direction = "right";
       this.sprite.setVelocityX(this.speed);
-      this.sprite.setAngle(90);
+      this.sprite.setAngle(0);
       this.walk();
     }
   }
@@ -92,9 +92,6 @@ class Player {
         default:
           var weapon = this.weapon;
           this.pick_weapon(tile);
-          if(weapon != null) {
-            this.drop_weapon(weapon);
-          }
       }
     }
   }
@@ -114,16 +111,11 @@ class Player {
         this.weapon = new Grenade(this.scene, 2000, 100);
         break;
     }
-    this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
-  }
-
-  drop_weapon(weapon) {
-    this.scene.forest.objectsLayer.putTileAtWorldXY(weapon.index, this.sprite.x, this.sprite.y, undefined, undefined, 1);
   }
 
   shoot() {
     if(this.cursors.space.isDown && this.weapon) {
-      this.weapon.shoot();
+      this.weapon.shoot(this.sprite);
     }
   }
 

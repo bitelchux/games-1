@@ -27,10 +27,10 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "tank.png",
+	"image": "tank_n.png",
 	"format": "RGBA8888",
 	"size": {"w":96,"h":32},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ab24cc00d881bb0928b6e3a1f8db47a3:813a82013034992137462d62e1ae2e43:a99356c10d69482e9bee53d25c3d05e1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:df449025d6f071c3eb4c1dcabd289643:b7875f5654c5658170640bb081c83bf6:f51ca3fed5d3c2841304bf29c4df2e11$"
 }
 }

@@ -60,6 +60,17 @@ class Enemies {
   removeEnemy(enemy) {
     this.group.splice(this.group.indexOf(enemy), 1);
   }
+
+  getEnemiesAround(point, radius) {
+    var enemies = [];
+    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
+    this.group.forEach(function(enemy) {
+      if(circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+        enemies.push(enemy);
+      }
+    });
+    return enemies;
+  }
 }
 
 /* config = {key, x, y, speed, hp, attack:{damage, rate, sounds}}*/
@@ -149,7 +160,7 @@ class Enemy {
 
       this.sprite.x += delta*direction.x*this.config.speed;
       this.sprite.y += delta*direction.y*this.config.speed;
-      this.sprite.setAngle(angle + 90);
+      this.sprite.setAngle(angle);
 
       if(this.sprite.getCenter().distance(curve.p1) < 2) {
         this.pathIndex += 1;

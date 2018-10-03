@@ -10,12 +10,18 @@ class Weapon {
   getHitZone() {}
   showImpacts(hitZone) {}
 
-  shoot() {
+  shoot(sprite) {
     if((this.scene.time.now - this.lastShotTime) > this.rate) {
       this.lastShotTime = this.scene.time.now;
       this.scene.sounds[this.constructor.name.toLowerCase()].play();
 
-      var hitZone = this.getHitZone();
+      var hitZone = this.getHitZone(sprite);
+      var rotatedPoints = [];
+      hitZone.points.forEach(function(point) {
+        rotatedPoints.push(Phaser.Math.RotateAround(point, sprite.x, sprite.y, sprite.rotation));
+      }.bind(this));
+
+      hitZone.setTo(rotatedPoints);
 
       // show hitzone
       /*var graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
@@ -45,71 +51,18 @@ class Pistols extends Weapon {
     this.index = Pistols.index;
   }
 
-  getHitZone() {
+  getHitZone(sprite) {
     var hitZone;
-    var x = this.scene.player.sprite.x;
-    var y = this.scene.player.sprite.y;
+    var x = sprite.x;
+    var y = sprite.y;
     var w = 16*3;
     var h = 16*10;
 
-    switch(this.scene.player.direction) {
-      case "up":
-        var downLeft = new Phaser.Geom.Point(x-w/2,y+2);
-        var downRight = new Phaser.Geom.Point(x+w/2,y+2);
-        var topLeft = new Phaser.Geom.Point(x-w/2, y-h);
-        var topRight = new Phaser.Geom.Point(x+w/2, y-h);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "down":
-        var topLeft = new Phaser.Geom.Point(x-w/2, y-2);
-        var topRight = new Phaser.Geom.Point(x+w/2, y-2);
-        var downLeft = new Phaser.Geom.Point(x-w/2,y+h);
-        var downRight = new Phaser.Geom.Point(x+w/2,y+h);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "left":
-        var topLeft = new Phaser.Geom.Point(x-h, y-w/2);
-        var topRight = new Phaser.Geom.Point(x-h, y+w/2);
-        var downLeft = new Phaser.Geom.Point(x+2,y-w/2);
-        var downRight = new Phaser.Geom.Point(x+2,y+w/2);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "right":
-        var topLeft = new Phaser.Geom.Point(x-2, y-w/2);
-        var topRight = new Phaser.Geom.Point(x-2, y+w/2);
-        var downLeft = new Phaser.Geom.Point(x+h,y-w/2);
-        var downRight = new Phaser.Geom.Point(x+h,y+w/2);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "upleft":
-        var downLeft = new Phaser.Geom.Point(x-w/3,y+w/3);
-        var downRight = new Phaser.Geom.Point(x+w/3,y-w/3);
-        var topLeft = new Phaser.Geom.Point(x-h*2/3-w/3, y-h*2/3+w/3);
-        var topRight = new Phaser.Geom.Point(x-h*2/3+w/3, y-h*2/3-w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "upright":
-        var downLeft = new Phaser.Geom.Point(x-w/3,y-w/3);
-        var downRight = new Phaser.Geom.Point(x+w/3,y+w/3);
-        var topLeft = new Phaser.Geom.Point(x+h*2/3-w/3, y-h*2/3-w/3);
-        var topRight = new Phaser.Geom.Point(x+h*2/3+w/3, y-h*2/3+w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "downleft":
-        var downLeft = new Phaser.Geom.Point(x-h*2/3-w/3, y+h*2/3-w/3);
-        var downRight = new Phaser.Geom.Point(x-h*2/3+w/3, y+h*2/3+w/3);
-        var topLeft = new Phaser.Geom.Point(x-w/3,y-w/3);
-        var topRight = new Phaser.Geom.Point(x+w/3,y+w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "downright":
-        var downLeft = new Phaser.Geom.Point(x+h*2/3-w/3, y+h*2/3+w/3);
-        var downRight = new Phaser.Geom.Point(x+h*2/3+w/3, y+h*2/3-w/3);
-        var topLeft = new Phaser.Geom.Point(x-w/3,y+w/3);
-        var topRight = new Phaser.Geom.Point(x+w/3,y-w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-    }
+    var downLeft = new Phaser.Geom.Point(x-2,y+w/2);
+    var topLeft = new Phaser.Geom.Point(x-2, y-w/2);
+    var topRight = new Phaser.Geom.Point(x+h, y-w/2);
+    var downRight = new Phaser.Geom.Point(x+h,y+w/2);
+    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
 
     return hitZone;
   }
@@ -131,56 +84,17 @@ class Shotgun extends Weapon {
     this.index = Shotgun.index;
   }
 
-  getHitZone() {
+  getHitZone(sprite) {
     var hitZone;
-    var x = this.scene.player.sprite.x;
-    var y = this.scene.player.sprite.y;
-    var origin = new Phaser.Geom.Point(x,y);
+    var x = sprite.x;
+    var y = sprite.y;
+    var origin = new Phaser.Geom.Point(x-2,y);
     var w = 16*8;
     var h = 16*10;
 
-    switch(this.scene.player.direction) {
-      case "up":
-        var left = new Phaser.Geom.Point(x-w/2,y-h);
-        var right = new Phaser.Geom.Point(x+w/2,y-h);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "down":
-        var left = new Phaser.Geom.Point(x+w/2,y+h);
-        var right = new Phaser.Geom.Point(x-w/2,y+h);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "left":
-        var left = new Phaser.Geom.Point(x-h,y+w/2);
-        var right = new Phaser.Geom.Point(x-h,y-w/2);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "right":
-        var left = new Phaser.Geom.Point(x+h,y-w/2);
-        var right = new Phaser.Geom.Point(x+h,y+w/2);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "upleft":
-        var left = new Phaser.Geom.Point(x-h,y-w/2);
-        var right = new Phaser.Geom.Point(x-w/2,y-h);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "upright":
-        var left = new Phaser.Geom.Point(x+w/2,y-h);
-        var right = new Phaser.Geom.Point(x+h,y-w/2);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "downleft":
-        var left = new Phaser.Geom.Point(x-h,y+w/2);
-        var right = new Phaser.Geom.Point(x-w/2,y+h);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-      case "downright":
-        var left = new Phaser.Geom.Point(x+h,y+w/2);
-        var right = new Phaser.Geom.Point(x+w/2,y+h);
-        hitZone = new Phaser.Geom.Polygon([origin, left, right]);
-        break;
-    }
+    var top = new Phaser.Geom.Point(x+h,y-w/2);
+    var down = new Phaser.Geom.Point(x+h,y+w/2);
+    hitZone = new Phaser.Geom.Polygon([origin, top, down]);
 
     return hitZone;
   }
@@ -204,71 +118,18 @@ class Uzi extends Weapon {
     this.index = Uzi.index;
   }
 
-  getHitZone() {
+  getHitZone(sprite) {
     var hitZone;
-    var x = this.scene.player.sprite.x;
-    var y = this.scene.player.sprite.y;
+    var x = sprite.x;
+    var y = sprite.y;
     var w = 16*2;
     var h = 16*10;
 
-    switch(this.scene.player.direction) {
-      case "up":
-        var downLeft = new Phaser.Geom.Point(x-w/2,y);
-        var downRight = new Phaser.Geom.Point(x+w/2,y);
-        var topLeft = new Phaser.Geom.Point(x-w/2, y-h);
-        var topRight = new Phaser.Geom.Point(x+w/2, y-h);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "down":
-        var topLeft = new Phaser.Geom.Point(x-w/2, y);
-        var topRight = new Phaser.Geom.Point(x+w/2, y);
-        var downLeft = new Phaser.Geom.Point(x-w/2,y+h);
-        var downRight = new Phaser.Geom.Point(x+w/2,y+h);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "left":
-        var topLeft = new Phaser.Geom.Point(x-h, y-w/2);
-        var topRight = new Phaser.Geom.Point(x-h, y+w/2);
-        var downLeft = new Phaser.Geom.Point(x,y-w/2);
-        var downRight = new Phaser.Geom.Point(x,y+w/2);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "right":
-        var topLeft = new Phaser.Geom.Point(x, y-w/2);
-        var topRight = new Phaser.Geom.Point(x, y+w/2);
-        var downLeft = new Phaser.Geom.Point(x+h,y-w/2);
-        var downRight = new Phaser.Geom.Point(x+h,y+w/2);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "upleft":
-        var downLeft = new Phaser.Geom.Point(x-w/3,y+w/3);
-        var downRight = new Phaser.Geom.Point(x+w/3,y-w/3);
-        var topLeft = new Phaser.Geom.Point(x-h*2/3-w/3, y-h*2/3+w/3);
-        var topRight = new Phaser.Geom.Point(x-h*2/3+w/3, y-h*2/3-w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "upright":
-        var downLeft = new Phaser.Geom.Point(x-w/3,y-w/3);
-        var downRight = new Phaser.Geom.Point(x+w/3,y+w/3);
-        var topLeft = new Phaser.Geom.Point(x+h*2/3-w/3, y-h*2/3-w/3);
-        var topRight = new Phaser.Geom.Point(x+h*2/3+w/3, y-h*2/3+w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "downleft":
-        var downLeft = new Phaser.Geom.Point(x-h*2/3-w/3, y+h*2/3-w/3);
-        var downRight = new Phaser.Geom.Point(x-h*2/3+w/3, y+h*2/3+w/3);
-        var topLeft = new Phaser.Geom.Point(x-w/3,y-w/3);
-        var topRight = new Phaser.Geom.Point(x+w/3,y+w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-      case "downright":
-        var downLeft = new Phaser.Geom.Point(x+h*2/3-w/3, y+h*2/3+w/3);
-        var downRight = new Phaser.Geom.Point(x+h*2/3+w/3, y+h*2/3-w/3);
-        var topLeft = new Phaser.Geom.Point(x-w/3,y+w/3);
-        var topRight = new Phaser.Geom.Point(x+w/3,y-w/3);
-        hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-        break;
-    }
+    var downLeft = new Phaser.Geom.Point(x-2,y+w/2);
+    var topLeft = new Phaser.Geom.Point(x-2, y-w/2);
+    var topRight = new Phaser.Geom.Point(x+h, y-w/2);
+    var downRight = new Phaser.Geom.Point(x+h,y+w/2);
+    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
 
     return hitZone;
   }
@@ -288,39 +149,18 @@ class Grenade extends Weapon {
     this.index = Grenade.index;
   }
 
-  getHitZone() {
+  getHitZone(sprite) {
     var hitZone;
-    var x = this.scene.player.sprite.x;
-    var y = this.scene.player.sprite.y;
+    var x = sprite.x;
+    var y = sprite.y;
+    var w = 16*4;
     var h = 16*10
-    var r = 16*3;
 
-    switch(this.scene.player.direction) {
-      case "up":
-        hitZone = new Phaser.Geom.Circle(x, y-h, r);
-        break;
-      case "down":
-        hitZone = new Phaser.Geom.Circle(x, y+h, r);
-        break;
-      case "left":
-        hitZone = new Phaser.Geom.Circle(x-h, y, r);
-        break;
-      case "right":
-        hitZone = new Phaser.Geom.Circle(x+h, y, r);
-        break;
-      case "upleft":
-        hitZone = new Phaser.Geom.Circle(x-h*2/3, y-h*2/3, r);
-        break;
-      case "upright":
-        hitZone = new Phaser.Geom.Circle(x+h*2/3, y-h*2/3, r);
-        break;
-      case "downleft":
-        hitZone = new Phaser.Geom.Circle(x-h*2/3, y+h*2/3, r);
-        break;
-      case "downright":
-        hitZone = new Phaser.Geom.Circle(x+h*2/3, y+h*2/3, r);
-        break;
-    }
+    var downLeft = new Phaser.Geom.Point(x-w/2+h,y+w/2);
+    var topLeft = new Phaser.Geom.Point(x-w/2+h, y-w/2);
+    var topRight = new Phaser.Geom.Point(x+w/2+h, y-w/2);
+    var downRight = new Phaser.Geom.Point(x+w/2+h,y+w/2);
+    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
 
     return hitZone;
   }

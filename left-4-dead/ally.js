@@ -88,7 +88,7 @@ class Ally {
     var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
     this.sprite.x += delta*direction.x*this.speed;
     this.sprite.y += delta*direction.y*this.speed;
-    this.sprite.setAngle(angle + 90);
+    this.sprite.setAngle(angle);
 
     if(this.sprite.getCenter().distance(curve.p1) < 2) {
       this.pathIndex += 1;
@@ -141,7 +141,17 @@ class Ally {
 
   }
 
+  shootWeaponAt(point) {
+    this.sprite.rotateToward(point);
+    this.weapon.shoot(this.sprite);
+  }
+
   update(time, delta) {
+    var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
+    if(enemies.length > 0) {
+      this.shootWeaponAt(enemies[0].sprite.getCenter());
+    }
+
     if(this.path && this.path.curves.length > 0) {
       this.followPath(delta);
     }

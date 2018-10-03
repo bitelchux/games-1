@@ -34,7 +34,7 @@
         <key>dataFormat</key>
         <string>phaser-json-array</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>tank_n.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
