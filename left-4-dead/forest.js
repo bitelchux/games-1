@@ -15,7 +15,6 @@ class Forest extends Level {
     this.obstaclesLayer = this.tilemap.createDynamicLayer(2, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
 
     this.obstaclesLayer.setCollisionBetween(1,25);
-    this.scene.player.sprite.body.world.setBounds(0,0,this.tilemap.widthInPixels,this.tilemap.heightInPixels);
   }
 
   getSpawns(playerCoord, minRange, maxRange) {
@@ -47,7 +46,7 @@ class Forest extends Level {
   }
 
   getTilesAroundPlayer() {
-    var playerCoord = new Phaser.Math.Vector2(this.scene.player.sprite.x, this.scene.player.sprite.y);
+    var playerCoord = new Phaser.Math.Vector2(this.scene.allies.player.sprite.x, this.scene.allies.player.sprite.y);
     var rect = new Phaser.Geom.Rectangle(playerCoord.x-16*2, playerCoord.y-16*2, 16*5, 16*5);
     var tiles = this.groundLayer.getTilesWithinWorldXY(rect.x, rect.y, rect.width, rect.height);
     tiles.splice(12, 1);

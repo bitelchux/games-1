@@ -1,10 +1,12 @@
 class Player {
-  constructor(scene) {
+  constructor(scene, x, y) {
     this.scene = scene;
 
-    this.sprite = scene.physics.add.sprite(100, 200, 'player').setPipeline("Light2D");
+    this.sprite = scene.physics.add.sprite(x, y, 'player').setPipeline("Light2D");
     this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
+    this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+
     this.direction = "up";
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();

@@ -36,7 +36,7 @@ class Enemies {
   }
 
   spawnZombies(n) {
-    var playerCoord = this.scene.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, this.spawns.minRange, this.spawns.maxRange);
     for(var i=0; i<n; i++) {
       var spawn = spawns[Math.floor(Math.random()*spawns.length)]
@@ -45,7 +45,7 @@ class Enemies {
   }
 
   spawnTank() {
-    var playerCoord = this.scene.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 600, 800);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
     this.group.push(new Tank(this.scene, spawn.x, spawn.y));
@@ -101,7 +101,7 @@ class Enemy {
   whenDie() {}
 
   update(time, delta) {
-    var playerCoord = this.scene.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
     var meCoord = this.sprite.getCenter();
     var distance = meCoord.distance(playerCoord);
     if(distance < 10) {
@@ -112,9 +112,9 @@ class Enemy {
   }
 
   startPursuit() {
-    var playerCoord = this.scene.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
     setInterval(function(){
-      var playerCoord = this.scene.player.sprite.getCenter();
+      var playerCoord = this.scene.allies.player.sprite.getCenter();
       this.setPathTo(playerCoord.x, playerCoord.y);
     }.bind(this), this.config.pathUpdateTime);
   }
@@ -175,7 +175,7 @@ class Enemy {
     var now = this.scene.time.now;
     if(now - this.config.attack.lastTime > this.config.attack.rate) {
       this.config.attack.lastTime = now;
-      this.scene.player.isHit(this.config.attack.damage);
+      this.scene.allies.player.isHit(this.config.attack.damage);
       var isAnyAttackSoundPlaying = false;
       var attackSounds = this.config.attack.sounds;
       attackSounds.forEach(function(sound) {
@@ -323,10 +323,10 @@ class Rock {
   thrown() {
     this.tank.config.throwSound.play();
 
-    this.scene.physics.add.overlap(this.scene.player.sprite, this.sprite, this.damagePlayer, null, this).name = 'rock_overlap';
+    this.scene.physics.add.overlap(this.scene.allies.player.sprite, this.sprite, this.damagePlayer, null, this).name = 'rock_overlap';
 
     var speed = 100;
-    var playerCoord = this.scene.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
     var direction = new Phaser.Math.Vector2(playerCoord.x - this.sprite.x, playerCoord.y - this.sprite.y).normalize();
     this.sprite.body.setVelocity(direction.x * speed, direction.y * speed);
     setTimeout(function(){this.explode();}.bind(this), 1000);
@@ -343,7 +343,7 @@ class Rock {
     this.scene.physics.world.colliders.getActive().find(function(i){
       return i.name == 'rock_overlap'
     }).destroy();
-    this.scene.player.isHit(this.damage);
+    this.scene.allies.player.isHit(this.damage);
     this.explode();
   }
 }

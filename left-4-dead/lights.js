@@ -1,16 +1,17 @@
 class Lights {
   constructor(scene) {
     this.scene = scene;
-
-    this.main = scene.lights.addLight(scene.player.sprite.x, scene.player.sprite.y, 150);
+    var player = scene.allies.player;
+    this.main = scene.lights.addLight(scene.allies.player.sprite.x, player.sprite.y, 150);
     this.main.setColor(0xffffff).setIntensity(1);
 
     scene.lights.enable().setAmbientColor(0x040404);
   }
 
   update() {
-    var playerX = this.scene.player.sprite.x;
-    var playerY = this.scene.player.sprite.y;
+    var player = this.scene.allies.player;
+    var playerX = player.sprite.x;
+    var playerY = player.sprite.y;
 
     if(playerX != this.main.x || playerY != this.main.y) {
       this.main.x = playerX;

@@ -5,10 +5,6 @@ window.Game = new Phaser.Class({
 
   function Game () {
     Phaser.Scene.call(this, { key: 'game' });
-    this.safe;
-    this.player;
-    this.tilemap;
-    this.sounds = {};
   },
 
   preload: function() {
@@ -257,6 +253,7 @@ window.Game = new Phaser.Class({
   },
 
   createAudio: function() {
+    this.sounds = {};
     //weapons
     this.sounds["pistols"] = this.sound.add('pistolsSound');
     this.sounds["shotgun"] = this.sound.add('shotgunSound');
@@ -305,23 +302,18 @@ window.Game = new Phaser.Class({
   create: function () {
     this.createAnims();
     this.createAudio();
-    this.player = new Player(this);
-    this.enemies = new Enemies(this);
     this.forest = new Forest(this);
+    this.allies = new Allies(this);
+    this.enemies = new Enemies(this);
     this.healthbar = new HealthBar(this);
     this.myLights = new Lights(this);
 
-    this.ally = new Ally(this);
-
-    this.physics.add.collider(this.player.sprite, this.forest.obstaclesLayer);
-
-    this.cameras.main.startFollow(this.player.sprite);
+    this.cameras.main.startFollow(this.allies.player.sprite);
     this.cameras.main.setZoom(1);
   },
 
   update: function(time, delta) {
-    this.player.update();
-    this.ally.update(time, delta);
+    this.allies.update(time, delta);
     this.enemies.update(time, delta);
     this.myLights.update();
   }

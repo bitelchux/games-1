@@ -1,8 +1,8 @@
 class Ally {
-  constructor(scene) {
+  constructor(scene, x, y) {
     this.scene = scene;
 
-    this.sprite = scene.add.sprite(132, 200, 'ally').setPipeline("Light2D");
+    this.sprite = scene.add.sprite(x, y, 'ally').setPipeline("Light2D");
     this.sprite.setDepth(2);
 
     this.path = null;
@@ -154,7 +154,7 @@ class Ally {
 
     if(this.fsm.is('idle') || this.fsm.is('near')) {
       var myCoord = this.sprite.getCenter();
-      var playerCoord = this.scene.player.sprite.getCenter();
+      var playerCoord = this.scene.allies.player.sprite.getCenter();
       if(myCoord.distance(playerCoord) > 60) {
         this.fsm.goNearPlayer();
       }
