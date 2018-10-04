@@ -102,17 +102,28 @@ class Player {
     switch(tile.index) {
       case Pistols.index:
         this.weapon = new Pistols(this.scene, 200, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 20, 3000);
         break;
       case Shotgun.index:
         this.weapon = new Shotgun(this.scene, 1000, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 5, 3000);
         break;
       case Uzi.index:
         this.weapon = new Uzi(this.scene, 70, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 40, 3000);
         break;
       case Grenade.index:
         this.weapon = new Grenade(this.scene, 2000, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 3, 3000);
         break;
     }
+
+    this.weapon.bulletBar.on("reload", function() {
+      this.weapon.isReloading = true;
+    }.bind(this));
+    this.weapon.bulletBar.on("reloadFinished", function() {
+      this.weapon.isReloading = false;
+    }.bind(this));
   }
 
   shoot() {

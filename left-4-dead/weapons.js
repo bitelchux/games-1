@@ -1,9 +1,12 @@
 class Weapon {
-  constructor(scene, rate, damage) {
+  constructor(scene, rate, damage, name) {
     this.scene = scene;
     this.rate = rate;
     this.damage = damage;
+    this.name = name;
     this.lastShotTime = scene.time.now;
+    this.bulletBar = null;
+    this.isReloading = false;
   }
 
   // to override
@@ -11,7 +14,15 @@ class Weapon {
   showImpacts(hitZone) {}
 
   shoot(sprite) {
+    if(this.isReloading)
+      return;
+
     if((this.scene.time.now - this.lastShotTime) > this.rate) {
+
+      if(this.bulletBar) {
+        this.bulletBar.useABullet();
+      }
+
       this.lastShotTime = this.scene.time.now;
       this.scene.sounds[this.constructor.name.toLowerCase()].play();
 
@@ -42,12 +53,15 @@ class Weapon {
       };
     }
   }
+
+  reload() {
+    this.isReloading = true;
+  }
 }
 
 class Pistols extends Weapon {
   constructor(scene, rate, damage) {
-    super(scene, rate, damage);
-    this.name = "pistols";
+    super(scene, rate, damage, "pistols");
     this.index = Pistols.index;
   }
 
@@ -79,8 +93,7 @@ Pistols.index = 5;
 
 class Shotgun extends Weapon {
   constructor(scene, rate, damage) {
-    super(scene, rate, damage);
-    this.name = "shotgun";
+    super(scene, rate, damage, "shotgun");
     this.index = Shotgun.index;
   }
 
@@ -113,8 +126,7 @@ Shotgun.index = 10;
 
 class Uzi extends Weapon {
   constructor(scene, rate, damage) {
-    super(scene, rate, damage);
-    this.name = "uzi";
+    super(scene, rate, damage, "uzi");
     this.index = Uzi.index;
   }
 
@@ -144,8 +156,7 @@ Uzi.index = 15;
 
 class Grenade extends Weapon {
   constructor(scene, rate, damage) {
-    super(scene, rate, damage);
-    this.name = "grenade";
+    super(scene, rate, damage, "grenade");
     this.index = Grenade.index;
   }
 

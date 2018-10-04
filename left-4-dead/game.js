@@ -11,6 +11,8 @@ window.Game = new Phaser.Class({
     this.load.setPath('assets/');
 
     // images
+    this.load.image("bullet", ["bullet.png", "bullet_n.png"]);
+    this.load.image("reload", ["reload.png", "reload_n.png"]);
     this.load.image("forest", ["forest.png", "forest_n.png"]);
     this.load.tilemapTiledJSON("forestTilemap", "forest.json");
     this.load.atlas({
