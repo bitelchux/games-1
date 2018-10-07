@@ -24,8 +24,8 @@ class Enemies {
       this.spawnTank();
       clearInterval(smallWaveInterval);
       clearInterval(bigWaveInterval);
-    // }.bind(this), 50000);
-    }.bind(this), 0);
+    }.bind(this), 50000);
+    // }.bind(this), 0);
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
@@ -213,7 +213,7 @@ class Zombie extends Enemy {
       key:'zombie',
       x: x, y: y,
       speed: 0.035,
-      hp: 500,
+      hp: 200,
       pathUpdateTime: 250,
       attack: {
         damage: 5,

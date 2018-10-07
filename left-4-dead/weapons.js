@@ -62,8 +62,8 @@ class Weapon {
 }
 
 class Pistols extends Weapon {
-  constructor(scene, rate, damage) {
-    super(scene, rate, damage, "pistols");
+  constructor(owner, scene, rate, damage) {
+    super(owner, scene, rate, damage, "pistols");
     this.index = Pistols.index;
   }
 
@@ -94,8 +94,8 @@ class Pistols extends Weapon {
 Pistols.index = 5;
 
 class Shotgun extends Weapon {
-  constructor(scene, rate, damage) {
-    super(scene, rate, damage, "shotgun");
+  constructor(owner, scene, rate, damage) {
+    super(owner, scene, rate, damage, "shotgun");
     this.index = Shotgun.index;
   }
 
@@ -127,8 +127,8 @@ class Shotgun extends Weapon {
 Shotgun.index = 10;
 
 class Uzi extends Weapon {
-  constructor(scene, rate, damage) {
-    super(scene, rate, damage, "uzi");
+  constructor(owner, scene, rate, damage) {
+    super(owner, scene, rate, damage, "uzi");
     this.index = Uzi.index;
   }
 
@@ -157,8 +157,8 @@ class Uzi extends Weapon {
 Uzi.index = 15;
 
 class Grenade extends Weapon {
-  constructor(scene, rate, damage) {
-    super(scene, rate, damage, "grenade");
+  constructor(owner, scene, rate, damage) {
+    super(owner, scene, rate, damage, "grenade");
     this.index = Grenade.index;
   }
 

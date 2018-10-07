@@ -26,52 +26,69 @@ class Player {
   }
 
   update() {
-    this.move();
-    this.shoot();
+    this.sprite.setVelocity(0,0);
+
+    if(this.cursors.space.isDown && this.weapon) {
+      this.weapon.shoot(this.sprite);
+      this.turn();
+    } else {
+      this.turn();
+      this.move();
+    }
+  }
+
+  turn() {
+    if(this.cursors.up.isDown && this.cursors.left.isDown) {
+      this.direction = "upleft";
+      this.sprite.setAngle(-135);
+    } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
+      this.direction = "upright";
+      this.sprite.setAngle(-45);
+    } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
+      this.direction = "downleft";
+      this.sprite.setAngle(135);
+    } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
+      this.direction = "downright";
+      this.sprite.setAngle(45);
+    } else if(this.cursors.up.isDown) {
+      this.direction = "up";
+      this.sprite.setAngle(-90);
+    } else if(this.cursors.down.isDown) {
+      this.direction = "down";
+      this.sprite.setAngle(90);
+    } else if(this.cursors.left.isDown) {
+      this.direction = "left";
+      this.sprite.setAngle(-180);
+    } else if(this.cursors.right.isDown) {
+      this.direction = "right";
+      this.sprite.setAngle(0);
+    }
   }
 
   move() {
-    this.sprite.setVelocity(0,0);
-
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
-      this.direction = "upleft";
       this.sprite.setVelocity(-2*this.speed/3,-2*this.speed/3);
-      this.sprite.setAngle(-135);
       this.walk();
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
-      this.direction = "upright";
       this.sprite.setVelocity(2*this.speed/3,-2*this.speed/3);
-      this.sprite.setAngle(-45);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
-      this.direction = "downleft";
       this.sprite.setVelocity(-2*this.speed/3,2*this.speed/3);
-      this.sprite.setAngle(135);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
-      this.direction = "downright";
       this.sprite.setVelocity(2*this.speed/3,2*this.speed/3);
-      this.sprite.setAngle(45);
       this.walk();
     } else if(this.cursors.up.isDown) {
-      this.direction = "up";
       this.sprite.setVelocityY(-this.speed);
-      this.sprite.setAngle(-90);
       this.walk();
     } else if(this.cursors.down.isDown) {
-      this.direction = "down";
       this.sprite.setVelocityY(this.speed);
-      this.sprite.setAngle(90);
       this.walk();
     } else if(this.cursors.left.isDown) {
-      this.direction = "left";
       this.sprite.setVelocityX(-this.speed);
-      this.sprite.setAngle(-180);
       this.walk();
     } else if(this.cursors.right.isDown) {
-      this.direction = "right";
       this.sprite.setVelocityX(this.speed);
-      this.sprite.setAngle(0);
       this.walk();
     }
   }
@@ -133,12 +150,6 @@ class Player {
     this.weapon.bulletBar.on("reloadFinished", function() {
       this.weapon.isReloading = false;
     }.bind(this));
-  }
-
-  shoot() {
-    if(this.cursors.space.isDown && this.weapon) {
-      this.weapon.shoot(this.sprite);
-    }
   }
 
   isHit(damage) {

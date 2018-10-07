@@ -160,17 +160,17 @@ class Ally {
     var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
     if(enemies.length > 0) {
       this.shootWeaponAt(enemies[0].sprite.getCenter());
-    }
+    } else {
+      if(this.path && this.path.curves.length > 0) {
+        this.followPath(delta);
+      }
 
-    if(this.path && this.path.curves.length > 0) {
-      this.followPath(delta);
-    }
-
-    if(this.fsm.is('idle') || this.fsm.is('near')) {
-      var myCoord = this.sprite.getCenter();
-      var playerCoord = this.scene.allies.player.sprite.getCenter();
-      if(myCoord.distance(playerCoord) > 60) {
-        this.fsm.goNearPlayer();
+      if(this.fsm.is('idle') || this.fsm.is('near')) {
+        var myCoord = this.sprite.getCenter();
+        var playerCoord = this.scene.allies.player.sprite.getCenter();
+        if(myCoord.distance(playerCoord) > 60) {
+          this.fsm.goNearPlayer();
+        }
       }
     }
   }
