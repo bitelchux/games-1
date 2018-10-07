@@ -24,8 +24,8 @@ class Enemies {
       this.spawnTank();
       clearInterval(smallWaveInterval);
       clearInterval(bigWaveInterval);
-    }.bind(this), 50000);
-    //}.bind(this), 0);
+    // }.bind(this), 50000);
+    }.bind(this), 0);
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
@@ -261,6 +261,10 @@ class Tank extends Enemy {
         this.throwRock();
       } else {
         this.followPath(delta);
+        if(!this.scene.sounds.tankwalk.isPlaying) {
+          var player = this.scene.allies.player;
+          this.scene.sounds.tankwalk.playInSpace(this.scene, this.sprite.getCenter());
+        }
       }
     }
   }
@@ -316,11 +320,11 @@ class Rock {
     this.tank.config.pickrockSound.once('ended', function (sound) {
       this.thrown();
     }, this);
-    this.tank.config.pickrockSound.play();
+    this.tank.config.pickrockSound.play(this.scene, this.sprite.getCenter());
   }
 
   thrown() {
-    this.tank.config.throwSound.play();
+    this.tank.config.throwSound.play(this.scene, this.sprite.getCenter());
     var target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
 
     this.scene.physics.add.overlap(this.scene.allies.getSprites(), this.sprite, this.damageTarget, null, this).name = 'rock_overlap';

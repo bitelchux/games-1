@@ -286,7 +286,7 @@ window.Game = new Phaser.Class({
     this.sounds["zombiewave"] = this.sound.add('zombiewaveSound');
 
     //tank
-    this.sounds["tank"] = this.sound.add('tankwalkSound');
+    this.sounds["tankwalk"] = this.sound.add('tankwalkSound');
     this.sounds["tankmusic"] = this.sound.add('tankmusicSound');
     this.sounds["tankattack"] = [];
     for(var i=0; i<3; i++){

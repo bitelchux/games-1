@@ -1,6 +1,7 @@
 class BulletBar extends Phaser.GameObjects.GameObject {
-  constructor(scene, max, reloadTime, visible = true) {
+  constructor(owner, scene, max, reloadTime, visible = true) {
     super(scene,"bulletbar");
+    this.owner = owner;
     this.scene = scene;
     this.max = max;
     this.reloadTime = reloadTime;
@@ -36,7 +37,7 @@ class BulletBar extends Phaser.GameObjects.GameObject {
   }
 
   reload() {
-    this.scene.sounds.reloading.play();
+    this.scene.sounds.reloading.play(this.scene, this.owner.sprite.getCenter());
     this.emit('reload', this);
     this.reloadImage.setVisible(this.visible);
     this.scene.tweens.add({

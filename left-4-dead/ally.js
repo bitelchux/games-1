@@ -118,20 +118,20 @@ class Ally {
     var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.sprite.getCenter().x, this.sprite.getCenter().y);
     switch(tile.index) {
       case Pistols.index:
-        this.weapon = new Pistols(this.scene, 200, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, 20, 3000, false);
+        this.weapon = new Pistols(this, this.scene, 200, 100);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this.scene, 1000, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, 5, 3000, false);
+        this.weapon = new Shotgun(this, this.scene, 1000, 100);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 5, 3000, false);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this.scene, 70, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, 40, 3000, false);
+        this.weapon = new Uzi(this, this.scene, 70, 100);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 40, 3000, false);
         break;
       case Grenade.index:
-        this.weapon = new Grenade(this.scene, 2000, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, 3, 3000, false);
+        this.weapon = new Grenade(this, this.scene, 2000, 100);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 3, 3000, false);
         break;
     }
 

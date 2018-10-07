@@ -1,5 +1,6 @@
 class Weapon {
-  constructor(scene, rate, damage, name) {
+  constructor(owner, scene, rate, damage, name) {
+    this.owner = owner;
     this.scene = scene;
     this.rate = rate;
     this.damage = damage;
@@ -24,7 +25,8 @@ class Weapon {
       }
 
       this.lastShotTime = this.scene.time.now;
-      this.scene.sounds[this.constructor.name.toLowerCase()].play();
+
+      this.scene.sounds[this.constructor.name.toLowerCase()].playInSpace(this.scene, this.owner.sprite.getCenter());
 
       var hitZone = this.getHitZone(sprite);
       var rotatedPoints = [];
