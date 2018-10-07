@@ -65,6 +65,12 @@ window.Game = new Phaser.Class({
     this.load.audio('uziSound', 'audio/uzi.wav');
     this.load.audio('grenadeSound', 'audio/grenade.wav');
 
+    //reloading
+    this.load.audio('reloadingSound', 'audio/reloading.wav');
+
+    //walking
+    this.load.audio('walkingSound', 'audio/walking.wav');
+
     //zombie
     this.load.audio('zombie1Sound', 'audio/zombie/zombie-1.wav',{instances: 10});
     this.load.audio('zombie2Sound', 'audio/zombie/zombie-2.wav');
@@ -262,6 +268,12 @@ window.Game = new Phaser.Class({
     this.sounds["uzi"] = this.sound.add('uziSound');
     this.sounds["grenade"] = this.sound.add('grenadeSound');
 
+    //reloading
+    this.sounds["reloading"] = this.sound.add('reloadingSound');
+
+    //walking
+    this.sounds["walking"] = this.sound.add('walkingSound');
+
     //zombie
     this.sounds["zombie"] = [];
     for(var i=0; i<9; i++){
@@ -307,7 +319,6 @@ window.Game = new Phaser.Class({
     this.forest = new Forest(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);
-    this.healthbar = new HealthBar(this);
     this.myLights = new Lights(this);
 
     this.cameras.main.startFollow(this.allies.player.sprite);

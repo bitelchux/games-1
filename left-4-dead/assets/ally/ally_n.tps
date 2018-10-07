@@ -34,7 +34,7 @@
         <key>dataFormat</key>
         <string>phaser-json-array</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>ally_n.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -163,13 +163,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -184,6 +184,7 @@
             <key type="filename">ally-die-1_n.png</key>
             <key type="filename">ally-die-2_n.png</key>
             <key type="filename">ally-die-3_n.png</key>
+            <key type="filename">ally-down_n.png</key>
             <key type="filename">ally-walk-1_n.png</key>
             <key type="filename">ally-walk-2_n.png</key>
             <key type="filename">ally-walk-3_n.png</key>
@@ -232,6 +233,7 @@
             <filename>ally-walk-pistols-1_n.png</filename>
             <filename>ally-walk-pistols-2_n.png</filename>
             <filename>ally-walk-pistols-3_n.png</filename>
+            <filename>ally-down_n.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

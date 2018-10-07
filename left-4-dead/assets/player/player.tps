@@ -34,7 +34,7 @@
         <key>dataFormat</key>
         <string>phaser-json-array</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>player.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -163,13 +163,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -184,6 +184,7 @@
             <key type="filename">player-die-1.png</key>
             <key type="filename">player-die-2.png</key>
             <key type="filename">player-die-3.png</key>
+            <key type="filename">player-down.png</key>
             <key type="filename">player-walk-1.png</key>
             <key type="filename">player-walk-2.png</key>
             <key type="filename">player-walk-3.png</key>
@@ -232,6 +233,7 @@
             <filename>player-walk-pistols-1.png</filename>
             <filename>player-walk-pistols-2.png</filename>
             <filename>player-walk-pistols-3.png</filename>
+            <filename>player-down.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

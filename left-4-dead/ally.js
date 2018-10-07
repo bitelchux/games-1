@@ -1,9 +1,12 @@
 class Ally {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, name) {
     this.scene = scene;
 
-    this.sprite = scene.add.sprite(x, y, 'ally').setPipeline("Light2D");
+    this.sprite = scene.physics.add.sprite(x, y, 'ally').setPipeline("Light2D");
     this.sprite.setDepth(2);
+    this.sprite.name = name;
+
+    this.healthbar = new HealthBar(scene, 100, false);
 
     this.path = null;
     this.pathIndex = null;
@@ -116,17 +119,28 @@ class Ally {
     switch(tile.index) {
       case Pistols.index:
         this.weapon = new Pistols(this.scene, 200, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, 20, 3000, false);
         break;
       case Shotgun.index:
         this.weapon = new Shotgun(this.scene, 1000, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, 5, 3000, false);
         break;
       case Uzi.index:
         this.weapon = new Uzi(this.scene, 70, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, 40, 3000, false);
         break;
       case Grenade.index:
         this.weapon = new Grenade(this.scene, 2000, 100);
+        this.weapon.bulletBar = new BulletBar(this.scene, 3, 3000, false);
         break;
     }
+
+    this.weapon.bulletBar.on("reload", function() {
+      this.weapon.isReloading = true;
+    }.bind(this));
+    this.weapon.bulletBar.on("reloadFinished", function() {
+      this.weapon.isReloading = false;
+    }.bind(this));
   }
 
   goNearPlayer() {
@@ -162,11 +176,15 @@ class Ally {
   }
 
   isHit(damage) {
-    if(this.hp > 0) {
-      this.hp -= damage;
-      if(this.hp <= 0) {
-        this.die();
-      }
+    this.healthbar.loseHp(damage);
+    if(this.healthbar.isTwoThird()){
+      this.speed = this.halfspeed;
+    }
+    if(this.healthbar.isOneThird()){
+      this.speed = 0;
+    }
+    if(this.healthbar.isEmpty()) {
+      this.die();
     }
   }
 

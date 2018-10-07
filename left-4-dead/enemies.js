@@ -25,6 +25,7 @@ class Enemies {
       clearInterval(smallWaveInterval);
       clearInterval(bigWaveInterval);
     }.bind(this), 50000);
+    //}.bind(this), 0);
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
@@ -88,34 +89,36 @@ class Enemy {
 
     this.config.attack['lastTime'] = this.scene.time.now;
 
-    this.whenStarting();
+    this.startPursuit();
   }
 
   // to override for special behaviors
-  whenStarting() {}
+  whenNearbyTarget(delta) {
+    this.attack();
+  }
 
-  whenNearbyPlayer() {}
+  whenDistantTarget() {}
 
-  whenDistantPlayer() {}
+  whenHittingTarget() {}
 
   whenDie() {}
 
   update(time, delta) {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var targetCoord = this.target.sprite.getCenter();
     var meCoord = this.sprite.getCenter();
-    var distance = meCoord.distance(playerCoord);
+    var distance = meCoord.distance(targetCoord);
     if(distance < 10) {
-      this.whenNearbyPlayer(delta);
+      this.whenNearbyTarget(delta);
     } else {
-      this.whenDistantPlayer(delta);
+      this.whenDistantTarget(delta);
     }
   }
 
   startPursuit() {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
     setInterval(function(){
-      var playerCoord = this.scene.allies.player.sprite.getCenter();
-      this.setPathTo(playerCoord.x, playerCoord.y);
+      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
@@ -174,8 +177,9 @@ class Enemy {
   attack() {
     var now = this.scene.time.now;
     if(now - this.config.attack.lastTime > this.config.attack.rate) {
+      this.whenHittingTarget();
       this.config.attack.lastTime = now;
-      this.scene.allies.player.isHit(this.config.attack.damage);
+      this.target.isHit(this.config.attack.damage);
       var isAnyAttackSoundPlaying = false;
       var attackSounds = this.config.attack.sounds;
       attackSounds.forEach(function(sound) {
@@ -209,7 +213,7 @@ class Zombie extends Enemy {
       key:'zombie',
       x: x, y: y,
       speed: 0.035,
-      hp: 100,
+      hp: 500,
       pathUpdateTime: 250,
       attack: {
         damage: 5,
@@ -220,15 +224,7 @@ class Zombie extends Enemy {
     super(scene, config);
   }
 
-  whenStarting() {
-    this.startPursuit();
-  }
-
-  whenNearbyPlayer(delta) {
-    this.attack();
-  }
-
-  whenDistantPlayer(delta) {
+  whenDistantTarget(delta) {
     this.followPath(delta);
   }
 }
@@ -239,7 +235,7 @@ class Tank extends Enemy {
       key:'tank',
       x: x, y: y,
       speed: 0.040,
-      hp: 1000,
+      hp: 10000,
       pathUpdateTime: 500,
       attack: {
         damage: 35,
@@ -258,15 +254,7 @@ class Tank extends Enemy {
     this.isThrowing = false;
   }
 
-  whenStarting() {
-    this.startPursuit();
-  }
-
-  whenNearbyPlayer(delta) {
-    this.attack();
-  }
-
-  whenDistantPlayer(delta) {
+  whenDistantTarget(delta) {
     if(!this.isThrowing) {
       this.isThrowing = Math.random() < 0.001;
       if(this.isThrowing) {
@@ -275,6 +263,17 @@ class Tank extends Enemy {
         this.followPath(delta);
       }
     }
+  }
+
+  whenHittingTarget() {
+    var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.sprite.x, this.target.sprite.y - this.sprite.y).normalize();
+    this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
+    this.scene.tweens.add({
+        targets: this.target.sprite.body.velocity,
+        x: 0,
+        y: 0,
+        duration: 2000
+    });
   }
 
   throwRock() {
@@ -322,12 +321,13 @@ class Rock {
 
   thrown() {
     this.tank.config.throwSound.play();
+    var target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
 
-    this.scene.physics.add.overlap(this.scene.allies.player.sprite, this.sprite, this.damagePlayer, null, this).name = 'rock_overlap';
+    this.scene.physics.add.overlap(this.scene.allies.getSprites(), this.sprite, this.damageTarget, null, this).name = 'rock_overlap';
 
     var speed = 100;
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var direction = new Phaser.Math.Vector2(playerCoord.x - this.sprite.x, playerCoord.y - this.sprite.y).normalize();
+    var targetCoord = target.sprite.getCenter();
+    var direction = new Phaser.Math.Vector2(targetCoord.x - this.sprite.x, targetCoord.y - this.sprite.y).normalize();
     this.sprite.body.setVelocity(direction.x * speed, direction.y * speed);
     setTimeout(function(){this.explode();}.bind(this), 1000);
   }
@@ -339,11 +339,12 @@ class Rock {
     this.sprite.anims.play('rock-anim', true);
   }
 
-  damagePlayer() {
+  damageTarget(sprite) {
     this.scene.physics.world.colliders.getActive().find(function(i){
       return i.name == 'rock_overlap'
     }).destroy();
-    this.scene.allies.player.isHit(this.damage);
+    var ally = this.scene.allies.getAlly(sprite.name)
+    ally.isHit(this.damage);
     this.explode();
   }
 }

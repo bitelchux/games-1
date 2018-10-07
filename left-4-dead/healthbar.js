@@ -1,10 +1,12 @@
 class HealthBar {
-  constructor(scene) {
+  constructor(scene, hp, visible = true) {
     this.scene = scene;
-    this.hp = 100;
+    this.hp = hp;
+    this.visible = visible;
     this.sprite = scene.physics.add.sprite(40, 20, 'healthbar');
     this.sprite.setDepth(4);
     this.sprite.setScrollFactor(0);
+    this.sprite.setVisible(this.visible);
   }
 
   gainHp(hp) {
@@ -41,6 +43,10 @@ class HealthBar {
 
   isOneThird() {
     return this.hp < 33;
+  }
+
+  isTwoThird() {
+    return this.hp < 66;
   }
 
   isFull() {

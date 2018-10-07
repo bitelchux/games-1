@@ -1,20 +1,20 @@
 class BulletBar extends Phaser.GameObjects.GameObject {
-  constructor(scene, name, max, reloadTime) {
+  constructor(scene, max, reloadTime, visible = true) {
     super(scene,"bulletbar");
     this.scene = scene;
-    this.name = name;
     this.max = max;
-    this.currentNb = max;
     this.reloadTime = reloadTime;
+    this.visible = visible;
     this.sprites = scene.add.group();
     this.setupSprites();
     this.setupReload();
   }
 
   setupSprites() {
-    for(var i=0; i<this.currentNb; i++) {
-      var sprite = this.scene.physics.add.image(20 + i*8, 50, this.name);
+    for(var i=0; i<this.max; i++) {
+      var sprite = this.scene.physics.add.image(20 + i*6, 50, "bullet");
       sprite.setDepth(4);
+      sprite.setVisible(this.visible);
       sprite.setScrollFactor(0);
       this.sprites.add(sprite);
     }
@@ -36,12 +36,13 @@ class BulletBar extends Phaser.GameObjects.GameObject {
   }
 
   reload() {
+    this.scene.sounds.reloading.play();
     this.emit('reload', this);
-    this.reloadImage.setVisible(true);
+    this.reloadImage.setVisible(this.visible);
     this.scene.tweens.add({
         targets: this.reloadImage,
-        displayWidth: 80,
-        x: 60,
+        displayWidth: 6*this.max,
+        x: 6*this.max/2 + 20,
         duration: this.reloadTime,
         callbackScope: this,
         onComplete: this.reloadFinished
@@ -52,8 +53,8 @@ class BulletBar extends Phaser.GameObjects.GameObject {
     this.emit('reloadFinished', this);
     this.sprites.getChildren().forEach(function(sprite) {
       sprite.setActive(true);
-      sprite.setVisible(true);
-    });
+      sprite.setVisible(this.visible);
+    }.bind(this));
     this.reloadImage.displayWidth = 16;
     this.reloadImage.x = 20;
     this.reloadImage.setVisible(false);
@@ -61,5 +62,12 @@ class BulletBar extends Phaser.GameObjects.GameObject {
 
   isEmpty() {
     return this.sprites.getLength() == 0;
+  }
+
+  kill() {
+    this.sprites.getChildren().forEach(function(sprite) {
+      sprite.setActive(false);
+      sprite.setVisible(false);
+    })
   }
 }

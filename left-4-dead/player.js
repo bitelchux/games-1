@@ -6,6 +6,8 @@ class Player {
     this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
     this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+    this.sprite.name = "player";
+    this.healthbar = new HealthBar(scene, 100);
 
     this.direction = "up";
 
@@ -75,6 +77,10 @@ class Player {
   }
 
   walk() {
+    var walkingSound = this.scene.sounds.walking;
+    if(!walkingSound.isPlaying)
+      walkingSound.play();
+
     if(this.weapon != null) {
       this.sprite.anims.play('walk-' + this.weapon.name, true);
     } else {
@@ -88,7 +94,7 @@ class Player {
       switch(tile.index) {
         case 18:
           this.speed = this.normalspeed;
-          this.scene.healthbar.gainHp(50);
+          this.healthbar.gainHp(50);
           this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
           break;
         default:
@@ -99,22 +105,25 @@ class Player {
   }
 
   pick_weapon(tile) {
+    if(this.weapon)
+      this.weapon.bulletBar.kill();
+
     switch(tile.index) {
       case Pistols.index:
         this.weapon = new Pistols(this.scene, 200, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 20, 3000);
+        this.weapon.bulletBar = new BulletBar(this.scene, 20, 3000);
         break;
       case Shotgun.index:
         this.weapon = new Shotgun(this.scene, 1000, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 5, 3000);
+        this.weapon.bulletBar = new BulletBar(this.scene, 5, 3000);
         break;
       case Uzi.index:
         this.weapon = new Uzi(this.scene, 70, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 40, 3000);
+        this.weapon.bulletBar = new BulletBar(this.scene, 40, 3000);
         break;
       case Grenade.index:
         this.weapon = new Grenade(this.scene, 2000, 100);
-        this.weapon.bulletBar = new BulletBar(this.scene, "bullet", 3, 3000);
+        this.weapon.bulletBar = new BulletBar(this.scene, 3, 3000);
         break;
     }
 
@@ -133,11 +142,14 @@ class Player {
   }
 
   isHit(damage) {
-    this.scene.healthbar.loseHp(damage);
-    if(this.scene.healthbar.isOneThird()){
+    this.healthbar.loseHp(damage);
+    if(this.healthbar.isTwoThird()){
       this.speed = this.halfspeed;
     }
-    if(this.scene.healthbar.isEmpty()) {
+    if(this.healthbar.isOneThird()){
+      this.speed = 0;
+    }
+    if(this.healthbar.isEmpty()) {
       location.href = location.href;
     }
   }
