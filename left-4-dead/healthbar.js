@@ -1,7 +1,8 @@
 class HealthBar {
-  constructor(scene, hp, visible = true) {
+  constructor(scene, visible = true) {
     this.scene = scene;
-    this.hp = hp;
+    this.hp = 100;
+    this.extrahp = 300;
     this.visible = visible;
     this.sprite = scene.physics.add.sprite(40, 20, 'healthbar');
     this.sprite.setDepth(4);
@@ -18,11 +19,21 @@ class HealthBar {
   }
 
   loseHp(hp) {
-    this.hp -= hp;
-    if(this.hp < 0) {
-      this.hp = 0;
+    if(this.hp == 0) {
+      this.extrahp -= hp;
+    } else {
+      this.hp -= hp;
+      if(this.hp < 0) {
+        this.hp = 0;
+      }
     }
+
     this.update();
+  }
+
+  recoverSomeHp() {
+    this.hp = 33;
+    this.extrahp = 300;
   }
 
   update() {
@@ -38,18 +49,18 @@ class HealthBar {
   }
 
   isEmpty() {
+    return this.extrahp == 0;
+  }
+
+  isExtra() {
     return this.hp == 0;
   }
 
-  isOneThird() {
+  isCritical() {
     return this.hp < 33;
   }
 
-  isTwoThird() {
-    return this.hp < 66;
-  }
-
-  isFull() {
-    return this.hp == 100
+  isNotCritical() {
+    return this.hp >= 33;
   }
 }

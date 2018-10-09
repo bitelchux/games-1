@@ -8,24 +8,30 @@ class Enemies {
   }
 
   startIntervalsAndTimeouts(){
-    //small wave
-    var smallWaveInterval = setInterval(function(){
-      this.spawnWaves(2, 5, 500);
-    }.bind(this), 5000);
-
-    //big wave
-    var bigWaveInterval = setInterval(function(){
-      this.scene.sounds.zombiewave.play();
-      this.spawnWaves(3, 30, 2000);
-    }.bind(this), 30000);
-
-    //tank
-    setTimeout(function(){
-      this.spawnTank();
-      clearInterval(smallWaveInterval);
-      clearInterval(bigWaveInterval);
-    }.bind(this), 50000);
-    // }.bind(this), 0);
+    this.spawnHunter();
+    // //small wave
+    // var smallWaveInterval = setInterval(function(){
+    //   this.spawnWaves(2, 5, 500);
+    // }.bind(this), 5000);
+    //
+    // //big wave
+    // var bigWaveInterval = setInterval(function(){
+    //   this.scene.sounds.zombiewave.play();
+    //   this.spawnWaves(3, 30, 2000);
+    // }.bind(this), 30000);
+    //
+    // //hunter
+    // var hunterInterval = setInterval(function(){
+    //   this.spawnHunter();
+    // }.bind(this), 0)
+    //
+    // //tank
+    // setTimeout(function(){
+    //   this.spawnTank();
+    //   clearInterval(smallWaveInterval);
+    //   clearInterval(bigWaveInterval);
+    // }.bind(this), 50000);
+    // // }.bind(this), 0);
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
@@ -43,6 +49,13 @@ class Enemies {
       var spawn = spawns[Math.floor(Math.random()*spawns.length)]
       this.group.push(new Zombie(this.scene, spawn.x, spawn.y));
     }
+  }
+
+  spawnHunter() {
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
+    this.group.push(new Hunter(this.scene, spawn.x, spawn.y));
   }
 
   spawnTank() {
@@ -213,11 +226,11 @@ class Zombie extends Enemy {
       key:'zombie',
       x: x, y: y,
       speed: 0.035,
-      hp: 200,
+      hp: 500,
       pathUpdateTime: 250,
       attack: {
-        damage: 5,
-        rate: 300,
+        damage: 1,
+        rate: 1000,
         sounds: scene.sounds.zombiefast
       }
     };
@@ -226,6 +239,60 @@ class Zombie extends Enemy {
 
   whenDistantTarget(delta) {
     this.followPath(delta);
+  }
+}
+
+class Hunter extends Enemy {
+  constructor(scene, x, y) {
+    var config = {
+      key:'hunter',
+      x: x, y: y,
+      speed: 0.015,
+      hp: 5000,
+      pathUpdateTime: 250,
+      attack: {
+        damage: 10,
+        rate: 1000,
+        sounds: scene.sounds.hunterattack
+      }
+    };
+    super(scene, config);
+
+    this.isOnTarget = false;
+  }
+
+  startPursuit() {
+    this.target = this.scene.allies.getWeakestAlly();
+    setInterval(function(){
+      this.target = this.scene.allies.getWeakestAlly(this.sprite.getCenter());
+      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
+    }.bind(this), this.config.pathUpdateTime);
+  }
+
+  update(time, delta) {
+    var targetCoord = this.target.sprite.getCenter();
+    var meCoord = this.sprite.getCenter();
+    var distance = meCoord.distance(targetCoord);
+    if(distance > 150) {
+      this.followPath(delta);
+    } else if (!this.isOnTarget) {
+      this.jumpOnTarget(delta);
+    }
+  }
+
+  jumpOnTarget(delta) {
+    this.isOnTarget = true;
+    this.scene.tweens.add({
+        targets: this.sprite,
+        x: this.target.sprite.x,
+        y: this.target.sprite.y,
+        duration: 500,
+        callbackScope: this,
+        onComplete: function() {
+          this.scene.sounds.hunterjump.play();
+        }
+    });
+    this.target.isHit(100);
   }
 }
 

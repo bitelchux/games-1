@@ -6,14 +6,15 @@ class Ally {
     this.sprite.setDepth(2);
     this.sprite.name = name;
 
-    this.healthbar = new HealthBar(scene, 100, false);
+    this.healthbar = new HealthBar(scene, false);
 
     this.path = null;
     this.pathIndex = null;
     this.target = null;
 
-    this.hp = 100;
-    this.speed = 0.035;
+    this.normalspeed = 0.035;
+    this.halfspeed = 0.017;
+    this.speed = this.normalspeed;
     this.weapon = null;
 
     var that = this;
@@ -160,7 +161,8 @@ class Ally {
     var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
     if(enemies.length > 0) {
       this.shootWeaponAt(enemies[0].sprite.getCenter());
-    } else {
+    } else if(this.speed > 0) {
+
       if(this.path && this.path.curves.length > 0) {
         this.followPath(delta);
       }
@@ -177,15 +179,28 @@ class Ally {
 
   isHit(damage) {
     this.healthbar.loseHp(damage);
-    if(this.healthbar.isTwoThird()){
-      this.speed = this.halfspeed;
-    }
-    if(this.healthbar.isOneThird()){
-      this.speed = 0;
-    }
+    this.updateHealthRelatedCondition();
+  }
+
+  isLifted() {
+    this.healthbar.recoverSomeHp();
+    this.updateHealthRelatedCondition();
+  }
+
+  updateHealthRelatedCondition() {
     if(this.healthbar.isEmpty()) {
       this.die();
+    } else if(this.healthbar.isExtra()) {
+      this.speed = 0;
+    } else if(this.healthbar.isCritical()){
+      this.speed = this.halfspeed;
+    } else if(this.healthbar.isNotCritical()){
+      this.speed = this.normalspeed;
     }
+  }
+
+  isDown() {
+    return this.healthbar.isExtra();
   }
 
   die() {

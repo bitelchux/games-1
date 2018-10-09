@@ -13,6 +13,7 @@ window.Game = new Phaser.Class({
     // images
     this.load.image("bullet", ["bullet.png", "bullet_n.png"]);
     this.load.image("reload", ["reload.png", "reload_n.png"]);
+    this.load.image("help", ["help.png", "help_n.png"]);
     this.load.image("forest", ["forest.png", "forest_n.png"]);
     this.load.tilemapTiledJSON("forestTilemap", "forest.json");
     this.load.atlas({
@@ -32,6 +33,12 @@ window.Game = new Phaser.Class({
       textureURL: 'enemies/zombie/zombie.png',
       normalMap: 'enemies/zombie/zombie_n.png',
       atlasURL: 'enemies/zombie/zombie.json'
+    });
+    this.load.atlas({
+      key: 'hunter',
+      textureURL: 'enemies/hunter/hunter.png',
+      normalMap: 'enemies/hunter/hunter_n.png',
+      atlasURL: 'enemies/hunter/hunter.json'
     });
     this.load.atlas({
       key: 'tank',
@@ -88,7 +95,14 @@ window.Game = new Phaser.Class({
     this.load.audio('zombiefast5Sound', 'audio/zombie/zombie-fast-5.wav');
     this.load.audio('zombiewaveSound', 'audio/zombie/zombie-wave.wav');
 
-    //zombie
+    //hunter
+    this.load.audio('hunterjumpSound', 'audio/hunter/hunter-jump.wav');
+    this.load.audio('huntercrySound', 'audio/hunter/hunter-cry.wav');
+    this.load.audio('hunterattack1Sound', 'audio/hunter/hunter-attack-1.wav');
+    this.load.audio('hunterattack2Sound', 'audio/hunter/hunter-attack-2.wav');
+    this.load.audio('hunterattack3Sound', 'audio/hunter/hunter-attack-3.wav');
+
+    //tank
     this.load.audio('tankmusicSound', 'audio/tank/tank-music.wav');
     this.load.audio('tankwalkSound', 'audio/tank/tank-walk.wav');
     this.load.audio('tankattack1Sound', 'audio/tank/tank-attack-1.wav');
@@ -241,6 +255,17 @@ window.Game = new Phaser.Class({
       yoyo: true
     });
 
+    // zombie
+    this.anims.create({
+      key: 'hunter-walk',
+      frames: this.anims.generateFrameNames('hunter', {
+        start: 1, end: 3, zeroPad: 0,
+        prefix: 'hunter-walk-', suffix: '.png'
+      }),
+      frameRate: 12,
+      yoyo: true
+    });
+
     // tank
     this.anims.create({
       key: 'tank-walk',
@@ -284,6 +309,14 @@ window.Game = new Phaser.Class({
       this.sounds.zombiefast[i] = this.sound.add('zombiefast'+ (i+1) +'Sound');
     }
     this.sounds["zombiewave"] = this.sound.add('zombiewaveSound');
+
+    //hunter
+    this.sounds["hunterjump"] = this.sound.add('hunterjumpSound', {volume: 0.5});
+    this.sounds["huntercry"] = this.sound.add('huntercrySound');
+    this.sounds["hunterattack"] = [];
+    for(var i=0; i<3; i++){
+      this.sounds.hunterattack[i] = this.sound.add('hunterattack'+ (i+1) +'Sound');
+    }
 
     //tank
     this.sounds["tankwalk"] = this.sound.add('tankwalkSound');

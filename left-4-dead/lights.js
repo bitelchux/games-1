@@ -2,10 +2,10 @@ class Lights {
   constructor(scene) {
     this.scene = scene;
     var player = scene.allies.player;
-    this.main = scene.lights.addLight(scene.allies.player.sprite.x, player.sprite.y, 150);
+    this.main = scene.lights.addLight(scene.allies.player.sprite.x, player.sprite.y, 125);
     this.main.setColor(0xffffff).setIntensity(1);
 
-    scene.lights.enable().setAmbientColor(0x040404);
+    scene.lights.enable().setAmbientColor(0x020202);
   }
 
   update() {

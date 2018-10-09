@@ -7,7 +7,9 @@ class Player {
     this.sprite.setDepth(2);
     this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
     this.sprite.name = "player";
-    this.healthbar = new HealthBar(scene, 100);
+
+    this.healthbar = new HealthBar(scene);
+    this.helpBar = new HelpBar(scene);
 
     this.direction = "up";
 
@@ -22,7 +24,7 @@ class Player {
     }, this);
 
     this.weapon == null;
-    this.isInjured = false;
+    this.isHelping = false;
   }
 
   update() {
@@ -33,8 +35,11 @@ class Player {
       this.turn();
     } else {
       this.turn();
-      this.move();
+      if(this.speed > 0)
+        this.move();
     }
+
+    this.helpBar.update(this.sprite.x, this.sprite.y - 20);
   }
 
   turn() {
@@ -118,7 +123,33 @@ class Player {
           var weapon = this.weapon;
           this.pick_weapon(tile);
       }
+    } else if(!this.isHelping) {
+      this.helpAlly();
     }
+  }
+
+  helpAlly() {
+    this.isHelping = true;
+    this.speed = 0;
+
+    var chosenAlly;
+    this.scene.allies.group.forEach(function(ally) {
+      if(ally != this && this.sprite.getCenter().distance(ally.sprite.getCenter()) < 10
+          && ally.isDown()) {
+            chosenAlly = ally;
+      }
+    }.bind(this));
+
+    if(chosenAlly) {
+      this.helpBar.help();
+      this.helpBar.on("helpComplete", function() {
+        chosenAlly.isLifted();
+        this.isHelping = false;
+        this.updateHealthRelatedCondition();
+      }.bind(this));
+    }
+
+    return chosenAlly;
   }
 
   pick_weapon(tile) {
@@ -154,14 +185,31 @@ class Player {
 
   isHit(damage) {
     this.healthbar.loseHp(damage);
-    if(this.healthbar.isTwoThird()){
-      this.speed = this.halfspeed;
-    }
-    if(this.healthbar.isOneThird()){
-      this.speed = 0;
-    }
+    this.updateHealthRelatedCondition();
+  }
+
+  isLifted() {
+    this.healthbar.recoverSomeHp();
+    this.updateHealthRelatedCondition();
+  }
+
+  updateHealthRelatedCondition() {
     if(this.healthbar.isEmpty()) {
-      location.href = location.href;
+      this.die();
+    } else if(this.healthbar.isExtra()) {
+      this.speed = 0;
+    } else if(this.healthbar.isCritical()){
+      this.speed = this.halfspeed;
+    } else if(this.healthbar.isNotCritical()){
+      this.speed = this.normalspeed;
     }
+  }
+
+  isDown() {
+    return this.healthbar.isExtra();
+  }
+
+  die() {
+    location.href = location.href;
   }
 }

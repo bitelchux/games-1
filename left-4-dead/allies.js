@@ -5,6 +5,10 @@ class Allies {
     this.ally1 = new Ally(this.scene, 132, 200, "ally1");
     this.ally2 = new Ally(this.scene, 30, 200, "ally2");
     this.ally3 = new Ally(this.scene, 30, 230, "ally3");
+
+    this.ally2.isHit(5);
+
+
     this.group = [];
     this.group.push(this.player);
     this.group.push(this.ally1);
@@ -39,7 +43,16 @@ class Allies {
   }
 
   getWeakestAlly() {
-
+    var totalhp = 401;
+    var chosenAlly;
+    this.group.forEach(function(ally) {
+      var totalhpAlly = ally.healthbar.hp + ally.healthbar.extrahp;
+      if(totalhpAlly < totalhp) {
+        totalhp = totalhpAlly;
+        chosenAlly = ally;
+      }
+    })
+    return chosenAlly;
   }
 
   getSprites() {
