@@ -8,7 +8,6 @@ class Allies {
 
     this.ally2.isHit(5);
 
-
     this.group = [];
     this.group.push(this.player);
     this.group.push(this.ally1);
@@ -20,7 +19,7 @@ class Allies {
 
   update(time, delta) {
     this.group.forEach(function(ally) {
-      ally.update(time, delta);
+      ally.update();
     });
   }
 
@@ -48,6 +47,19 @@ class Allies {
     this.group.forEach(function(ally) {
       var totalhpAlly = ally.healthbar.hp + ally.healthbar.extrahp;
       if(totalhpAlly < totalhp) {
+        totalhp = totalhpAlly;
+        chosenAlly = ally;
+      }
+    })
+    return chosenAlly;
+  }
+
+  getStrongestAlly() {
+    var totalhp = 0;
+    var chosenAlly;
+    this.group.forEach(function(ally) {
+      var totalhpAlly = ally.healthbar.hp + ally.healthbar.extrahp;
+      if(totalhpAlly > totalhp) {
         totalhp = totalhpAlly;
         chosenAlly = ally;
       }

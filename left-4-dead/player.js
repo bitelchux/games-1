@@ -148,8 +148,6 @@ class Player {
         this.updateHealthRelatedCondition();
       }.bind(this));
     }
-
-    return chosenAlly;
   }
 
   pick_weapon(tile) {

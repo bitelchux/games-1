@@ -3,10 +3,13 @@ class Ally {
     this.scene = scene;
 
     this.sprite = scene.physics.add.sprite(x, y, 'ally').setPipeline("Light2D");
+    this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(2);
+    this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
     this.sprite.name = name;
 
     this.healthbar = new HealthBar(scene, false);
+    this.helpBar = new HelpBar(scene);
 
     this.path = null;
     this.pathIndex = null;
@@ -17,28 +20,53 @@ class Ally {
     this.speed = this.normalspeed;
     this.weapon = null;
 
-    var that = this;
-    this.fsm = new StateMachine({
-      init: 'unweaponed',
-      transitions: [
-        { name: 'pickWeapon', from: 'unweaponed', to: 'weaponed' },
-        { name: 'goNearPlayer', from: ['*'], to: 'near' },
-        { name: 'wait', from: ['near'], to: 'idle' },
-        { name: 'goto', from: '*', to: function(s) { return s } }
-      ],
-      methods: {
-        onPickWeapon: function() { that.pickWeapon() },
-        onGoNearPlayer: function() { that.goNearPlayer() },
-        onWait: function() { that.wait() }
-      }
-    });
+    this.states = {
+      IDLE: 0,
+      MOVING: 1,
+      INTERACTING: 2,
+      SHOOTING: 3,
+    }
 
-    this.start();
+    this.state = this.states.IDLE;
   }
 
-  start() {
+  update() {
+    if(this.state == this.states.IDLE) {
+      // unarmed
+      if(this.weapon == null) {
+        var point = this.getClosestWeaponCoord();
+        // on top of weapon
+        if(this.sprite.getCenter().equals(point)) {
+          this.interact();
+        }
+        // move to weapon
+        else {
+          this.moveTo(point.x, point.y);
+        }
+      }
+      // armed
+      else {
+        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
+        // enemies nearby
+        if(enemies.length > 0) {
+          this.shootWeaponAt(enemies[0].sprite.getCenter());
+        }
+
+        // var ally = this.scene.allies.getStrongestAlly();
+        var ally = this.scene.allies.player;
+        var distanceWithAlly = this.sprite.getCenter().distance(ally.sprite.getCenter());
+
+        // go near strongest ally
+        if(distanceWithAlly > 70){
+          this.goNearAlly(ally);
+        }
+      }
+    }
+  }
+
+  getClosestWeaponCoord() {
     var chosenDistance = 100;
-    var chosenTile = null;
+    var chosenCoord = null;
     var myCoord = this.sprite.getCenter();
 
     var weaponTiles = this.scene.forest.getWeapons();
@@ -46,11 +74,12 @@ class Ally {
       var tileCoord = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
       var distance = myCoord.distance(tileCoord);
       if(distance < chosenDistance) {
-        chosenTile = tile;
         chosenDistance = distance;
+        chosenCoord = tileCoord;
       }
     });
-    this.moveTo(chosenTile.getCenterX(), chosenTile.getCenterY());
+
+    return chosenCoord;
   }
 
   moveTo(x, y) {
@@ -80,43 +109,50 @@ class Ally {
       this.path.lineTo(tileCoord[0]*16 + 8, tileCoord[1]*16 + 8);
     }.bind(this));
 
-    this.path;
     this.pathIndex = 0;
+
+    if(Array.isArray(this.path.curves) && this.path.curves.length){
+      this.followPath();
+    }
   }
 
-  followPath(delta) {
+  followPath() {
+    this.state = this.states.MOVING;
+
     this.sprite.anims.play('ally-walk', true);
-
     var curve = this.path.curves[this.pathIndex];
-    var direction = new Phaser.Math.Vector2(curve.p1.x - curve.p0.x, curve.p1.y - curve.p0.y).normalize();
+    var distance = curve.p0.distance(curve.p1);
     var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
-    this.sprite.x += delta*direction.x*this.speed;
-    this.sprite.y += delta*direction.y*this.speed;
     this.sprite.setAngle(angle);
-
-    if(this.sprite.getCenter().distance(curve.p1) < 2) {
-      this.pathIndex += 1;
-      if(this.pathIndex == this.path.curves.length) {
-        this.atEndOfPath();
+    this.scene.tweens.add({
+      targets: this.sprite,
+      x: curve.p1.x,
+      y: curve.p1.y,
+      duration: distance / this.speed,
+      callbackScope: this,
+      onComplete: function() {
+        this.pathIndex += 1;
+        if(this.pathIndex < this.path.curves.length) {
+          this.followPath();
+        } else {
+          this.path = null;
+          this.pathIndex = 0;
+          this.state = this.states.IDLE;
+        }
       }
-    }
+    });
   }
 
-  atEndOfPath() {
-    this.path = null;
-
-    if(this.fsm.is('unweaponed')) {
-      this.fsm.pickWeapon();
-      this.fsm.goNearPlayer();
-    } else if(this.fsm.is('near')) {
-      this.fsm.wait();
+  interact() {
+    this.state = this.states.INTERACTING;
+    var tile = this.scene.forest.getObjectAt(this.sprite.getCenter());
+    if(tile) {
+      this.pickObject(tile);
     }
+    this.state = this.states.IDLE;
   }
 
-  wait() {}
-
-  pickWeapon() {
-    var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.sprite.getCenter().x, this.sprite.getCenter().y);
+  pickObject(tile) {
     switch(tile.index) {
       case Pistols.index:
         this.weapon = new Pistols(this, this.scene, 200, 100);
@@ -144,37 +180,36 @@ class Ally {
     }.bind(this));
   }
 
-  goNearPlayer() {
-    var tilesAroundPlayer = this.scene.forest.getTilesAroundPlayer();
-    var chosenTile = tilesAroundPlayer[Math.floor(Math.random()*tilesAroundPlayer.length)];
+  goNearAlly(ally) {
+    var tiles = this.scene.forest.getTilesAround(ally.sprite.getCenter());
+    var chosenTile = tiles[Math.floor(Math.random()*tiles.length)];
     this.moveTo(chosenTile.getCenterX(), chosenTile.getCenterY());
+  }
 
+  helpAlly() {
+    this.speed = 0;
+
+    var chosenAlly;
+    this.scene.allies.group.forEach(function(ally) {
+      if(ally != this && this.sprite.getCenter().distance(ally.sprite.getCenter()) < 10
+          && ally.isDown()) {
+            chosenAlly = ally;
+      }
+    }.bind(this));
+
+    if(chosenAlly) {
+      this.helpBar.help();
+      this.helpBar.on("helpComplete", function() {
+        chosenAlly.isLifted();
+        this.updateHealthRelatedCondition();
+        this.fsm.wait();
+      }.bind(this));
+    }
   }
 
   shootWeaponAt(point) {
     this.sprite.rotateToward(point);
     this.weapon.shoot(this.sprite);
-  }
-
-  update(time, delta) {
-
-    var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
-    if(enemies.length > 0) {
-      this.shootWeaponAt(enemies[0].sprite.getCenter());
-    } else if(this.speed > 0) {
-
-      if(this.path && this.path.curves.length > 0) {
-        this.followPath(delta);
-      }
-
-      if(this.fsm.is('idle') || this.fsm.is('near')) {
-        var myCoord = this.sprite.getCenter();
-        var playerCoord = this.scene.allies.player.sprite.getCenter();
-        if(myCoord.distance(playerCoord) > 60) {
-          this.fsm.goNearPlayer();
-        }
-      }
-    }
   }
 
   isHit(damage) {

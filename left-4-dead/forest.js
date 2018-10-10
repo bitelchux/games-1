@@ -45,11 +45,19 @@ class Forest extends Level {
     return weapons;
   }
 
-  getTilesAroundPlayer() {
-    var playerCoord = new Phaser.Math.Vector2(this.scene.allies.player.sprite.x, this.scene.allies.player.sprite.y);
-    var rect = new Phaser.Geom.Rectangle(playerCoord.x-16*2, playerCoord.y-16*2, 16*5, 16*5);
+  getTilesAround(coord) {
+    var rect = new Phaser.Geom.Rectangle(coord.x-16*2, coord.y-16*2, 16*5, 16*5);
     var tiles = this.groundLayer.getTilesWithinWorldXY(rect.x, rect.y, rect.width, rect.height);
     tiles.splice(12, 1);
     return tiles;
+  }
+
+  getObjectAt(point) {
+    var tile = this.objectsLayer.getTileAtWorldXY(point.x, point.y);
+    if(tile.index != -1) {
+      return tile;
+    } else {
+      return null;
+    }
   }
 }

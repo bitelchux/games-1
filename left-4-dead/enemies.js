@@ -7,31 +7,30 @@ class Enemies {
     this.startIntervalsAndTimeouts();
   }
 
-  startIntervalsAndTimeouts(){
-    this.spawnHunter();
-    // //small wave
-    // var smallWaveInterval = setInterval(function(){
-    //   this.spawnWaves(2, 5, 500);
-    // }.bind(this), 5000);
-    //
-    // //big wave
-    // var bigWaveInterval = setInterval(function(){
-    //   this.scene.sounds.zombiewave.play();
-    //   this.spawnWaves(3, 30, 2000);
-    // }.bind(this), 30000);
-    //
-    // //hunter
-    // var hunterInterval = setInterval(function(){
-    //   this.spawnHunter();
-    // }.bind(this), 0)
-    //
-    // //tank
-    // setTimeout(function(){
-    //   this.spawnTank();
-    //   clearInterval(smallWaveInterval);
-    //   clearInterval(bigWaveInterval);
-    // }.bind(this), 50000);
-    // // }.bind(this), 0);
+  startIntervalsAndTimeouts() {
+    //small wave
+    var smallWaveInterval = setInterval(function(){
+      this.spawnWaves(2, 5, 500);
+    }.bind(this), 5000);
+
+    //big wave
+    var bigWaveInterval = setInterval(function(){
+      this.scene.sounds.zombiewave.play();
+      this.spawnWaves(3, 30, 2000);
+    }.bind(this), 30000);
+
+    //hunter
+    var hunterInterval = setInterval(function(){
+      this.spawnHunter();
+    }.bind(this), 50000)
+
+    //tank
+    setTimeout(function(){
+      this.spawnTank();
+      clearInterval(smallWaveInterval);
+      clearInterval(bigWaveInterval);
+    }.bind(this), 70000);
+    // }.bind(this), 0);
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
