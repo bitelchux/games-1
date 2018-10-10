@@ -29,6 +29,7 @@ class Enemies {
       this.spawnTank();
       clearInterval(smallWaveInterval);
       clearInterval(bigWaveInterval);
+      clearInterval(hunterInterval);
     }.bind(this), 70000);
     // }.bind(this), 0);
   }
@@ -145,7 +146,6 @@ class Enemy {
     var grid = new PF.Grid(map.width, map.height);
     forest.obstaclesLayer.forEachTile(function(tile){
       if(tile.canCollide) {
-        var random_boolean = Math.random() < 0.1;
         grid.setWalkableAt(tile.x, tile.y, false);
       }
     }, this,0,0,map.width,map.height,{isNotEmpty: true});
