@@ -1,5 +1,6 @@
-class Ally {
+class Ally extends Phaser.GameObjects.GameObject {
   constructor(scene, x, y, name) {
+    super(scene);
     this.scene = scene;
 
     this.sprite = scene.physics.add.sprite(x, y, 'ally').setPipeline("Light2D");
@@ -36,14 +37,7 @@ class Ally {
       // unarmed
       if(this.weapon == null) {
         var point = this.getClosestWeaponCoord();
-        // on top of weapon
-        if(this.sprite.getCenter().equals(point)) {
-          this.interact();
-        }
-        // move to weapon
-        else {
-          this.moveTo(point.x, point.y);
-        }
+        this.moveTo(point.x, point.y, this.interact);
       }
       // armed
       else {
@@ -85,7 +79,7 @@ class Ally {
     return chosenCoord;
   }
 
-  moveTo(x, y) {
+  moveTo(x, y, callback, args) {
     var finder = new PF.AStarFinder({
       allowDiagonal: true,
       dontCrossCorners: true
@@ -115,11 +109,11 @@ class Ally {
     this.pathIndex = 0;
 
     if(Array.isArray(this.path.curves) && this.path.curves.length){
-      this.followPath();
+      this.followPath(callback, args);
     }
   }
 
-  followPath() {
+  followPath(callback, args) {
     this.state = this.states.MOVING;
 
     this.sprite.anims.play('ally-walk', true);
@@ -135,12 +129,15 @@ class Ally {
       callbackScope: this,
       onComplete: function() {
         this.pathIndex += 1;
-        if(this.pathIndex < this.path.curves.length) {
-          this.followPath();
+        if(this.path && this.pathIndex < this.path.curves.length) {
+          this.followPath(callback, args);
         } else {
           this.path = null;
           this.pathIndex = 0;
           this.state = this.states.IDLE;
+          if(typeof callback === "function") {
+            callback.call(this, args);
+          }
         }
       }
     });
@@ -189,25 +186,15 @@ class Ally {
     this.moveTo(chosenTile.getCenterX(), chosenTile.getCenterY());
   }
 
-  helpAlly() {
-    this.speed = 0;
+  calledForHelp(ally) {
+    this.moveTo(ally.sprite.x, ally.sprite.y, this.helpAlly, ally);
+  }
 
-    var chosenAlly;
-    this.scene.allies.group.forEach(function(ally) {
-      if(ally != this && this.sprite.getCenter().distance(ally.sprite.getCenter()) < 10
-          && ally.isDown()) {
-            chosenAlly = ally;
-      }
+  helpAlly(ally) {
+    this.helpBar.help();
+    this.helpBar.on("helpComplete", function() {
+      ally.isLifted();
     }.bind(this));
-
-    if(chosenAlly) {
-      this.helpBar.help();
-      this.helpBar.on("helpComplete", function() {
-        chosenAlly.isLifted();
-        this.updateHealthRelatedCondition();
-        this.fsm.wait();
-      }.bind(this));
-    }
   }
 
   shootWeaponAt(point) {
@@ -232,6 +219,7 @@ class Ally {
       this.state = this.states.DOWN;
       this.speed = 0;
       this.helpSign.show();
+      this.emit('askHelp', this);
     } else if(this.healthbar.isCritical()){
       this.state = this.states.IDLE;
       this.speed = this.halfspeed;

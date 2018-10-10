@@ -1,5 +1,6 @@
-class Player {
+class Player extends Phaser.GameObjects.GameObject {
   constructor(scene, x, y) {
+    super(scene);
     this.scene = scene;
 
     this.sprite = scene.physics.add.sprite(x, y, 'player').setPipeline("Light2D");
@@ -181,6 +182,10 @@ class Player {
     this.weapon.bulletBar.on("reloadFinished", function() {
       this.weapon.isReloading = false;
     }.bind(this));
+  }
+
+  calledForHelp(ally) {
+    //nothing to do here
   }
 
   isHit(damage) {

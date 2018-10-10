@@ -6,15 +6,34 @@ class Allies {
     this.ally2 = new Ally(this.scene, 30, 200, "ally2");
     this.ally3 = new Ally(this.scene, 30, 230, "ally3");
 
-    this.ally2.isHit(5);
-
     this.group = [];
     this.group.push(this.player);
     this.group.push(this.ally1);
     this.group.push(this.ally2);
     this.group.push(this.ally3);
 
-    scene.physics.add.collider(this.player.sprite, scene.forest.obstaclesLayer);
+    this.setupColliders();
+    this.setupHelpEvents();
+  }
+
+  setupColliders() {
+    this.group.forEach(function(ally) {
+      this.scene.physics.add.collider(ally.sprite, this.scene.forest.obstaclesLayer);
+    }.bind(this));
+  }
+
+  setupHelpEvents() {
+    for(var i=0; i<this.group.length; i++) {
+      var ally = this.group[i];
+      ally.on("askHelp", function(allyAsking) {
+        for(var j=0; j<this.group.length; j++) {
+          var allyHelping = this.group[j];
+          if(allyAsking.sprite.name != allyHelping.sprite.name) {
+            allyHelping.calledForHelp(allyAsking);
+          }
+        }
+      }.bind(this));
+    }
   }
 
   update(time, delta) {
