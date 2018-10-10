@@ -10,6 +10,7 @@ class Player {
 
     this.healthbar = new HealthBar(scene);
     this.helpBar = new HelpBar(scene);
+    this.helpSign = new HelpSign(scene);
 
     this.direction = "up";
 
@@ -40,6 +41,7 @@ class Player {
     }
 
     this.helpBar.update(this.sprite.x, this.sprite.y - 20);
+    this.helpSign.update(this.sprite.x, this.sprite.y - 20);
   }
 
   turn() {
@@ -196,10 +198,13 @@ class Player {
       this.die();
     } else if(this.healthbar.isExtra()) {
       this.speed = 0;
+      this.helpSign.show();
     } else if(this.healthbar.isCritical()){
       this.speed = this.halfspeed;
+      this.helpSign.hide();
     } else if(this.healthbar.isNotCritical()){
       this.speed = this.normalspeed;
+      this.helpSign.hide();
     }
   }
 

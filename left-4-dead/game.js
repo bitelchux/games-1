@@ -64,6 +64,9 @@ window.Game = new Phaser.Class({
     this.load.spritesheet('healthbar', 'healthbar.png', {
       frameWidth: 64, frameHeight: 16
     });
+    this.load.spritesheet('helpsign', 'helpsign.png', {
+      frameWidth: 16, frameHeight: 16
+    });
 
     // sounds
     // weapons
@@ -282,6 +285,15 @@ window.Game = new Phaser.Class({
       key: 'grenade-explosion',
       frames: this.anims.generateFrameNumbers('grenade', {start:0, end:3}),
       frameRate: 6
+    });
+
+    //grenade
+    this.anims.create({
+      key: 'helpsign-anim',
+      frames: this.anims.generateFrameNumbers('helpsign', {start:0, end:3}),
+      frameRate: 6,
+      yoyo: true,
+      repeat: -1
     });
   },
 

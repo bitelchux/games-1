@@ -10,6 +10,7 @@ class Ally {
 
     this.healthbar = new HealthBar(scene, false);
     this.helpBar = new HelpBar(scene);
+    this.helpSign = new HelpSign(scene);
 
     this.path = null;
     this.pathIndex = null;
@@ -62,6 +63,8 @@ class Ally {
         }
       }
     }
+
+    this.helpSign.update(this.sprite.x, this.sprite.y - 20);
   }
 
   getClosestWeaponCoord() {
@@ -227,10 +230,13 @@ class Ally {
       this.die();
     } else if(this.healthbar.isExtra()) {
       this.speed = 0;
+      this.helpSign.show();
     } else if(this.healthbar.isCritical()){
       this.speed = this.halfspeed;
+      this.helpSign.hide();
     } else if(this.healthbar.isNotCritical()){
       this.speed = this.normalspeed;
+      this.helpSign.hide();
     }
   }
 
