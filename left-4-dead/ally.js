@@ -25,7 +25,7 @@ class Ally {
       IDLE: 0,
       MOVING: 1,
       INTERACTING: 2,
-      SHOOTING: 3,
+      DOWN: 3
     }
 
     this.state = this.states.IDLE;
@@ -229,12 +229,15 @@ class Ally {
     if(this.healthbar.isEmpty()) {
       this.die();
     } else if(this.healthbar.isExtra()) {
+      this.state = this.states.DOWN;
       this.speed = 0;
       this.helpSign.show();
     } else if(this.healthbar.isCritical()){
+      this.state = this.states.IDLE;
       this.speed = this.halfspeed;
       this.helpSign.hide();
     } else if(this.healthbar.isNotCritical()){
+      this.state = this.states.IDLE;
       this.speed = this.normalspeed;
       this.helpSign.hide();
     }
