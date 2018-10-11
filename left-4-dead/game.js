@@ -35,6 +35,12 @@ window.Game = new Phaser.Class({
       atlasURL: 'enemies/zombie/zombie.json'
     });
     this.load.atlas({
+      key: 'boomer',
+      textureURL: 'enemies/boomer/boomer.png',
+      normalMap: 'enemies/boomer/boomer_n.png',
+      atlasURL: 'enemies/boomer/boomer.json'
+    });
+    this.load.atlas({
       key: 'hunter',
       textureURL: 'enemies/hunter/hunter.png',
       normalMap: 'enemies/hunter/hunter_n.png',
@@ -97,6 +103,13 @@ window.Game = new Phaser.Class({
     this.load.audio('zombiefast4Sound', 'audio/zombie/zombie-fast-4.wav');
     this.load.audio('zombiefast5Sound', 'audio/zombie/zombie-fast-5.wav');
     this.load.audio('zombiewaveSound', 'audio/zombie/zombie-wave.wav');
+
+    //boomer
+    this.load.audio('boomerexplodeSound', 'audio/boomer/boomer-explode.wav');
+    this.load.audio('boomercrySound', 'audio/boomer/boomer-cry.wav');
+    this.load.audio('boomerattack1Sound', 'audio/boomer/boomer-attack-1.wav');
+    this.load.audio('boomerattack2Sound', 'audio/boomer/boomer-attack-2.wav');
+    this.load.audio('boomerattack3Sound', 'audio/boomer/boomer-attack-3.wav');
 
     //hunter
     this.load.audio('hunterjumpSound', 'audio/hunter/hunter-jump.wav');
@@ -258,7 +271,18 @@ window.Game = new Phaser.Class({
       yoyo: true
     });
 
-    // zombie
+    // boomer
+    this.anims.create({
+      key: 'boomer-walk',
+      frames: this.anims.generateFrameNames('boomer', {
+        start: 1, end: 3, zeroPad: 0,
+        prefix: 'boomer-walk-', suffix: '.png'
+      }),
+      frameRate: 12,
+      yoyo: true
+    });
+
+    // hunter
     this.anims.create({
       key: 'hunter-walk',
       frames: this.anims.generateFrameNames('hunter', {
@@ -321,6 +345,14 @@ window.Game = new Phaser.Class({
       this.sounds.zombiefast[i] = this.sound.add('zombiefast'+ (i+1) +'Sound');
     }
     this.sounds["zombiewave"] = this.sound.add('zombiewaveSound');
+
+    //boomer
+    this.sounds["boomerexplode"] = this.sound.add('boomerexplodeSound');
+    this.sounds["boomercry"] = this.sound.add('boomercrySound');
+    this.sounds["boomerattack"] = [];
+    for(var i=0; i<3; i++){
+      this.sounds.boomerattack[i] = this.sound.add('boomerattack'+ (i+1) +'Sound');
+    }
 
     //hunter
     this.sounds["hunterjump"] = this.sound.add('hunterjumpSound', {volume: 0.5});

@@ -204,6 +204,7 @@ class Player extends Phaser.GameObjects.GameObject {
     } else if(this.healthbar.isExtra()) {
       this.speed = 0;
       this.helpSign.show();
+      this.emit('askHelp', this);
     } else if(this.healthbar.isCritical()){
       this.speed = this.halfspeed;
       this.helpSign.hide();

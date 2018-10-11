@@ -47,7 +47,7 @@ class Allies {
   }
 
   getClosestAllyTo(coord) {
-    var distance = 1000;
+    var distance = 100000;
     var chosenAlly;
     this.group.forEach(function(ally) {
       var allyCoord = ally.sprite.getCenter();
@@ -101,5 +101,16 @@ class Allies {
         chosenAlly = ally;
     });
     return chosenAlly;
+  }
+
+  getAlliesAround(point, radius) {
+    var allies = [];
+    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
+    this.group.forEach(function(ally) {
+      if(circle.contains(ally.sprite.x, ally.sprite.y)) {
+        allies.push(ally);
+      }
+    });
+    return allies;
   }
 }

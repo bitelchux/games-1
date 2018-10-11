@@ -17,7 +17,12 @@ class Enemies {
     var bigWaveInterval = setInterval(function(){
       this.scene.sounds.zombiewave.play();
       this.spawnWaves(3, 30, 2000);
-    }.bind(this), 30000);
+    }.bind(this), 60000);
+
+    //boomer
+    var boomerInterval = setInterval(function(){
+      this.spawnBoomer();
+    }.bind(this), 30000)
 
     //hunter
     var hunterInterval = setInterval(function(){
@@ -29,8 +34,9 @@ class Enemies {
       this.spawnTank();
       clearInterval(smallWaveInterval);
       clearInterval(bigWaveInterval);
+      clearInterval(boomerInterval);
       clearInterval(hunterInterval);
-    }.bind(this), 70000);
+    }.bind(this), 80000);
     // }.bind(this), 0);
   }
 
@@ -56,6 +62,13 @@ class Enemies {
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
     this.group.push(new Hunter(this.scene, spawn.x, spawn.y));
+  }
+
+  spawnBoomer() {
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var spawns = this.scene.forest.getSpawns(playerCoord, 200, 300);
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
+    this.group.push(new Boomer(this.scene, spawn.x, spawn.y));
   }
 
   spawnTank() {
@@ -106,13 +119,15 @@ class Enemy {
   }
 
   // to override for special behaviors
+  whenStartPursuit() {}
+
   whenNearbyTarget(delta) {
     this.attack();
   }
 
   whenDistantTarget() {}
 
-  whenHittingTarget() {}
+  whenAttack() {}
 
   whenDie() {}
 
@@ -129,6 +144,7 @@ class Enemy {
 
   startPursuit() {
     this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    this.whenStartPursuit();
     setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
@@ -189,7 +205,7 @@ class Enemy {
   attack() {
     var now = this.scene.time.now;
     if(now - this.config.attack.lastTime > this.config.attack.rate) {
-      this.whenHittingTarget();
+      this.whenAttack();
       this.config.attack.lastTime = now;
       this.target.isHit(this.config.attack.damage);
       var isAnyAttackSoundPlaying = false;
@@ -241,6 +257,44 @@ class Zombie extends Enemy {
   }
 }
 
+class Boomer extends Enemy {
+  constructor(scene, x, y) {
+    var config = {
+      key:'boomer',
+      x: x, y: y,
+      speed: 0.025,
+      hp: 1000,
+      pathUpdateTime: 250,
+      attack: {
+        damage: 5,
+        rate: 5000,
+        sounds: scene.sounds.boomerattack
+      }
+    };
+    super(scene, config);
+  }
+
+  whenStartPursuit() {
+    this.scene.sounds.boomercry.playInSpace(this.scene, this.sprite.getCenter());
+  }
+
+  whenDistantTarget(delta) {
+    this.followPath(delta);
+  }
+
+  whenAttack() {
+    this.scene.enemies.spawnZombies(20);
+  }
+
+  whenDie() {
+    var allies = this.scene.allies.getAlliesAround(this.sprite.getCenter(), 32);
+    if(allies.length > 0) {
+      this.scene.sounds.boomerexplode.playInSpace(this.scene, this.sprite.getCenter());
+      this.scene.enemies.spawnWaves(2, 20, 2000);
+    }
+  }
+}
+
 class Hunter extends Enemy {
   constructor(scene, x, y) {
     var config = {
@@ -262,6 +316,7 @@ class Hunter extends Enemy {
 
   startPursuit() {
     this.target = this.scene.allies.getWeakestAlly();
+    this.scene.sounds.huntercry.playInSpace(this.scene, this.sprite.getCenter());
     setInterval(function(){
       this.target = this.scene.allies.getWeakestAlly(this.sprite.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
@@ -281,15 +336,12 @@ class Hunter extends Enemy {
 
   jumpOnTarget(delta) {
     this.isOnTarget = true;
+    this.scene.sounds.hunterjump.play();
     this.scene.tweens.add({
         targets: this.sprite,
         x: this.target.sprite.x,
         y: this.target.sprite.y,
-        duration: 500,
-        callbackScope: this,
-        onComplete: function() {
-          this.scene.sounds.hunterjump.play();
-        }
+        duration: 500
     });
     this.target.isHit(100);
   }
@@ -335,7 +387,7 @@ class Tank extends Enemy {
     }
   }
 
-  whenHittingTarget() {
+  whenAttack() {
     var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.sprite.x, this.target.sprite.y - this.sprite.y).normalize();
     this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
     this.scene.tweens.add({
