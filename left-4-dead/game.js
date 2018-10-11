@@ -75,6 +75,8 @@ window.Game = new Phaser.Class({
     });
 
     // sounds
+    this.load.audio('musicSound', 'audio/music.wav');
+
     // weapons
     this.load.audio('pistolsSound', 'audio/pistols.wav');
     this.load.audio('shotgunSound', 'audio/shotgun.wav');
@@ -323,6 +325,10 @@ window.Game = new Phaser.Class({
 
   createAudio: function() {
     this.sounds = {};
+
+    //background music
+    this.sounds["music"] = this.sound.add('musicSound', {volume: 0.5, loop: true});
+
     //weapons
     this.sounds["pistols"] = this.sound.add('pistolsSound');
     this.sounds["shotgun"] = this.sound.add('shotgunSound');
@@ -393,6 +399,10 @@ window.Game = new Phaser.Class({
   create: function () {
     this.createAnims();
     this.createAudio();
+
+    this.sounds.music.play();
+
+
     this.forest = new Forest(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);

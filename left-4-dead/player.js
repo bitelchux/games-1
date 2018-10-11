@@ -132,9 +132,6 @@ class Player extends Phaser.GameObjects.GameObject {
   }
 
   helpAlly() {
-    this.isHelping = true;
-    this.speed = 0;
-
     var chosenAlly;
     this.scene.allies.group.forEach(function(ally) {
       if(ally != this && this.sprite.getCenter().distance(ally.sprite.getCenter()) < 10
@@ -144,6 +141,9 @@ class Player extends Phaser.GameObjects.GameObject {
     }.bind(this));
 
     if(chosenAlly) {
+      this.isHelping = true;
+      this.speed = 0;
+      
       this.helpBar.help();
       this.helpBar.on("helpComplete", function() {
         chosenAlly.isLifted();

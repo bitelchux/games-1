@@ -366,7 +366,7 @@ class Tank extends Enemy {
       walkSound: scene.sounds.walkthrow
     };
     super(scene, config);
-
+    this.scene.sounds.fadeOut('music', 500);
     scene.sounds.tankmusic.play();
     this.rock = null;
     this.isThrowing = false;
@@ -408,6 +408,7 @@ class Tank extends Enemy {
 
   whenDie() {
     this.scene.sounds.fadeOut('tankmusic', 500);
+    scene.sounds.music.play();
     this.rock = null;
     this.scene.enemies.startIntervalsAndTimeouts();
   }
