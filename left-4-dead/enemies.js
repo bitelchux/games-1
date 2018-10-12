@@ -4,6 +4,9 @@ class Enemies {
     this.group = [];
 
     this.spawns = {list:[], minRange: 125, maxRange: 300};
+
+    this.spawnWanderers(100);
+
     this.startIntervalsAndTimeouts();
   }
 
@@ -38,6 +41,14 @@ class Enemies {
       clearInterval(hunterInterval);
     }.bind(this), 80000);
     // }.bind(this), 0);
+  }
+
+  spawnWanderers(n) {
+    var spawns = this.scene.forest.getAllSpawns();
+    for(var i=0; i<n; i++) {
+      var spawn = spawns[Math.floor(Math.random()*spawns.length)]
+      this.group.push(new Zombie(this.scene, spawn.x, spawn.y, false));
+    }
   }
 
   spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
@@ -102,9 +113,10 @@ class Enemies {
 
 /* config = {key, x, y, speed, hp, attack:{damage, rate, sounds}}*/
 class Enemy {
-  constructor(scene, config) {
+  constructor(scene, config, startsPursuit = true) {
     this.scene = scene;
     this.config = config;
+    this.startsPursuit = startsPursuit;
 
     this.sprite = scene.add.sprite(config.x, config.y, config.key).setPipeline("Light2D");
     this.sprite.setDepth(2);
@@ -115,7 +127,11 @@ class Enemy {
 
     this.config.attack['lastTime'] = this.scene.time.now;
 
-    this.startPursuit();
+    if(this.startsPursuit) {
+      this.startPursuit();
+    } else {
+      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    }
   }
 
   // to override for special behaviors
@@ -220,6 +236,10 @@ class Enemy {
   }
 
   isHit(damage) {
+    if(!this.startsPursuit) {
+      this.startPursuit()
+    }
+
     if(this.config.hp > 0) {
       this.config.hp -= damage;
       if(this.config.hp <= 0) {
@@ -236,7 +256,7 @@ class Enemy {
 }
 
 class Zombie extends Enemy {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, startsPursuit) {
     var config = {
       key:'zombie',
       x: x, y: y,
@@ -249,7 +269,7 @@ class Zombie extends Enemy {
         sounds: scene.sounds.zombiefast
       }
     };
-    super(scene, config);
+    super(scene, config, startsPursuit);
   }
 
   whenDistantTarget(delta) {
