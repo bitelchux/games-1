@@ -36,7 +36,7 @@ class Allies {
     }
   }
 
-  update(time, delta) {
+  update() {
     this.group.forEach(function(ally) {
       ally.update();
     });

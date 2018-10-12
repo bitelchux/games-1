@@ -413,7 +413,7 @@ window.Game = new Phaser.Class({
   },
 
   update: function(time, delta) {
-    this.allies.update(time, delta);
+    this.allies.update();
     this.enemies.update(time, delta);
     this.myLights.update();
   }
