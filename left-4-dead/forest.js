@@ -17,6 +17,17 @@ class Forest extends Level {
     this.obstaclesLayer.setCollisionBetween(1,25);
   }
 
+  getAllSpawns() {
+    var spawns = [];
+    this.groundLayer.filterTiles(function(tile){
+      if(tile.index == 21) {
+        var point = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
+        spawns.push(point);
+      }
+    }, this);
+    return spawns;
+  }
+
   getSpawns(playerCoord, minRange, maxRange) {
     var spawns = [];
     var minCircle = new Phaser.Geom.Circle(playerCoord.x, playerCoord.y, minRange);
