@@ -41,7 +41,7 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
       // armed
       else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
+        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 60);
         // enemies nearby
         if(enemies.length > 0) {
           this.shootWeaponAt(enemies[0].sprite.getCenter());
@@ -203,6 +203,7 @@ class Ally extends Phaser.GameObjects.GameObject {
   }
 
   isHit(damage) {
+    this.emit("isHit", damage);
     this.healthbar.loseHp(damage);
     this.updateHealthRelatedCondition();
   }
@@ -214,12 +215,13 @@ class Ally extends Phaser.GameObjects.GameObject {
 
   updateHealthRelatedCondition() {
     if(this.healthbar.isEmpty()) {
+      this.emit('die');
       this.die();
     } else if(this.healthbar.isExtra()) {
+      this.emit('askHelp', this);
       this.state = this.states.DOWN;
       this.speed = 0;
       this.helpSign.show();
-      this.emit('askHelp', this);
     } else if(this.healthbar.isCritical()){
       this.state = this.states.IDLE;
       this.speed = this.halfspeed;

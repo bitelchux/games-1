@@ -406,6 +406,7 @@ window.Game = new Phaser.Class({
     this.forest = new Forest(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);
+    this.aidirector = new AIDirector(this, this.allies, this.enemies);
     this.myLights = new Lights(this);
 
     this.cameras.main.startFollow(this.allies.player.sprite);
@@ -415,6 +416,7 @@ window.Game = new Phaser.Class({
   update: function(time, delta) {
     this.allies.update();
     this.enemies.update(time, delta);
+    this.aidirector.update(time, delta);
     this.myLights.update();
   }
 });

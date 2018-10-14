@@ -143,7 +143,7 @@ class Player extends Phaser.GameObjects.GameObject {
     if(chosenAlly) {
       this.isHelping = true;
       this.speed = 0;
-      
+
       this.helpBar.help();
       this.helpBar.on("helpComplete", function() {
         chosenAlly.isLifted();
@@ -189,6 +189,7 @@ class Player extends Phaser.GameObjects.GameObject {
   }
 
   isHit(damage) {
+    this.emit('isHit', damage);
     this.healthbar.loseHp(damage);
     this.updateHealthRelatedCondition();
   }
@@ -200,11 +201,12 @@ class Player extends Phaser.GameObjects.GameObject {
 
   updateHealthRelatedCondition() {
     if(this.healthbar.isEmpty()) {
+      this.emit('die');
       this.die();
     } else if(this.healthbar.isExtra()) {
+      this.emit('askHelp', this);
       this.speed = 0;
       this.helpSign.show();
-      this.emit('askHelp', this);
     } else if(this.healthbar.isCritical()){
       this.speed = this.halfspeed;
       this.helpSign.hide();

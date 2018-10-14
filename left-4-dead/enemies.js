@@ -2,112 +2,75 @@ class Enemies {
   constructor(scene) {
     this.scene = scene;
     this.group = [];
-
-    this.spawns = {list:[], minRange: 125, maxRange: 300};
-
-    this.spawnWanderers(100);
-
-    this.startIntervalsAndTimeouts();
   }
 
-  startIntervalsAndTimeouts() {
-    //small wave
-    var smallWaveInterval = setInterval(function(){
-      this.spawnWaves(2, 5, 500);
-    }.bind(this), 5000);
-
-    //big wave
-    var bigWaveInterval = setInterval(function(){
-      this.scene.sounds.zombiewave.play();
-      this.spawnWaves(3, 30, 2000);
-    }.bind(this), 60000);
-
-    //boomer
-    var boomerInterval = setInterval(function(){
-      this.spawnBoomer();
-    }.bind(this), 30000)
-
-    //hunter
-    var hunterInterval = setInterval(function(){
-      this.spawnHunter();
-    }.bind(this), 50000)
-
-    //tank
-    setTimeout(function(){
-      this.spawnTank();
-      clearInterval(smallWaveInterval);
-      clearInterval(bigWaveInterval);
-      clearInterval(boomerInterval);
-      clearInterval(hunterInterval);
-    }.bind(this), 80000);
-    // }.bind(this), 0);
+  add(enemy) {
+    this.group.push(enemy);
   }
 
-  spawnWanderers(n) {
-    var spawns = this.scene.forest.getAllSpawns();
-    for(var i=0; i<n; i++) {
-      var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-      this.group.push(new Zombie(this.scene, spawn.x, spawn.y, false));
-    }
+  remove(enemy) {
+    this.group.splice(this.group.indexOf(enemy), 1);
   }
 
-  spawnWaves(nbWaves, nbEnemiesPerWave, delayBetweenWaves) {
-    for(var i=0; i<nbWaves; i++) {
-      setTimeout(function(){
-        this.spawnZombies(nbEnemiesPerWave);
-      }.bind(this),delayBetweenWaves * i);
-    }
+  removeMultiple(enemies) {
+    enemies.forEach(function(enemy) {
+        this.remove(enemy);
+    }.bind(this));
   }
 
-  spawnZombies(n) {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, this.spawns.minRange, this.spawns.maxRange);
-    for(var i=0; i<n; i++) {
-      var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-      this.group.push(new Zombie(this.scene, spawn.x, spawn.y));
-    }
+  getAll() {
+    return this.group.slice();
   }
 
-  spawnHunter() {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-    this.group.push(new Hunter(this.scene, spawn.x, spawn.y));
+  count() {
+    return this.group.length;
   }
 
-  spawnBoomer() {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 200, 300);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-    this.group.push(new Boomer(this.scene, spawn.x, spawn.y));
+  contains(enemyType) {
+    return this.group.some(function(enemy) {
+      return enemy.config.key == enemyType;
+    }.bind(this));
   }
 
-  spawnTank() {
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 600, 800);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-    this.group.push(new Tank(this.scene, spawn.x, spawn.y));
+  getWanderersInside(point, radius) {
+    var wanderers = [];
+    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
+    this.group.forEach(function(enemy) {
+      if(!enemy.startsPursuit && circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+        wanderers.push(enemy);
+      }
+    });
+    return wanderers;
+  }
+
+  getWanderersOutside(point, radius) {
+    var wanderers = [];
+    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
+    this.group.forEach(function(enemy) {
+      if(!enemy.startsPursuit && !circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+        wanderers.push(enemy);
+      }
+    });
+    return wanderers;
+  }
+
+  getEnemiesAround(point, radius) {
+    var enemies = [];
+    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
+
+    this.group.forEach(function(enemy) {
+      if(circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+        enemies.push(enemy);
+      }
+    });
+
+    return enemies;
   }
 
   update(time, delta) {
     this.group.forEach(function(enemy) {
       enemy.update(time, delta);
     });
-  }
-
-  removeEnemy(enemy) {
-    this.group.splice(this.group.indexOf(enemy), 1);
-  }
-
-  getEnemiesAround(point, radius) {
-    var enemies = [];
-    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
-    this.group.forEach(function(enemy) {
-      if(circle.contains(enemy.sprite.x, enemy.sprite.y)) {
-        enemies.push(enemy);
-      }
-    });
-    return enemies;
   }
 }
 
@@ -251,7 +214,7 @@ class Enemy {
   die() {
     this.whenDie();
     this.sprite.destroy();
-    this.scene.enemies.removeEnemy(this);
+    this.scene.enemies.remove(this);
   }
 }
 
@@ -264,7 +227,7 @@ class Zombie extends Enemy {
       hp: 500,
       pathUpdateTime: 250,
       attack: {
-        damage: 1,
+        damage: 10,
         rate: 1000,
         sounds: scene.sounds.zombiefast
       }
@@ -428,9 +391,8 @@ class Tank extends Enemy {
 
   whenDie() {
     this.scene.sounds.fadeOut('tankmusic', 500);
-    scene.sounds.music.play();
+    this.scene.sounds.music.play();
     this.rock = null;
-    this.scene.enemies.startIntervalsAndTimeouts();
   }
 }
 
