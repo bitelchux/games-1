@@ -13,6 +13,7 @@ class Ally extends Phaser.GameObjects.GameObject {
     this.helpBar = new HelpBar(scene);
     this.helpSign = new HelpSign(scene);
 
+    this.movingTween = null;
     this.path = null;
     this.pathIndex = null;
     this.target = null;
@@ -41,7 +42,7 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
       // armed
       else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 60);
+        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 80);
         // enemies nearby
         if(enemies.length > 0) {
           this.shootWeaponAt(enemies[0].sprite.getCenter());
@@ -80,6 +81,10 @@ class Ally extends Phaser.GameObjects.GameObject {
   }
 
   moveTo(x, y, callback, args) {
+    //stop ongoing movements
+    if(this.movingTween)
+      this.movingTween.stop();
+
     var finder = new PF.AStarFinder({
       allowDiagonal: true,
       dontCrossCorners: true
@@ -121,7 +126,7 @@ class Ally extends Phaser.GameObjects.GameObject {
     var distance = curve.p0.distance(curve.p1);
     var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
     this.sprite.setAngle(angle);
-    this.scene.tweens.add({
+    this.movingTween = this.scene.tweens.add({
       targets: this.sprite,
       x: curve.p1.x,
       y: curve.p1.y,

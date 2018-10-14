@@ -13,6 +13,10 @@ class AIDirector {
     this.emotionalIntensity = 0;
     this.relaxPeriod = false;
 
+    //special timeouts
+    this.boomerConfig = { time: 0, timeout: 20000 };
+    this.hunterConfig = { time: 0, timeout: 30000 };
+
     //setup spawning intervals
     this.setupTank();
     this.mobInterval = false;
@@ -24,14 +28,14 @@ class AIDirector {
   setupTank() {
     setInterval(function() {
       this.spawnTank();
-    }.bind(this), 50000 + Math.random()*50000);
+    }.bind(this), 80000 + Math.random()*80000);
   }
 
   setupMob() {
     if(!this.mobInterval) {
       this.mobInterval = setInterval(function() {
         this.spawnMob();
-      }.bind(this), 20000 + Math.random()*20000);
+      }.bind(this), 40000 + Math.random()*40000);
     }
   }
 
@@ -44,7 +48,7 @@ class AIDirector {
     this.allies.group.forEach(function(ally) {
       //when ally is hit
       ally.on("isHit", function(damage) {
-        this.increaseEmotionalIntensity(damage/400);
+        this.increaseEmotionalIntensity(damage/300);
       }.bind(this));
       //when ally is incapacited
       ally.on("askHelp", function(allyAsking) {
@@ -59,15 +63,21 @@ class AIDirector {
 
   increaseEmotionalIntensity(nb) {
     this.emotionalIntensity += nb;
+    if(this.emotionalIntensity > 1)
+      this.emotionalIntensity = 1;
   }
 
   decreaseEmotionalIntensity() {
-    this.emotionalIntensity -= 0.001;
+    this.emotionalIntensity -= 0.005;
+    if(this.emotionalIntensity < 0)
+      this.emotionalIntensity = 0;
   }
 
   update(time, delta) {
+    this.time = time;
+
+    console.log(this.emotionalIntensity);
     this.pacingTime += delta;
-    this.decreaseEmotionalIntensity();
 
     // remove wanderers leaving area
     var wanderersOutside = this.enemies.getWanderersOutside(this.allies.player, 600);
@@ -84,9 +94,8 @@ class AIDirector {
         this.increaseThreat();
       }
       // cross peak
-      else if (this.pacingTime > 5000) {
+      else {
         this.relaxPeriod = true;
-        this.pacingTime = 0;
       }
     } else {
       // peak fade
@@ -94,9 +103,8 @@ class AIDirector {
         this.decreaseThreat();
       }
       // resume build up
-      else if (this.pacingTime < 30000) {
+      else {
         this.relaxPeriod = false;
-        this.pacingTime = 0;
       }
     }
   }
@@ -108,24 +116,23 @@ class AIDirector {
     }
     //small threat
     else if(this.emotionalIntensity > 0 && this.emotionalIntensity < 0.5) {
-      if(!this.enemies.contains('boomer')) {
+      var boomerTimeDiff = this.time - this.boomerConfig.time;
+      if(boomerTimeDiff > this.boomerConfig.timeout) {
         this.spawnBoomer();
       }
     }
     //medium threat
     else if(this.emotionalIntensity > 0.5 && this.emotionalIntensity < 1) {
-      if(!this.enemies.contains('hunter')) {
+      var hunterTimeDiff = this.time - this.hunterConfig.time;
+      if(hunterTimeDiff > this.hunterConfig.timeout) {
         this.spawnHunter();
       }
     }
     //max threat
     else if(this.emotionalIntensity == 1) {
-      if(!this.enemies.contains('boomer')) {
-        this.spawnBoomer();
-      }
-      if(!this.enemies.contains('hunter')) {
-        this.spawnHunter();
-      }
+      this.spawnMob();
+      this.spawnBoomer();
+      this.spawnHunter();
     }
   }
 
@@ -134,6 +141,7 @@ class AIDirector {
     if(this.emotionalIntensity == 1) {
       this.stopMob();
     }
+    this.decreaseEmotionalIntensity();
   }
 
   getSpawnSpots() {
@@ -170,6 +178,7 @@ class AIDirector {
   }
 
   spawnHunter() {
+    this.hunterConfig.time = this.time;
     var playerCoord = this.scene.allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
@@ -177,6 +186,7 @@ class AIDirector {
   }
 
   spawnBoomer() {
+    this.boomerConfig.time = this.time;
     var playerCoord = this.scene.allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 200, 300);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
@@ -185,7 +195,7 @@ class AIDirector {
 
   spawnTank() {
     var playerCoord = this. allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 600, 800);
+    var spawns = this.scene.forest.getSpawns(playerCoord, 400, 500);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
     this.enemies.add(new Tank(this.scene, spawn.x, spawn.y));
   }

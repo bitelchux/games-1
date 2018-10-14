@@ -227,7 +227,7 @@ class Zombie extends Enemy {
       hp: 500,
       pathUpdateTime: 250,
       attack: {
-        damage: 10,
+        damage: 3,
         rate: 1000,
         sounds: scene.sounds.zombiefast
       }
@@ -367,14 +367,16 @@ class Tank extends Enemy {
   }
 
   whenAttack() {
-    var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.sprite.x, this.target.sprite.y - this.sprite.y).normalize();
-    this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
-    this.scene.tweens.add({
+    if(this.target) {
+      var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.sprite.x, this.target.sprite.y - this.sprite.y).normalize();
+      this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
+      this.scene.tweens.add({
         targets: this.target.sprite.body.velocity,
         x: 0,
         y: 0,
         duration: 2000
-    });
+      });
+    }
   }
 
   throwRock() {

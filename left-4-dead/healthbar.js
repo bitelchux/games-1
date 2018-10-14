@@ -32,7 +32,7 @@ class HealthBar {
   }
 
   recoverSomeHp() {
-    this.hp = 33;
+    this.hp = 30;
     this.extrahp = 300;
   }
 
