@@ -404,10 +404,10 @@ window.Game = new Phaser.Class({
 
 
     this.forest = new Forest(this);
+    this.myLights = new Lights(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);
     this.aidirector = new AIDirector(this, this.allies, this.enemies);
-    this.myLights = new Lights(this);
 
     this.cameras.main.startFollow(this.allies.player.sprite);
     this.cameras.main.setZoom(1);

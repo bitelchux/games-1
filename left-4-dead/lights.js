@@ -1,22 +1,26 @@
 class Lights {
   constructor(scene) {
     this.scene = scene;
-    var player = scene.allies.player;
-    this.main = scene.lights.addLight(scene.allies.player.sprite.x, player.sprite.y, 125);
-    this.main.setColor(0xffffff).setIntensity(1);
-
+    this.group = [];
     scene.lights.enable().setAmbientColor(0x020202);
   }
 
-  update() {
-    var player = this.scene.allies.player;
-    var playerX = player.sprite.x;
-    var playerY = player.sprite.y;
+  addLight(owner) {
+    var light = this.scene.lights.addLight(owner.sprite.x, owner.sprite.y, 125);
+    light.setColor(0xffffff).setIntensity(.5);
+    light['owner'] = owner;
+    this.group.push(light);
+  }
 
-    if(playerX != this.main.x || playerY != this.main.y) {
-      this.main.x = playerX;
-      this.main.y = playerY;
-    }
+  update() {
+    this.group.forEach(function(light) {
+      var x = light.owner.sprite.x;
+      var y = light.owner.sprite.y;
+      if(x != light.x || y != light.y) {
+        light.x = x;
+        light.y = y;
+      }
+    }.bind(this));
   }
 
   addTempLight(x, y, r, color, intensity, time) {

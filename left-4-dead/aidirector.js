@@ -30,10 +30,7 @@ class AIDirector {
   setupMob() {
     if(!this.mobInterval) {
       this.mobInterval = setInterval(function() {
-        this.scene.sounds.zombiewave.play();
-        setTimeout(function() {
-          this.spawnMob();
-        }.bind(this), 2000 + Math.random()*3000);
+        this.spawnMob();
       }.bind(this), 20000 + Math.random()*20000);
     }
   }
@@ -160,13 +157,16 @@ class AIDirector {
   }
 
   spawnMob() {
-    for(var i=0; i<10; i++)
-    {
-      setTimeout(function(){
-        var mobSize = Math.floor(Math.exp(i/4)) + Math.floor(Math.random()*2);
-        this.spawnZombies(mobSize);
-      }.bind(this), i*500);
-    }
+    this.scene.sounds.zombiewave.play();
+    setTimeout(function() {
+      for(var i=0; i<10; i++)
+      {
+        setTimeout(function(){
+          var mobSize = Math.floor(Math.exp(i/4)) + Math.floor(Math.random()*2);
+          this.spawnZombies(mobSize);
+        }.bind(this), i*500);
+      }
+    }.bind(this), 2000 + Math.random()*3000);
   }
 
   spawnHunter() {

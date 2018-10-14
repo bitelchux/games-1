@@ -249,7 +249,7 @@ class Boomer extends Enemy {
       hp: 1000,
       pathUpdateTime: 250,
       attack: {
-        damage: 5,
+        damage: 15,
         rate: 5000,
         sounds: scene.sounds.boomerattack
       }
@@ -265,15 +265,11 @@ class Boomer extends Enemy {
     this.followPath(delta);
   }
 
-  whenAttack() {
-    this.scene.enemies.spawnZombies(20);
-  }
-
   whenDie() {
     var allies = this.scene.allies.getAlliesAround(this.sprite.getCenter(), 32);
     if(allies.length > 0) {
       this.scene.sounds.boomerexplode.playInSpace(this.scene, this.sprite.getCenter());
-      this.scene.enemies.spawnWaves(2, 20, 2000);
+      this.scene.aidirector.spawnMob();
     }
   }
 }

@@ -12,8 +12,15 @@ class Allies {
     this.group.push(this.ally2);
     this.group.push(this.ally3);
 
+    this.setupLights();
     this.setupColliders();
     this.setupHelpEvents();
+  }
+
+  setupLights() {
+    this.group.forEach(function(ally) {
+      this.scene.myLights.addLight(ally);
+    }.bind(this));
   }
 
   setupColliders() {
