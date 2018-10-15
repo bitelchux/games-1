@@ -8,22 +8,21 @@ class AIDirector {
     this.spawnRadiusMax = 400;
 
     this.maxEnemies = 300;
-    this.spawnTank();
-    // this.spawnWanderers(this.maxEnemies);
-    //
-    // this.emotionalIntensity = 0;
-    // this.relaxPeriod = false;
-    //
-    // //special timeouts
-    // this.boomerConfig = { time: 0, timeout: 20000 };
-    // this.hunterConfig = { time: 0, timeout: 30000 };
-    //
-    // //setup spawning intervals
-    // this.setupTank();
-    // this.mobInterval = false;
-    // this.setupMob();
-    //
-    // this.setupEmotionalIntensityHookups();
+    this.spawnWanderers(this.maxEnemies);
+
+    this.emotionalIntensity = 0;
+    this.relaxPeriod = false;
+
+    //special timeouts
+    this.boomerConfig = { time: 0, timeout: 20000 };
+    this.hunterConfig = { time: 0, timeout: 30000 };
+
+    //setup spawning intervals
+    this.setupTank();
+    this.mobInterval = false;
+    this.setupMob();
+
+    this.setupEmotionalIntensityHookups();
   }
 
   setupTank() {

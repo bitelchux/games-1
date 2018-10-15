@@ -127,6 +127,7 @@ class Enemy {
   }
 
   startPursuit() {
+    this.startsPursuit = true;
     this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
     this.whenStartPursuit();
     setInterval(function(){
@@ -240,6 +241,14 @@ class Zombie extends Enemy {
     super(scene, config, startsPursuit);
   }
 
+  whenInRangeTarget(delta) {
+    if(!this.startsPursuit) {
+      console.log("starteld")
+      this.startPursuit();
+      console.log(this.startsPursuit);
+    }
+  }
+
   whenDistantTarget(delta) {
     this.followPath(delta);
   }
@@ -285,7 +294,7 @@ class Hunter extends Enemy {
       key:'hunter',
       x: x, y: y,
       speed: 0.015,
-      hp: 5000,
+      hp: 1000,
       pathUpdateTime: 250,
       attack: {
         damage: 10,
@@ -299,6 +308,7 @@ class Hunter extends Enemy {
   }
 
   startPursuit() {
+    this.startsPursuit = true;
     this.target = this.scene.allies.getWeakestAlly();
     this.scene.sounds.huntercry.playInSpace(this.scene, this.sprite.getCenter());
     setInterval(function(){
