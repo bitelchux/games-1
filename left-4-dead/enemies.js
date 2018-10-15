@@ -448,7 +448,7 @@ class Rock {
     });
     if(collider)
       collider.destroy();
-    
+
     var ally = this.scene.allies.getAlly(sprite.name)
     ally.isHit(this.damage);
     this.explode();

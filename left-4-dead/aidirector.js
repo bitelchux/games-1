@@ -4,10 +4,10 @@ class AIDirector {
     this.allies = allies;
     this.enemies = enemies;
 
-    this.spawnRadiusMin = 150;
+    this.spawnRadiusMin = 200;
     this.spawnRadiusMax = 400;
 
-    this.maxEnemies = 25;
+    this.maxEnemies = 300;
     this.spawnWanderers(this.maxEnemies);
 
     this.emotionalIntensity = 0;
@@ -74,19 +74,10 @@ class AIDirector {
   }
 
   update(time, delta) {
+    // console.log(this.emotionalIntensity);
+
     this.time = time;
-
-    console.log(this.emotionalIntensity);
     this.pacingTime += delta;
-
-    // remove wanderers leaving area
-    var wanderersOutside = this.enemies.getWanderersOutside(this.allies.player, 600);
-    this.enemies.removeMultiple(wanderersOutside);
-
-    // spawn new wanderers to keep same nb of enemies
-    var wanderersToSpawn = this.maxEnemies - this.enemies.count();
-    if(wanderersToSpawn > 0)
-      this.spawnWanderers(wanderersToSpawn);
 
     if(this.relaxPeriod == false) {
       // build up
@@ -149,7 +140,7 @@ class AIDirector {
   }
 
   spawnWanderers(n) {
-    var spawns = this.getSpawnSpots();
+    var spawns = this.scene.forest.getAllSpawns();
     for(var i=0; i<n; i++) {
       var spawn = spawns[Math.floor(Math.random()*spawns.length)]
       this.enemies.add(new Zombie(this.scene, spawn.x, spawn.y, false));
