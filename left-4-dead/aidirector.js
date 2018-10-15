@@ -8,21 +8,22 @@ class AIDirector {
     this.spawnRadiusMax = 400;
 
     this.maxEnemies = 300;
-    this.spawnWanderers(this.maxEnemies);
-
-    this.emotionalIntensity = 0;
-    this.relaxPeriod = false;
-
-    //special timeouts
-    this.boomerConfig = { time: 0, timeout: 20000 };
-    this.hunterConfig = { time: 0, timeout: 30000 };
-
-    //setup spawning intervals
-    this.setupTank();
-    this.mobInterval = false;
-    this.setupMob();
-
-    this.setupEmotionalIntensityHookups();
+    this.spawnTank();
+    // this.spawnWanderers(this.maxEnemies);
+    //
+    // this.emotionalIntensity = 0;
+    // this.relaxPeriod = false;
+    //
+    // //special timeouts
+    // this.boomerConfig = { time: 0, timeout: 20000 };
+    // this.hunterConfig = { time: 0, timeout: 30000 };
+    //
+    // //setup spawning intervals
+    // this.setupTank();
+    // this.mobInterval = false;
+    // this.setupMob();
+    //
+    // this.setupEmotionalIntensityHookups();
   }
 
   setupTank() {
@@ -186,7 +187,7 @@ class AIDirector {
 
   spawnTank() {
     var playerCoord = this. allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 400, 500);
+    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)]
     this.enemies.add(new Tank(this.scene, spawn.x, spawn.y));
   }

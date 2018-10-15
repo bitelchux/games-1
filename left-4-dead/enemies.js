@@ -104,7 +104,9 @@ class Enemy {
     this.attack();
   }
 
-  whenDistantTarget() {}
+  whenInRangeTarget(delta) {}
+
+  whenDistantTarget(delta) {}
 
   whenAttack() {}
 
@@ -117,6 +119,9 @@ class Enemy {
     if(distance < 10) {
       this.whenNearbyTarget(delta);
     } else {
+      if(distance < 125) {
+        this.whenInRangeTarget(delta);
+      }
       this.whenDistantTarget(delta);
     }
   }
@@ -351,17 +356,21 @@ class Tank extends Enemy {
     this.isThrowing = false;
   }
 
-  whenDistantTarget(delta) {
+  whenInRangeTarget(delta) {
     if(!this.isThrowing) {
       this.isThrowing = Math.random() < 0.001;
       if(this.isThrowing) {
         this.throwRock();
-      } else {
-        this.followPath(delta);
-        if(!this.scene.sounds.tankwalk.isPlaying) {
-          var player = this.scene.allies.player;
-          this.scene.sounds.tankwalk.playInSpace(this.scene, this.sprite.getCenter());
-        }
+      }
+    }
+  }
+
+  whenDistantTarget(delta) {
+    if(!this.isThrowing) {
+      this.followPath(delta);
+      if(!this.scene.sounds.tankwalk.isPlaying) {
+        var player = this.scene.allies.player;
+        this.scene.sounds.tankwalk.playInSpace(this.scene, this.sprite.getCenter());
       }
     }
   }
@@ -384,6 +393,8 @@ class Tank extends Enemy {
     if(now - this.config.attack.lastTime > this.config.attack.rate) {
       this.config.attack.lastTime = now;
       this.rock = new Rock(this, this.scene, this.sprite.x, this.sprite.y);
+    } else {
+      this.isThrowing = false;
     }
   }
 

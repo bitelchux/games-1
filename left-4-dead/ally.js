@@ -42,27 +42,25 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
       // armed
       else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 80);
+        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
         // enemies nearby
         if(enemies.length > 0) {
           this.shootWeaponAt(enemies[0].sprite.getCenter());
         }
 
-        if(this.healthbar.isCritical()) {
-          //health kit is close by
-          var healthkitCoord = this.scene.forest.getClosestHealthKit(this.sprite.getCenter());
-          if (healthkitCoord.distance(this.sprite.getCenter()) < 100) {
-            this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
+        var healthkitCoord = this.scene.forest.getClosestHealthKit(this.sprite.getCenter());
+        //health kit is close by
+        if(this.healthbar.isCritical() && healthkitCoord.distance(this.sprite.getCenter()) < 200) {
+          this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
+        } else {
+          // var ally = this.scene.allies.getStrongestAlly();
+          var ally = this.scene.allies.player;
+          var distanceWithAlly = this.sprite.getCenter().distance(ally.sprite.getCenter());
+
+          // go near ally
+          if(distanceWithAlly > 70) {
+            this.goNearAlly(ally);
           }
-        }
-
-        // var ally = this.scene.allies.getStrongestAlly();
-        var ally = this.scene.allies.player;
-        var distanceWithAlly = this.sprite.getCenter().distance(ally.sprite.getCenter());
-
-        // go near strongest ally
-        if(distanceWithAlly > 70) {
-          this.goNearAlly(ally);
         }
       }
     }
