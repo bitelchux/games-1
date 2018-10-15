@@ -338,7 +338,7 @@ class Tank extends Enemy {
       x: x, y: y,
       speed: 0.040,
       hp: 10000,
-      pathUpdateTime: 500,
+      pathUpdateTime: 250,
       attack: {
         damage: 35,
         rate: 3000,
