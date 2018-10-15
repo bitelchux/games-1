@@ -243,9 +243,7 @@ class Zombie extends Enemy {
 
   whenInRangeTarget(delta) {
     if(!this.startsPursuit) {
-      console.log("starteld")
       this.startPursuit();
-      console.log(this.startsPursuit);
     }
   }
 
@@ -294,7 +292,7 @@ class Hunter extends Enemy {
       key:'hunter',
       x: x, y: y,
       speed: 0.015,
-      hp: 1000,
+      hp: 2500,
       pathUpdateTime: 250,
       attack: {
         damage: 10,
@@ -321,7 +319,7 @@ class Hunter extends Enemy {
     var targetCoord = this.target.sprite.getCenter();
     var meCoord = this.sprite.getCenter();
     var distance = meCoord.distance(targetCoord);
-    if(distance > 150) {
+    if(distance > 130) {
       this.followPath(delta);
     } else if (!this.isOnTarget) {
       this.jumpOnTarget(delta);
@@ -341,13 +339,74 @@ class Hunter extends Enemy {
   }
 }
 
+class Smoker extends Enemy {
+  constructor(scene, x, y) {
+    var config = {
+      key:'smoker',
+      x: x, y: y,
+      speed: 0.025,
+      hp: 2500,
+      pathUpdateTime: 250,
+      attack: {
+        damage: 15,
+        rate: 1000,
+        sounds: scene.sounds.smokerattack
+      }
+    };
+    super(scene, config);
+
+    this.draggingTarget = false;
+    this.dragTween = null;
+  }
+
+  startPursuit() {
+    this.startsPursuit = true;
+    this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    this.scene.sounds.smokercry.playInSpace(this.scene, this.sprite.getCenter());
+    setInterval(function(){
+      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
+    }.bind(this), this.config.pathUpdateTime);
+  }
+
+  update(time, delta) {
+    var targetCoord = this.target.sprite.getCenter();
+    var meCoord = this.sprite.getCenter();
+    var distance = meCoord.distance(targetCoord);
+    if(distance > 150) {
+      this.followPath(delta);
+    } else if (!this.draggingTarget) {
+      this.dragTarget(delta);
+    } else if (distance < 10) {
+      this.attack();
+    }
+  }
+
+  dragTarget(delta) {
+    this.draggingTarget = true;
+    this.scene.sounds.smokerdrag.play();
+    this.scene.tweens.add({
+        targets: this.target.sprite,
+        x: this.sprite.x,
+        y: this.sprite.y,
+        duration: 3000
+    });
+    this.target.isHit(100);
+  }
+
+  whenDie() {
+    if(this.dragTween)
+      this.dragTween.stop();
+  }
+}
+
 class Tank extends Enemy {
   constructor(scene, x, y) {
     var config = {
       key:'tank',
       x: x, y: y,
       speed: 0.040,
-      hp: 10000,
+      hp: 30000,
       pathUpdateTime: 250,
       attack: {
         damage: 35,

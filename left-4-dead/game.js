@@ -47,6 +47,12 @@ window.Game = new Phaser.Class({
       atlasURL: 'enemies/hunter/hunter.json'
     });
     this.load.atlas({
+      key: 'smoker',
+      textureURL: 'enemies/smoker/smoker.png',
+      normalMap: 'enemies/smoker/smoker_n.png',
+      atlasURL: 'enemies/smoker/smoker.json'
+    });
+    this.load.atlas({
       key: 'tank',
       textureURL: 'enemies/tank/tank.png',
       normalMap: 'enemies/tank/tank_n.png',
@@ -119,6 +125,13 @@ window.Game = new Phaser.Class({
     this.load.audio('hunterattack1Sound', 'audio/hunter/hunter-attack-1.wav');
     this.load.audio('hunterattack2Sound', 'audio/hunter/hunter-attack-2.wav');
     this.load.audio('hunterattack3Sound', 'audio/hunter/hunter-attack-3.wav');
+
+    //smoker
+    this.load.audio('smokerdragSound', 'audio/smoker/smoker-drag.wav');
+    this.load.audio('smokercrySound', 'audio/smoker/smoker-cry.wav');
+    this.load.audio('smokerattack1Sound', 'audio/smoker/smoker-attack-1.wav');
+    this.load.audio('smokerattack2Sound', 'audio/smoker/smoker-attack-2.wav');
+    this.load.audio('smokerattack3Sound', 'audio/smoker/smoker-attack-3.wav');
 
     //tank
     this.load.audio('tankmusicSound', 'audio/tank/tank-music.wav');
@@ -295,6 +308,17 @@ window.Game = new Phaser.Class({
       yoyo: true
     });
 
+    // smoker
+    this.anims.create({
+      key: 'smoker-walk',
+      frames: this.anims.generateFrameNames('smoker', {
+        start: 1, end: 3, zeroPad: 0,
+        prefix: 'smoker-walk-', suffix: '.png'
+      }),
+      frameRate: 12,
+      yoyo: true
+    });
+
     // tank
     this.anims.create({
       key: 'tank-walk',
@@ -366,6 +390,14 @@ window.Game = new Phaser.Class({
     this.sounds["hunterattack"] = [];
     for(var i=0; i<3; i++){
       this.sounds.hunterattack[i] = this.sound.add('hunterattack'+ (i+1) +'Sound');
+    }
+
+    //smoker
+    this.sounds["smokerdrag"] = this.sound.add('smokerdragSound');
+    this.sounds["smokercry"] = this.sound.add('smokercrySound');
+    this.sounds["smokerattack"] = [];
+    for(var i=0; i<3; i++){
+      this.sounds.smokerattack[i] = this.sound.add('smokerattack'+ (i+1) +'Sound');
     }
 
     //tank

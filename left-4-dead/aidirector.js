@@ -16,6 +16,7 @@ class AIDirector {
     //special timeouts
     this.boomerConfig = { time: 0, timeout: 20000 };
     this.hunterConfig = { time: 0, timeout: 30000 };
+    this.smokerConfig = { time: 0, timeout: 40000 };
 
     //setup spawning intervals
     this.setupTank();
@@ -74,8 +75,6 @@ class AIDirector {
   }
 
   update(time, delta) {
-    // console.log(this.emotionalIntensity);
-
     this.time = time;
     this.pacingTime += delta;
 
@@ -106,17 +105,24 @@ class AIDirector {
       this.setupMob();
     }
     //small threat
-    else if(this.emotionalIntensity > 0 && this.emotionalIntensity < 0.5) {
+    else if(this.emotionalIntensity > 0 && this.emotionalIntensity < 0.25) {
       var boomerTimeDiff = this.time - this.boomerConfig.time;
       if(boomerTimeDiff > this.boomerConfig.timeout) {
         this.spawnBoomer();
       }
     }
     //medium threat
-    else if(this.emotionalIntensity > 0.5 && this.emotionalIntensity < 1) {
+    else if(this.emotionalIntensity > 0.25 && this.emotionalIntensity < 0.5) {
       var hunterTimeDiff = this.time - this.hunterConfig.time;
       if(hunterTimeDiff > this.hunterConfig.timeout) {
         this.spawnHunter();
+      }
+    }
+    //big threat
+    else if(this.emotionalIntensity > 0.5 && this.emotionalIntensity < 1) {
+      var smokerTimeDiff = this.time - this.smokerConfig.time;
+      if(smokerTimeDiff > this.smokerConfig.timeout) {
+        this.spawnSmoker();
       }
     }
     //max threat
@@ -124,6 +130,7 @@ class AIDirector {
       this.spawnMob();
       this.spawnBoomer();
       this.spawnHunter();
+      this.spawnSmoker();
     }
   }
 
@@ -168,26 +175,34 @@ class AIDirector {
     }.bind(this), 2000 + Math.random()*3000);
   }
 
-  spawnHunter() {
-    this.hunterConfig.time = this.time;
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
-    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-    this.enemies.add(new Hunter(this.scene, spawn.x, spawn.y));
-  }
-
   spawnBoomer() {
     this.boomerConfig.time = this.time;
     var playerCoord = this.scene.allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 200, 300);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Boomer(this.scene, spawn.x, spawn.y));
+  }
+
+  spawnHunter() {
+    this.hunterConfig.time = this.time;
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)];
+    this.enemies.add(new Hunter(this.scene, spawn.x, spawn.y));
+  }
+
+  spawnSmoker() {
+    this.smokerConfig.time = this.time;
+    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)];
+    this.enemies.add(new Smoker(this.scene, spawn.x, spawn.y));
   }
 
   spawnTank() {
     var playerCoord = this. allies.player.sprite.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
-    var spawn = spawns[Math.floor(Math.random()*spawns.length)]
+    var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Tank(this.scene, spawn.x, spawn.y));
   }
 }
