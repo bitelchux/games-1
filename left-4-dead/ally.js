@@ -48,12 +48,20 @@ class Ally extends Phaser.GameObjects.GameObject {
           this.shootWeaponAt(enemies[0].sprite.getCenter());
         }
 
+        if(this.healthbar.isCritical()) {
+          //health kit is close by
+          var healthkitCoord = this.scene.forest.getClosestHealthKit(this.sprite.getCenter());
+          if (healthkitCoord.distance(this.sprite.getCenter()) < 100) {
+            this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
+          }
+        }
+
         // var ally = this.scene.allies.getStrongestAlly();
         var ally = this.scene.allies.player;
         var distanceWithAlly = this.sprite.getCenter().distance(ally.sprite.getCenter());
 
         // go near strongest ally
-        if(distanceWithAlly > 70){
+        if(distanceWithAlly > 70) {
           this.goNearAlly(ally);
         }
       }
@@ -159,6 +167,11 @@ class Ally extends Phaser.GameObjects.GameObject {
 
   pickObject(tile) {
     switch(tile.index) {
+      case 18:
+        this.healthbar.gainHp(50);
+        this.updateHealthRelatedCondition();
+        this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
+        break;
       case Pistols.index:
         this.weapon = new Pistols(this, this.scene, 200, 100);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);

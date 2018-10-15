@@ -52,7 +52,7 @@ class AIDirector {
       }.bind(this));
       //when ally is incapacited
       ally.on("askHelp", function(allyAsking) {
-        this.increaseEmotionalIntensity(0.25);
+        this.increaseEmotionalIntensity(0.4);
       }.bind(this));
       //when ally is incapacited
       ally.on("die", function() {

@@ -112,10 +112,29 @@ class Forest extends Level {
 
   getObjectAt(point) {
     var tile = this.objectsLayer.getTileAtWorldXY(point.x, point.y);
-    if(tile.index != -1) {
+    if(tile && tile.index != -1) {
       return tile;
     } else {
       return null;
     }
+  }
+
+  getClosestHealthKit(point) {
+    var healthkitTiles = this.objectsLayer.filterTiles(function(tile){
+      return tile.index == 18;
+    });
+
+    var distanceToHealthkit = 10000;
+    var chosenTile = null;
+    healthkitTiles.forEach(function(tile) {
+      var tileCoord = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
+      var distance = tileCoord.distance(point);
+      if(distance < distanceToHealthkit) {
+        distanceToHealthkit = distance;
+        chosenTile = tile;
+      }
+    }.bind(this));
+
+    return new Phaser.Math.Vector2(chosenTile.getCenterX(), chosenTile.getCenterY());
   }
 }

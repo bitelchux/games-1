@@ -227,7 +227,7 @@ class Zombie extends Enemy {
       hp: 500,
       pathUpdateTime: 250,
       attack: {
-        damage: 3,
+        damage: 2,
         rate: 1000,
         sounds: scene.sounds.zombiefast
       }
@@ -443,9 +443,12 @@ class Rock {
   }
 
   damageTarget(sprite) {
-    this.scene.physics.world.colliders.getActive().find(function(i){
+    var collider = this.scene.physics.world.colliders.getActive().find(function(i){
       return i.name == 'rock_overlap'
-    }).destroy();
+    });
+    if(collider)
+      collider.destroy();
+    
     var ally = this.scene.allies.getAlly(sprite.name)
     ally.isHit(this.damage);
     this.explode();

@@ -118,8 +118,8 @@ class Player extends Phaser.GameObjects.GameObject {
     if(tile) {
       switch(tile.index) {
         case 18:
-          this.speed = this.normalspeed;
           this.healthbar.gainHp(50);
+          this.updateHealthRelatedCondition();
           this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
           break;
         default:
