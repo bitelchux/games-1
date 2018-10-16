@@ -113,6 +113,7 @@ window.Game = new Phaser.Class({
     this.load.audio('zombiewaveSound', 'audio/zombie/zombie-wave.wav');
 
     //boomer
+    this.load.audio('boomermusicSound', 'audio/boomer/boomer-music.wav');
     this.load.audio('boomerexplodeSound', 'audio/boomer/boomer-explode.wav');
     this.load.audio('boomercrySound', 'audio/boomer/boomer-cry.wav');
     this.load.audio('boomerattack1Sound', 'audio/boomer/boomer-attack-1.wav');
@@ -120,6 +121,7 @@ window.Game = new Phaser.Class({
     this.load.audio('boomerattack3Sound', 'audio/boomer/boomer-attack-3.wav');
 
     //hunter
+    this.load.audio('huntermusicSound', 'audio/hunter/hunter-music.wav');
     this.load.audio('hunterjumpSound', 'audio/hunter/hunter-jump.wav');
     this.load.audio('huntercrySound', 'audio/hunter/hunter-cry.wav');
     this.load.audio('hunterattack1Sound', 'audio/hunter/hunter-attack-1.wav');
@@ -127,6 +129,7 @@ window.Game = new Phaser.Class({
     this.load.audio('hunterattack3Sound', 'audio/hunter/hunter-attack-3.wav');
 
     //smoker
+    this.load.audio('smokermusicSound', 'audio/smoker/smoker-music.wav');
     this.load.audio('smokerdragSound', 'audio/smoker/smoker-drag.wav');
     this.load.audio('smokercrySound', 'audio/smoker/smoker-cry.wav');
     this.load.audio('smokerattack1Sound', 'audio/smoker/smoker-attack-1.wav');
@@ -377,6 +380,7 @@ window.Game = new Phaser.Class({
     this.sounds["zombiewave"] = this.sound.add('zombiewaveSound');
 
     //boomer
+    this.sounds["boomermusic"] = this.sound.add('boomermusicSound');
     this.sounds["boomerexplode"] = this.sound.add('boomerexplodeSound');
     this.sounds["boomercry"] = this.sound.add('boomercrySound');
     this.sounds["boomerattack"] = [];
@@ -385,6 +389,7 @@ window.Game = new Phaser.Class({
     }
 
     //hunter
+    this.sounds["huntermusic"] = this.sound.add('huntermusicSound');
     this.sounds["hunterjump"] = this.sound.add('hunterjumpSound', {volume: 0.5});
     this.sounds["huntercry"] = this.sound.add('huntercrySound');
     this.sounds["hunterattack"] = [];
@@ -393,6 +398,7 @@ window.Game = new Phaser.Class({
     }
 
     //smoker
+    this.sounds["smokermusic"] = this.sound.add('smokermusicSound');
     this.sounds["smokerdrag"] = this.sound.add('smokerdragSound');
     this.sounds["smokercry"] = this.sound.add('smokercrySound');
     this.sounds["smokerattack"] = [];
@@ -401,8 +407,8 @@ window.Game = new Phaser.Class({
     }
 
     //tank
-    this.sounds["tankwalk"] = this.sound.add('tankwalkSound');
     this.sounds["tankmusic"] = this.sound.add('tankmusicSound');
+    this.sounds["tankwalk"] = this.sound.add('tankwalkSound');
     this.sounds["tankattack"] = [];
     for(var i=0; i<3; i++){
       this.sounds.tankattack[i] = this.sound.add('tankattack'+ (i+1) +'Sound');
@@ -411,21 +417,18 @@ window.Game = new Phaser.Class({
     this.sounds["tankthrow"] = this.sound.add('tankthrowSound');
     this.sounds["tankrockexplode"] = this.sound.add('tankrockexplodeSound');
 
-    // fade out function
-    var that = this;
-    this.sounds["fadeOut"] = function(sound, speed) {
-      var sound = that.sounds[sound];
-      var soundInterval = setInterval(function(){
-        var volume = sound.volume - 0.1;
-        if(volume < 0) {
-          sound.stop();
-          clearInterval(soundInterval);
-          sound.setVolume(1);
-        } else {
-          sound.setVolume(volume);
-        }
-      }, speed);
-    };
+    // change music function
+    this.sounds["changeMusic"] = function(newMusic) {
+      this.sounds.music.pause();
+      this.sounds[newMusic].play();
+
+      this.sounds[newMusic].on('ended', function(music){
+        this.sounds.music.resume();
+      }, this);
+      this.sounds[newMusic].on('stop', function(music){
+        this.sounds.music.resume();
+      }, this);
+    }.bind(this);
   },
 
   create: function () {

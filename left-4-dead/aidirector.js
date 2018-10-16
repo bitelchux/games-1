@@ -128,7 +128,6 @@ class AIDirector {
     //max threat
     else if(this.emotionalIntensity == 1) {
       this.spawnMob();
-      this.spawnBoomer();
       this.spawnHunter();
       this.spawnSmoker();
     }

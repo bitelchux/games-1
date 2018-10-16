@@ -230,7 +230,7 @@ class Zombie extends Enemy {
       key:'zombie',
       x: x, y: y,
       speed: 0.035,
-      hp: 500,
+      hp: 100,
       pathUpdateTime: 250,
       attack: {
         damage: 2,
@@ -258,7 +258,7 @@ class Boomer extends Enemy {
       key:'boomer',
       x: x, y: y,
       speed: 0.025,
-      hp: 1000,
+      hp: 100,
       pathUpdateTime: 250,
       attack: {
         damage: 15,
@@ -279,9 +279,13 @@ class Boomer extends Enemy {
 
   whenDie() {
     var allies = this.scene.allies.getAlliesAround(this.sprite.getCenter(), 32);
+    this.scene.sounds.boomerexplode.playInSpace(this.scene, this.sprite.getCenter());
     if(allies.length > 0) {
-      this.scene.sounds.boomerexplode.playInSpace(this.scene, this.sprite.getCenter());
       this.scene.aidirector.spawnMob();
+      this.scene.sounds.changeMusic('boomermusic', 1000);
+      this.scene.sounds.boomermusic.once('ended', function(music){
+        this.scene.sounds.music.play();
+      }, this);
     }
   }
 }
@@ -292,7 +296,7 @@ class Hunter extends Enemy {
       key:'hunter',
       x: x, y: y,
       speed: 0.015,
-      hp: 2500,
+      hp: 500,
       pathUpdateTime: 250,
       attack: {
         damage: 10,
@@ -306,9 +310,10 @@ class Hunter extends Enemy {
   }
 
   startPursuit() {
+    this.scene.sounds.changeMusic('huntermusic');
+    this.scene.sounds.huntercry.playInSpace(this.scene, this.sprite.getCenter());
     this.startsPursuit = true;
     this.target = this.scene.allies.getWeakestAlly();
-    this.scene.sounds.huntercry.playInSpace(this.scene, this.sprite.getCenter());
     setInterval(function(){
       this.target = this.scene.allies.getWeakestAlly(this.sprite.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
@@ -345,7 +350,7 @@ class Smoker extends Enemy {
       key:'smoker',
       x: x, y: y,
       speed: 0.025,
-      hp: 2500,
+      hp: 500,
       pathUpdateTime: 250,
       attack: {
         damage: 15,
@@ -360,9 +365,10 @@ class Smoker extends Enemy {
   }
 
   startPursuit() {
+    this.scene.sounds.changeMusic('smokermusic');
+    this.scene.sounds.smokercry.playInSpace(this.scene, this.sprite.getCenter());
     this.startsPursuit = true;
     this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
-    this.scene.sounds.smokercry.playInSpace(this.scene, this.sprite.getCenter());
     setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
@@ -406,7 +412,7 @@ class Tank extends Enemy {
       key:'tank',
       x: x, y: y,
       speed: 0.040,
-      hp: 30000,
+      hp: 6000,
       pathUpdateTime: 250,
       attack: {
         damage: 35,
@@ -419,8 +425,7 @@ class Tank extends Enemy {
       walkSound: scene.sounds.walkthrow
     };
     super(scene, config);
-    this.scene.sounds.fadeOut('music', 500);
-    scene.sounds.tankmusic.play();
+    this.scene.sounds.changeMusic('tankmusic', 500);
     this.rock = null;
     this.isThrowing = false;
   }
@@ -468,8 +473,7 @@ class Tank extends Enemy {
   }
 
   whenDie() {
-    this.scene.sounds.fadeOut('tankmusic', 500);
-    this.scene.sounds.music.play();
+    this.scene.sounds.tankmusic.stop();
     this.rock = null;
   }
 }

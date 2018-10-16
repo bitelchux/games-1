@@ -159,20 +159,20 @@ class Player extends Phaser.GameObjects.GameObject {
 
     switch(tile.index) {
       case Pistols.index:
-        this.weapon = new Pistols(this, this.scene, 200, 100);
+        this.weapon = new Pistols(this, this.scene, 100, 36);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this, this.scene, 1000, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 5, 3000);
+        this.weapon = new Shotgun(this, this.scene, 1150, 240);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this, this.scene, 70, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 40, 3000);
+        this.weapon = new Uzi(this, this.scene, 63, 20);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000);
         break;
       case Grenade.index:
-        this.weapon = new Grenade(this, this.scene, 2000, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 3, 3000);
+        this.weapon = new Grenade(this, this.scene, 1, 400);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 1, 3760);
         break;
     }
 

@@ -42,7 +42,7 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
       // armed
       else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 100);
+        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 90);
         // enemies nearby
         if(enemies.length > 0) {
           this.shootWeaponAt(enemies[0].sprite.getCenter());
@@ -170,22 +170,22 @@ class Ally extends Phaser.GameObjects.GameObject {
         this.updateHealthRelatedCondition();
         this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
         break;
-      case Pistols.index:
-        this.weapon = new Pistols(this, this.scene, 200, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
-        break;
-      case Shotgun.index:
-        this.weapon = new Shotgun(this, this.scene, 1000, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 5, 3000, false);
-        break;
-      case Uzi.index:
-        this.weapon = new Uzi(this, this.scene, 70, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 40, 3000, false);
-        break;
-      case Grenade.index:
-        this.weapon = new Grenade(this, this.scene, 2000, 100);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 3, 3000, false);
-        break;
+        case Pistols.index:
+          this.weapon = new Pistols(this, this.scene, 100, 36);
+          this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
+          break;
+        case Shotgun.index:
+          this.weapon = new Shotgun(this, this.scene, 1150, 240);
+          this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
+          break;
+        case Uzi.index:
+          this.weapon = new Uzi(this, this.scene, 63, 20);
+          this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
+          break;
+        case Grenade.index:
+          this.weapon = new Grenade(this, this.scene, 1, 400);
+          this.weapon.bulletBar = new BulletBar(this, this.scene, 1, 3760, false);
+          break;
     }
 
     this.weapon.bulletBar.on("reload", function() {
