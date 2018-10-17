@@ -163,7 +163,7 @@ class Player extends Phaser.GameObjects.GameObject {
         this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this, this.scene, 1150, 240);
+        this.weapon = new Shotgun(this, this.scene, 1150, 24);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000);
         break;
       case Uzi.index:

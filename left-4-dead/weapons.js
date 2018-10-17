@@ -11,8 +11,7 @@ class Weapon {
   }
 
   // to override
-  getHitZone() {}
-  showImpacts(hitZone) {}
+  createBullets(x, y, rotation) {}
 
   shoot(sprite) {
     if(this.isReloading)
@@ -28,31 +27,10 @@ class Weapon {
 
       this.scene.sounds[this.constructor.name.toLowerCase()].playInSpace(this.scene, this.owner.sprite.getCenter());
 
-      var hitZone = this.getHitZone(sprite);
-      var rotatedPoints = [];
-      hitZone.points.forEach(function(point) {
-        rotatedPoints.push(Phaser.Math.RotateAround(point, sprite.x, sprite.y, sprite.rotation));
-      }.bind(this));
+      this.createBullets(sprite.x, sprite.y, sprite.rotation);
 
-      hitZone.setTo(rotatedPoints);
-
-      // show hitzone
-      /*var graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
-      if(hitZone.constructor.name == "Circle") {
-        graphics.strokeCircleShape(hitZone)
-      } else {
-        graphics.strokePoints(hitZone.points, true);
-      }*/
-
-      // show random bullet impacts inside hitZone
-      this.showImpacts(hitZone);
-
-      for(var i=0; i<this.scene.enemies.group.length; i++) {
-        var enemy = this.scene.enemies.group[i];
-        if(hitZone.contains(enemy.sprite.x, enemy.sprite.y)) {
-          enemy.isHit(this.damage);
-        }
-      };
+      if(sprite.name == "player")
+        this.scene.camera.shake(100, 0.001);
     }
   }
 
@@ -67,28 +45,11 @@ class Pistols extends Weapon {
     this.index = Pistols.index;
   }
 
-  getHitZone(sprite) {
-    var hitZone;
-    var x = sprite.x;
-    var y = sprite.y;
-    var w = 16*3;
-    var h = 16*10;
-
-    var downLeft = new Phaser.Geom.Point(x-2,y+w/2);
-    var topLeft = new Phaser.Geom.Point(x-2, y-w/2);
-    var topRight = new Phaser.Geom.Point(x+h, y-w/2);
-    var downRight = new Phaser.Geom.Point(x+h,y+w/2);
-    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-
-    return hitZone;
-  }
-
-  showImpacts(hitZone) {
-    var rect = Phaser.Geom.Polygon.GetAABB(hitZone);
-    var p1 = rect.getRandomPoint()
-    var p2 = rect.getRandomPoint()
-    new Impact(this.scene, p1.x, p1.y);
-    new Impact(this.scene, p2.x, p2.y);
+  createBullets(x, y, rotation) {
+    var randX = x + Math.random()*3 - Math.random()*3;
+    var randY = y + Math.random()*3 - Math.random()*3;
+    var bullet1 = new Bullet(this.scene, randX, randY, rotation - 0.1, this.damage);
+    var bullet2 = new Bullet(this.scene, randX, randY, rotation + 0.1, this.damage);
   }
 }
 Pistols.index = 5;
@@ -99,29 +60,19 @@ class Shotgun extends Weapon {
     this.index = Shotgun.index;
   }
 
-  getHitZone(sprite) {
-    var hitZone;
-    var x = sprite.x;
-    var y = sprite.y;
-    var origin = new Phaser.Geom.Point(x-2,y);
-    var w = 16*8;
-    var h = 16*10;
-
-    var top = new Phaser.Geom.Point(x+h,y-w/2);
-    var down = new Phaser.Geom.Point(x+h,y+w/2);
-    hitZone = new Phaser.Geom.Polygon([origin, top, down]);
-
-    return hitZone;
-  }
-
-  showImpacts(hitZone) {
-    var triangle = new Phaser.Geom.Triangle(hitZone.points[0].x, hitZone.points[0].y,
-      hitZone.points[1].x, hitZone.points[1].y, hitZone.points[2].x, hitZone.points[2].y);
-
-    for(var i=0; i<5; i++) {
-      var point = triangle.getRandomPoint()
-      var impact = new Impact(this.scene, point.x, point.y);
+  createBullets(x, y, rotation) {
+    for(var i=0; i<10; i++) {
+      var randX = x + Math.random()*3 - Math.random()*3;
+      var randY = y + Math.random()*3 - Math.random()*3;
+      new Bullet(this.scene, randX, randY, rotation - 0.5 + i/10, this.damage);
     }
+    setTimeout(function() {
+      for(var i=0; i<10; i++) {
+        var randX = x + Math.random()*3 - Math.random()*3;
+        var randY = y + Math.random()*3 - Math.random()*3;
+        new Bullet(this.scene, randX, randY, rotation - 0.5 + i/10, this.damage);
+      }
+    }.bind(this), 100)
   }
 }
 Shotgun.index = 10;
@@ -132,26 +83,10 @@ class Uzi extends Weapon {
     this.index = Uzi.index;
   }
 
-  getHitZone(sprite) {
-    var hitZone;
-    var x = sprite.x;
-    var y = sprite.y;
-    var w = 16*2;
-    var h = 16*10;
-
-    var downLeft = new Phaser.Geom.Point(x-2,y+w/2);
-    var topLeft = new Phaser.Geom.Point(x-2, y-w/2);
-    var topRight = new Phaser.Geom.Point(x+h, y-w/2);
-    var downRight = new Phaser.Geom.Point(x+h,y+w/2);
-    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-
-    return hitZone;
-  }
-
-  showImpacts(hitZone) {
-    var rect = Phaser.Geom.Polygon.GetAABB(hitZone);
-    var point = rect.getRandomPoint()
-    var impact = new Impact(this.scene, point.x, point.y);
+  createBullets(x, y, rotation) {
+    var randX = x + Math.random()*3 - Math.random()*3;
+    var randY = y + Math.random()*3 - Math.random()*3;
+    var bullet = new Bullet(this.scene, randX, randY, rotation, this.damage);
   }
 }
 Uzi.index = 15;
@@ -162,51 +97,54 @@ class Grenade extends Weapon {
     this.index = Grenade.index;
   }
 
-  getHitZone(sprite) {
-    var hitZone;
-    var x = sprite.x;
-    var y = sprite.y;
-    var w = 16*4;
-    var h = 16*10
-
-    var downLeft = new Phaser.Geom.Point(x-w/2+h,y+w/2);
-    var topLeft = new Phaser.Geom.Point(x-w/2+h, y-w/2);
-    var topRight = new Phaser.Geom.Point(x+w/2+h, y-w/2);
-    var downRight = new Phaser.Geom.Point(x+w/2+h,y+w/2);
-    hitZone = new Phaser.Geom.Polygon([downLeft, topLeft, topRight, downRight]);
-
-    return hitZone;
-  }
-
-  showImpacts(hitZone) {
-    this.sprite = this.scene.physics.add.sprite(hitZone.x, hitZone.y, 'grenade');
-    this.sprite.setDepth(3);
-    this.scene.myLights.addTempLight(hitZone.x, hitZone.y, 75, 0xffffff, .5, 500)
-
-    this.sprite.on('animationcomplete', function(animation) {
-      if(animation.key == "grenade-explosion") {
-          this.sprite.destroy();
-      }
-    }, this);
-
-    this.sprite.anims.play('grenade-explosion', true);
+  createBullets(x, y, rotation) {
+    var bullet = new Bullet(this.scene, x, y, rotation, this.damage);
   }
 }
 Grenade.index = 20;
 
-class Impact {
-  constructor(scene, x, y) {
+
+class Bullet extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y, rotation, damage) {
+    super(scene, x, y, 'bullet');
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
+
     this.scene = scene;
+    this.setPipeline("Light2D");
+    this.setDepth(3);
 
-    this.sprite = scene.physics.add.sprite(x, y, 'impact').setPipeline("Light2D");
-    this.sprite.setDepth(3);
+    this.speed = Phaser.Math.GetSpeed(300000, 1);
+    this.body.setVelocity(Math.cos(rotation)*this.speed, Math.sin(rotation)*this.speed);
+    this.damage = damage;
 
-    this.sprite.on('animationcomplete', function(animation) {
-      if(animation.key == "impact-anim") {
-          this.sprite.destroy();
-      }
-    }, this);
+    scene.physics.add.overlap(this, scene.enemies.getAll(), this.hitEnemy, null, this);
+    scene.physics.add.collider(this, scene.forest.obstaclesLayer, this.die, null, this);
 
-    this.sprite.anims.play('impact-anim', true);
+    this.anims.play('bullet-fired', true);
+
+    setTimeout(function() {
+      this.die();
+    }.bind(this), 2000);
+  }
+
+  hitEnemy(bullet, enemy) {
+    enemy.isHit(bullet.damage);
+    this.die();
+  }
+
+  die() {
+    if(this.body)
+      this.body.setVelocity(0, 0);
+
+    this.x += Math.random()*5 - Math.random()*5;
+    this.y += Math.random()*5 - Math.random()*5;
+    var scale = Math.random();
+    this.setFrame('bullet-impact.png');
+    this.setScale(scale);
+
+    setTimeout(function(){
+      this.destroy();
+    }.bind(this), 100);
   }
 }

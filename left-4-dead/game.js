@@ -11,11 +11,17 @@ window.Game = new Phaser.Class({
     this.load.setPath('assets/');
 
     // images
-    this.load.image("bullet", ["bullet.png", "bullet_n.png"]);
+    this.load.image("bulletshell", ["bullet.png", "bullet_n.png"]);
     this.load.image("reload", ["reload.png", "reload_n.png"]);
     this.load.image("help", ["help.png", "help_n.png"]);
     this.load.image("forest", ["forest.png", "forest_n.png"]);
     this.load.tilemapTiledJSON("forestTilemap", "forest.json");
+    this.load.atlas({
+      key: 'bullet',
+      textureURL: 'bullet/bullet.png',
+      normalMap: 'bullet/bullet_n.png',
+      atlasURL: 'bullet/bullet.json'
+    });
     this.load.atlas({
       key: 'player',
       textureURL: 'player/player.png',
@@ -148,6 +154,15 @@ window.Game = new Phaser.Class({
   },
 
   createAnims: function() {
+    // bulelt
+    this.anims.create({
+      key: 'bullet-fired',
+      frames: this.anims.generateFrameNames('bullet', {
+        start: 1, end: 3, zeroPad: 0,
+        prefix: 'bullet-', suffix: '.png'
+      }),
+      frameRate: 24
+    });
     // player
     this.anims.create({
       key: 'walk',
@@ -444,8 +459,9 @@ window.Game = new Phaser.Class({
     this.enemies = new Enemies(this);
     this.aidirector = new AIDirector(this, this.allies, this.enemies);
 
-    this.cameras.main.startFollow(this.allies.player.sprite);
-    this.cameras.main.setZoom(1);
+    this.camera = this.cameras.main;
+    this.camera.startFollow(this.allies.player.sprite);
+    this.camera.setZoom(1);
   },
 
   update: function(time, delta) {

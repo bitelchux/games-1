@@ -36,7 +36,7 @@ class Enemies {
     var wanderers = [];
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
     this.group.forEach(function(enemy) {
-      if(!enemy.startsPursuit && circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+      if(!enemy.startsPursuit && circle.contains(enemy.x, enemy.y)) {
         wanderers.push(enemy);
       }
     });
@@ -47,7 +47,7 @@ class Enemies {
     var wanderers = [];
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
     this.group.forEach(function(enemy) {
-      if(!enemy.startsPursuit && !circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+      if(!enemy.startsPursuit && !circle.contains(enemy.x, enemy.y)) {
         wanderers.push(enemy);
       }
     });
@@ -59,7 +59,7 @@ class Enemies {
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
 
     this.group.forEach(function(enemy) {
-      if(circle.contains(enemy.sprite.x, enemy.sprite.y)) {
+      if(circle.contains(enemy.x, enemy.y)) {
         enemies.push(enemy);
       }
     });
@@ -75,25 +75,32 @@ class Enemies {
 }
 
 /* config = {key, x, y, speed, hp, attack:{damage, rate, sounds}}*/
-class Enemy {
+class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, config, startsPursuit = true) {
+    super(scene, config.x, config.y, config.key);
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
+
     this.scene = scene;
     this.config = config;
     this.startsPursuit = startsPursuit;
 
-    this.sprite = scene.add.sprite(config.x, config.y, config.key).setPipeline("Light2D");
-    this.sprite.setDepth(2);
+    this.setPipeline("Light2D");
+    this.setDepth(2);
 
+    this.pursuitInterval = null;
     this.path = null;
     this.pathIndex = null;
     this.target = null;
 
     this.config.attack['lastTime'] = this.scene.time.now;
 
+    this.config.hp *= 2;
+
     if(this.startsPursuit) {
       this.startPursuit();
     } else {
-      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+      this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
     }
   }
 
@@ -114,7 +121,7 @@ class Enemy {
 
   update(time, delta) {
     var targetCoord = this.target.sprite.getCenter();
-    var meCoord = this.sprite.getCenter();
+    var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance < 10) {
       this.whenNearbyTarget(delta);
@@ -128,10 +135,10 @@ class Enemy {
 
   startPursuit() {
     this.startsPursuit = true;
-    this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
     this.whenStartPursuit();
-    setInterval(function(){
-      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    this.pursuitInterval = setInterval(function(){
+      this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
     }.bind(this), this.config.pathUpdateTime);
   }
@@ -151,9 +158,9 @@ class Enemy {
       }
     }, this,0,0,map.width,map.height,{isNotEmpty: true});
 
-    this.path = new Phaser.Curves.Path(this.sprite.x, this.sprite.y);
+    this.path = new Phaser.Curves.Path(this.x, this.y);
 
-    var startTile = map.worldToTileXY(this.sprite.x, this.sprite.y);
+    var startTile = map.worldToTileXY(this.x, this.y);
     var endTile = map.worldToTileXY(x, y);
 
     var tilePath = finder.findPath(startTile.x, startTile.y, endTile.x, endTile.y, grid);
@@ -168,17 +175,17 @@ class Enemy {
 
   followPath(delta) {
     if(this.path && this.path.curves.length > 0) {
-      this.sprite.anims.play(this.config.key + '-walk', true);
+      this.anims.play(this.config.key + '-walk', true);
 
       var curve = this.path.curves[this.pathIndex];
       var direction = new Phaser.Math.Vector2(curve.p1.x - curve.p0.x, curve.p1.y - curve.p0.y).normalize();
       var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
 
-      this.sprite.x += delta*direction.x*this.config.speed;
-      this.sprite.y += delta*direction.y*this.config.speed;
-      this.sprite.setAngle(angle);
+      this.x += delta*direction.x*this.config.speed;
+      this.y += delta*direction.y*this.config.speed;
+      this.setAngle(angle);
 
-      if(this.sprite.getCenter().distance(curve.p1) < 2) {
+      if(this.getCenter().distance(curve.p1) < 2) {
         this.pathIndex += 1;
         if(this.pathIndex == this.path.curves.length) {
           this.path = null;
@@ -219,8 +226,9 @@ class Enemy {
 
   die() {
     this.whenDie();
-    this.sprite.destroy();
     this.scene.enemies.remove(this);
+    clearInterval(this.pursuitInterval);
+    this.destroy();
   }
 }
 
@@ -270,7 +278,7 @@ class Boomer extends Enemy {
   }
 
   whenStartPursuit() {
-    this.scene.sounds.boomercry.playInSpace(this.scene, this.sprite.getCenter());
+    this.scene.sounds.boomercry.playInSpace(this.scene, this.getCenter());
   }
 
   whenDistantTarget(delta) {
@@ -278,14 +286,11 @@ class Boomer extends Enemy {
   }
 
   whenDie() {
-    var allies = this.scene.allies.getAlliesAround(this.sprite.getCenter(), 32);
-    this.scene.sounds.boomerexplode.playInSpace(this.scene, this.sprite.getCenter());
+    var allies = this.scene.allies.getAlliesAround(this.getCenter(), 32);
+    this.scene.sounds.boomerexplode.playInSpace(this.scene, this.getCenter());
     if(allies.length > 0) {
       this.scene.aidirector.spawnMob();
-      this.scene.sounds.changeMusic('boomermusic', 1000);
-      this.scene.sounds.boomermusic.once('ended', function(music){
-        this.scene.sounds.music.play();
-      }, this);
+      this.scene.sounds.changeMusic('boomermusic');
     }
   }
 }
@@ -311,18 +316,18 @@ class Hunter extends Enemy {
 
   startPursuit() {
     this.scene.sounds.changeMusic('huntermusic');
-    this.scene.sounds.huntercry.playInSpace(this.scene, this.sprite.getCenter());
+    this.scene.sounds.huntercry.playInSpace(this.scene, this.getCenter());
     this.startsPursuit = true;
     this.target = this.scene.allies.getWeakestAlly();
-    setInterval(function(){
-      this.target = this.scene.allies.getWeakestAlly(this.sprite.getCenter());
+    this.pursuitInterval = setInterval(function(){
+      this.target = this.scene.allies.getWeakestAlly(this.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
   update(time, delta) {
     var targetCoord = this.target.sprite.getCenter();
-    var meCoord = this.sprite.getCenter();
+    var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance > 130) {
       this.followPath(delta);
@@ -335,7 +340,7 @@ class Hunter extends Enemy {
     this.isOnTarget = true;
     this.scene.sounds.hunterjump.play();
     this.scene.tweens.add({
-        targets: this.sprite,
+        targets: this,
         x: this.target.sprite.x,
         y: this.target.sprite.y,
         duration: 500
@@ -366,18 +371,18 @@ class Smoker extends Enemy {
 
   startPursuit() {
     this.scene.sounds.changeMusic('smokermusic');
-    this.scene.sounds.smokercry.playInSpace(this.scene, this.sprite.getCenter());
+    this.scene.sounds.smokercry.playInSpace(this.scene, this.getCenter());
     this.startsPursuit = true;
-    this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
-    setInterval(function(){
-      this.target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
+    this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
+    this.pursuitInterval = setInterval(function(){
+      this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
       this.setPathTo(this.target.sprite.x, this.target.sprite.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
   update(time, delta) {
     var targetCoord = this.target.sprite.getCenter();
-    var meCoord = this.sprite.getCenter();
+    var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance > 150) {
       this.followPath(delta);
@@ -393,8 +398,8 @@ class Smoker extends Enemy {
     this.scene.sounds.smokerdrag.play();
     this.scene.tweens.add({
         targets: this.target.sprite,
-        x: this.sprite.x,
-        y: this.sprite.y,
+        x: this.x,
+        y: this.y,
         duration: 3000
     });
     this.target.isHit(100);
@@ -425,7 +430,7 @@ class Tank extends Enemy {
       walkSound: scene.sounds.walkthrow
     };
     super(scene, config);
-    this.scene.sounds.changeMusic('tankmusic', 500);
+    this.scene.sounds.changeMusic('tankmusic');
     this.rock = null;
     this.isThrowing = false;
   }
@@ -444,14 +449,14 @@ class Tank extends Enemy {
       this.followPath(delta);
       if(!this.scene.sounds.tankwalk.isPlaying) {
         var player = this.scene.allies.player;
-        this.scene.sounds.tankwalk.playInSpace(this.scene, this.sprite.getCenter());
+        this.scene.sounds.tankwalk.playInSpace(this.scene, this.getCenter());
       }
     }
   }
 
   whenAttack() {
     if(this.target) {
-      var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.sprite.x, this.target.sprite.y - this.sprite.y).normalize();
+      var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.x, this.target.sprite.y - this.y).normalize();
       this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
       this.scene.tweens.add({
         targets: this.target.sprite.body.velocity,
@@ -466,7 +471,7 @@ class Tank extends Enemy {
     var now = this.scene.time.now;
     if(now - this.config.attack.lastTime > this.config.attack.rate) {
       this.config.attack.lastTime = now;
-      this.rock = new Rock(this, this.scene, this.sprite.x, this.sprite.y);
+      this.rock = new Rock(this, this.scene, this.x, this.y);
     } else {
       this.isThrowing = false;
     }

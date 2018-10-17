@@ -19,7 +19,7 @@ class HelpSign extends Phaser.GameObjects.GameObject {
 
   update(x, y) {
     if(this.sprite.visible) {
-      var cameraRect = this.scene.cameras.main.worldView;
+      var cameraRect = this.scene.camera.worldView;
 
       if(x < cameraRect.x) {
         x = cameraRect.x + 8;
