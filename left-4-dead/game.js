@@ -461,7 +461,7 @@ window.Game = new Phaser.Class({
     this.aidirector = new AIDirector(this, this.allies, this.enemies);
 
     this.camera = this.cameras.main;
-    this.camera.startFollow(this.allies.player.sprite);
+    this.camera.startFollow(this.allies.player);
     this.camera.setZoom(2);
   },
 

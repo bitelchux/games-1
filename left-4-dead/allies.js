@@ -1,10 +1,11 @@
 class Allies {
   constructor(scene) {
     this.scene = scene;
-    this.player = new Player(this.scene, 100, 200);
-    this.ally1 = new Ally(this.scene, 132, 200, "ally1");
-    this.ally2 = new Ally(this.scene, 30, 200, "ally2");
-    this.ally3 = new Ally(this.scene, 30, 230, "ally3");
+    // this.player = new Player(this.scene, 100, 200, 0xff00ff);
+    this.player = new Player(this.scene, 100, 200, 0xff00ff);
+    this.ally1 = new Ally(this.scene, 132, 200, "ally1", 0xffff00);
+    this.ally2 = new Ally(this.scene, 30, 200, "ally2", 0x0000ff);
+    this.ally3 = new Ally(this.scene, 30, 230, "ally3", 0x00ff00);
 
     this.group = [];
     this.group.push(this.player);
@@ -25,7 +26,7 @@ class Allies {
 
   setupColliders() {
     this.group.forEach(function(ally) {
-      this.scene.physics.add.collider(ally.sprite, this.scene.forest.obstaclesLayer);
+      this.scene.physics.add.collider(ally, this.scene.forest.obstaclesLayer);
     }.bind(this));
   }
 
@@ -35,7 +36,7 @@ class Allies {
       ally.on("askHelp", function(allyAsking) {
         for(var j=0; j<this.group.length; j++) {
           var allyHelping = this.group[j];
-          if(allyAsking.sprite.name != allyHelping.sprite.name) {
+          if(allyAsking.name != allyHelping.name) {
             allyHelping.calledForHelp(allyAsking);
           }
         }
@@ -57,7 +58,7 @@ class Allies {
     var distance = 100000;
     var chosenAlly;
     this.group.forEach(function(ally) {
-      var allyCoord = ally.sprite.getCenter();
+      var allyCoord = ally.getCenter();
       var allyDistance = allyCoord.distance(coord);
       if(allyDistance < distance) {
         distance = allyDistance;
@@ -93,18 +94,10 @@ class Allies {
     return chosenAlly;
   }
 
-  getSprites() {
-    var sprites = [];
-    this.group.forEach(function(ally) {
-      sprites.push(ally.sprite);
-    });
-    return sprites;
-  }
-
   getAlly(name) {
     var chosenAlly;
     this.group.forEach(function(ally) {
-      if(ally.sprite.name == name)
+      if(ally.name == name)
         chosenAlly = ally;
     });
     return chosenAlly;
@@ -114,7 +107,7 @@ class Allies {
     var allies = [];
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
     this.group.forEach(function(ally) {
-      if(circle.contains(ally.sprite.x, ally.sprite.y)) {
+      if(circle.contains(ally.x, ally.y)) {
         allies.push(ally);
       }
     });

@@ -64,7 +64,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   whenDie() {}
 
   update(time, delta) {
-    var targetCoord = this.target.sprite.getCenter();
+    var targetCoord = this.target.getCenter();
     var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance < 10) {
@@ -83,7 +83,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.whenStartPursuit();
     this.pursuitInterval = setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
-      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
+      this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
@@ -156,7 +156,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
-    this.setTintFill(0xff0000);
+    this.setTint(0xff0000);
     setTimeout(function() {
       this.clearTint();
     }.bind(this), 10);
@@ -270,12 +270,12 @@ class Hunter extends Enemy {
     this.target = this.scene.allies.getWeakestAlly();
     this.pursuitInterval = setInterval(function(){
       this.target = this.scene.allies.getWeakestAlly(this.getCenter());
-      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
+      this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
   update(time, delta) {
-    var targetCoord = this.target.sprite.getCenter();
+    var targetCoord = this.target.getCenter();
     var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance > 130) {
@@ -290,8 +290,8 @@ class Hunter extends Enemy {
     this.scene.sounds.hunterjump.play();
     this.scene.tweens.add({
         targets: this,
-        x: this.target.sprite.x,
-        y: this.target.sprite.y,
+        x: this.target.x,
+        y: this.target.y,
         duration: 500
     });
     this.target.isHit(100);
@@ -325,12 +325,12 @@ class Smoker extends Enemy {
     this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
     this.pursuitInterval = setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
-      this.setPathTo(this.target.sprite.x, this.target.sprite.y);
+      this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
   }
 
   update(time, delta) {
-    var targetCoord = this.target.sprite.getCenter();
+    var targetCoord = this.target.getCenter();
     var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
     if(distance > 150) {
@@ -346,7 +346,7 @@ class Smoker extends Enemy {
     this.draggingTarget = true;
     this.scene.sounds.smokerdrag.play();
     this.scene.tweens.add({
-        targets: this.target.sprite,
+        targets: this.target,
         x: this.x,
         y: this.y,
         duration: 3000
@@ -405,10 +405,10 @@ class Tank extends Enemy {
 
   whenAttack() {
     if(this.target) {
-      var hitDirection = new Phaser.Math.Vector2(this.target.sprite.x - this.x, this.target.sprite.y - this.y).normalize();
-      this.target.sprite.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
+      var hitDirection = new Phaser.Math.Vector2(this.target.x - this.x, this.target.y - this.y).normalize();
+      this.target.body.setVelocity(hitDirection.x*100, hitDirection.y*100);
       this.scene.tweens.add({
-        targets: this.target.sprite.body.velocity,
+        targets: this.target.body.velocity,
         x: 0,
         y: 0,
         duration: 2000
@@ -464,10 +464,10 @@ class Rock {
     this.tank.config.throwSound.play(this.scene, this.sprite.getCenter());
     var target = this.scene.allies.getClosestAllyTo(this.sprite.getCenter());
 
-    this.scene.physics.add.overlap(this.scene.allies.getSprites(), this.sprite, this.damageTarget, null, this).name = 'rock_overlap';
+    this.scene.physics.add.overlap(this.scene.allies.group, this.sprite, this.damageTarget, null, this).name = 'rock_overlap';
 
     var speed = 100;
-    var targetCoord = target.sprite.getCenter();
+    var targetCoord = target.getCenter();
     var direction = new Phaser.Math.Vector2(targetCoord.x - this.sprite.x, targetCoord.y - this.sprite.y).normalize();
     this.sprite.body.setVelocity(direction.x * speed, direction.y * speed);
     setTimeout(function(){this.explode();}.bind(this), 1000);
@@ -480,14 +480,14 @@ class Rock {
     this.sprite.anims.play('rock-anim', true);
   }
 
-  damageTarget(sprite) {
+  damageTarget(target) {
     var collider = this.scene.physics.world.colliders.getActive().find(function(i){
       return i.name == 'rock_overlap'
     });
     if(collider)
       collider.destroy();
 
-    var ally = this.scene.allies.getAlly(sprite.name)
+    var ally = this.scene.allies.getAlly(target.name)
     ally.isHit(this.damage);
     this.explode();
   }

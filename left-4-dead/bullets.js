@@ -8,11 +8,11 @@ class Bullets {
     }
   }
 
-  fire(x, y, rotation, damage) {
+  fire(x, y, rotation, damage, color) {
     var inactiveBullet = this.pool.find(function(bullet) {
       return bullet.active == false;
     });
-    inactiveBullet.fire(x, y, rotation, damage);
+    inactiveBullet.fire(x, y, rotation, damage, color);
   }
 }
 
@@ -30,13 +30,15 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.lifetimeTimeout;
   }
 
-  fire(x, y, rotation, damage) {
+  fire(x, y, rotation, damage, color) {
     this.setActive(true);
     this.setVisible(true);
 
     this.x = x;
     this.y = y;
     this.damage = damage;
+    console.log(color);
+    this.setTintFill(color);
     this.body.setVelocity(Math.cos(rotation)*this.speed, Math.sin(rotation)*this.speed);
 
     var enemiesToCheck = this.scene.enemies.getEnemiesAround(new Phaser.Math.Vector2(x, y), 300);

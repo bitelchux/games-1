@@ -142,7 +142,7 @@ class AIDirector {
   }
 
   getSpawnSpots() {
-    return this.scene.forest.getSpawns(this.allies.player.sprite.getCenter(), this.spawnRadiusMin, this.spawnRadiusMax);
+    return this.scene.forest.getSpawns(this.allies.player.getCenter(), this.spawnRadiusMin, this.spawnRadiusMax);
   }
 
   spawnWanderers(n) {
@@ -176,7 +176,7 @@ class AIDirector {
 
   spawnBoomer() {
     this.boomerConfig.time = this.time;
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 200, 300);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Boomer(this.scene, spawn.x, spawn.y));
@@ -184,7 +184,7 @@ class AIDirector {
 
   spawnHunter() {
     this.hunterConfig.time = this.time;
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Hunter(this.scene, spawn.x, spawn.y));
@@ -192,14 +192,14 @@ class AIDirector {
 
   spawnSmoker() {
     this.smokerConfig.time = this.time;
-    var playerCoord = this.scene.allies.player.sprite.getCenter();
+    var playerCoord = this.scene.allies.player.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Smoker(this.scene, spawn.x, spawn.y));
   }
 
   spawnTank() {
-    var playerCoord = this. allies.player.sprite.getCenter();
+    var playerCoord = this. allies.player.getCenter();
     var spawns = this.scene.forest.getSpawns(playerCoord, 300, 400);
     var spawn = spawns[Math.floor(Math.random()*spawns.length)];
     this.enemies.add(new Tank(this.scene, spawn.x, spawn.y));

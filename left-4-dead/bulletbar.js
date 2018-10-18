@@ -37,7 +37,7 @@ class BulletBar extends Phaser.GameObjects.GameObject {
   }
 
   reload() {
-    this.scene.sounds.reloading.play(this.scene, this.owner.sprite.getCenter());
+    this.scene.sounds.reloading.play(this.scene, this.owner.getCenter());
     this.emit('reload', this);
     this.reloadImage.setVisible(this.visible);
     this.scene.tweens.add({

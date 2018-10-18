@@ -5,7 +5,7 @@ Phaser.GameObjects.Sprite.prototype['rotateToward'] = function(point) {
 
 Phaser.Sound.WebAudioSound.prototype["playInSpace"] = function(scene, point) {
   var radius = 500;
-  var playerCoord = scene.allies.player.sprite.getCenter();
+  var playerCoord = scene.allies.player.getCenter();
   var distance = Phaser.Math.Distance.Between(playerCoord.x, playerCoord.y, point.x, point.y);
   var volume = 1 - distance/radius;
   if(volume < 0)

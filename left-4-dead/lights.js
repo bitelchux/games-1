@@ -6,7 +6,7 @@ class Lights {
   }
 
   addLight(owner) {
-    var light = this.scene.lights.addLight(owner.sprite.x, owner.sprite.y, 125);
+    var light = this.scene.lights.addLight(owner.x, owner.y, 125);
     light.setColor(0xffffff).setIntensity(.5);
     light['owner'] = owner;
     this.group.push(light);
@@ -14,8 +14,8 @@ class Lights {
 
   update() {
     this.group.forEach(function(light) {
-      var x = light.owner.sprite.x;
-      var y = light.owner.sprite.y;
+      var x = light.owner.x;
+      var y = light.owner.y;
       if(x != light.x || y != light.y) {
         light.x = x;
         light.y = y;

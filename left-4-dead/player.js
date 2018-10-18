@@ -1,13 +1,17 @@
-class Player extends Phaser.GameObjects.GameObject {
-  constructor(scene, x, y) {
-    super(scene);
+class Player extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y, color) {
+    super(scene, x, y, 'player');
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
     this.scene = scene;
+    this.color = color;
 
-    this.sprite = scene.physics.add.sprite(x, y, 'player').setPipeline("Light2D");
-    this.sprite.setCollideWorldBounds(true);
-    this.sprite.setDepth(2);
-    this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
-    this.sprite.name = "player";
+    this.setPipeline("Light2D");
+    this.setCollideWorldBounds(true);
+    this.setDepth(2);
+    this.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+    this.name = "player";
+    this.setTint(color);
 
     this.healthbar = new HealthBar(scene);
     this.helpBar = new HelpBar(scene);
@@ -30,10 +34,10 @@ class Player extends Phaser.GameObjects.GameObject {
   }
 
   update() {
-    this.sprite.setVelocity(0,0);
+    this.setVelocity(0,0);
 
     if(this.cursors.space.isDown && this.weapon) {
-      this.weapon.shoot(this.sprite);
+      this.weapon.shoot();
       this.turn();
     } else {
       this.turn();
@@ -41,62 +45,62 @@ class Player extends Phaser.GameObjects.GameObject {
         this.move();
     }
 
-    this.helpBar.update(this.sprite.x, this.sprite.y - 20);
-    this.helpSign.update(this.sprite.x, this.sprite.y - 20);
+    this.helpBar.update(this.x, this.y - 20);
+    this.helpSign.update(this.x, this.y - 20);
   }
 
   turn() {
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
       this.direction = "upleft";
-      this.sprite.setAngle(-135);
+      this.setAngle(-135);
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
       this.direction = "upright";
-      this.sprite.setAngle(-45);
+      this.setAngle(-45);
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
       this.direction = "downleft";
-      this.sprite.setAngle(135);
+      this.setAngle(135);
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
       this.direction = "downright";
-      this.sprite.setAngle(45);
+      this.setAngle(45);
     } else if(this.cursors.up.isDown) {
       this.direction = "up";
-      this.sprite.setAngle(-90);
+      this.setAngle(-90);
     } else if(this.cursors.down.isDown) {
       this.direction = "down";
-      this.sprite.setAngle(90);
+      this.setAngle(90);
     } else if(this.cursors.left.isDown) {
       this.direction = "left";
-      this.sprite.setAngle(-180);
+      this.setAngle(-180);
     } else if(this.cursors.right.isDown) {
       this.direction = "right";
-      this.sprite.setAngle(0);
+      this.setAngle(0);
     }
   }
 
   move() {
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
-      this.sprite.setVelocity(-2*this.speed/3,-2*this.speed/3);
+      this.setVelocity(-2*this.speed/3,-2*this.speed/3);
       this.walk();
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
-      this.sprite.setVelocity(2*this.speed/3,-2*this.speed/3);
+      this.setVelocity(2*this.speed/3,-2*this.speed/3);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
-      this.sprite.setVelocity(-2*this.speed/3,2*this.speed/3);
+      this.setVelocity(-2*this.speed/3,2*this.speed/3);
       this.walk();
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
-      this.sprite.setVelocity(2*this.speed/3,2*this.speed/3);
+      this.setVelocity(2*this.speed/3,2*this.speed/3);
       this.walk();
     } else if(this.cursors.up.isDown) {
-      this.sprite.setVelocityY(-this.speed);
+      this.setVelocityY(-this.speed);
       this.walk();
     } else if(this.cursors.down.isDown) {
-      this.sprite.setVelocityY(this.speed);
+      this.setVelocityY(this.speed);
       this.walk();
     } else if(this.cursors.left.isDown) {
-      this.sprite.setVelocityX(-this.speed);
+      this.setVelocityX(-this.speed);
       this.walk();
     } else if(this.cursors.right.isDown) {
-      this.sprite.setVelocityX(this.speed);
+      this.setVelocityX(this.speed);
       this.walk();
     }
   }
@@ -107,20 +111,20 @@ class Player extends Phaser.GameObjects.GameObject {
       walkingSound.play();
 
     if(this.weapon != null) {
-      this.sprite.anims.play('walk-' + this.weapon.name, true);
+      this.anims.play('walk-' + this.weapon.name, true);
     } else {
-      this.sprite.anims.play('walk', true);
+      this.anims.play('walk', true);
     }
   }
 
   interact() {
-    var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, 1);
+    var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.x, this.y, undefined, undefined, 1);
     if(tile) {
       switch(tile.index) {
         case 18:
           this.healthbar.gainHp(50);
           this.updateHealthRelatedCondition();
-          this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
+          this.scene.forest.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
           break;
         default:
           var weapon = this.weapon;
@@ -134,7 +138,7 @@ class Player extends Phaser.GameObjects.GameObject {
   helpAlly() {
     var chosenAlly;
     this.scene.allies.group.forEach(function(ally) {
-      if(ally != this && this.sprite.getCenter().distance(ally.sprite.getCenter()) < 10
+      if(ally != this && this.getCenter().distance(ally.getCenter()) < 10
           && ally.isDown()) {
             chosenAlly = ally;
       }

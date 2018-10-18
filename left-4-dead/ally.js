@@ -1,13 +1,17 @@
-class Ally extends Phaser.GameObjects.GameObject {
-  constructor(scene, x, y, name) {
-    super(scene);
+class Ally extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y, name, color) {
+    super(scene, x, y, 'ally');
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
     this.scene = scene;
+    this.color = color;
 
-    this.sprite = scene.physics.add.sprite(x, y, 'ally').setPipeline("Light2D");
-    this.sprite.setCollideWorldBounds(true);
-    this.sprite.setDepth(2);
-    this.sprite.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
-    this.sprite.name = name;
+    this.setPipeline("Light2D");
+    this.setCollideWorldBounds(true);
+    this.setDepth(2);
+    this.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+    this.name = name;
+    this.setTint(color);
 
     this.healthbar = new HealthBar(scene, false);
     this.helpBar = new HelpBar(scene);
@@ -42,20 +46,20 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
       // armed
       else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.sprite.getCenter(), 90);
+        var enemies = this.scene.enemies.getEnemiesAround(this.getCenter(), 90);
         // enemies nearby
         if(enemies.length > 0) {
           this.shootWeaponAt(enemies[0].getCenter());
         }
 
-        var healthkitCoord = this.scene.forest.getClosestHealthKit(this.sprite.getCenter());
+        var healthkitCoord = this.scene.forest.getClosestHealthKit(this.getCenter());
         //health kit is close by
-        if(this.healthbar.isCritical() && healthkitCoord.distance(this.sprite.getCenter()) < 200) {
+        if(this.healthbar.isCritical() && healthkitCoord.distance(this.getCenter()) < 200) {
           this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
         } else {
           // var ally = this.scene.allies.getStrongestAlly();
           var ally = this.scene.allies.player;
-          var distanceWithAlly = this.sprite.getCenter().distance(ally.sprite.getCenter());
+          var distanceWithAlly = this.getCenter().distance(ally.getCenter());
 
           // go near ally
           if(distanceWithAlly > 70) {
@@ -65,13 +69,13 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
     }
 
-    this.helpSign.update(this.sprite.x, this.sprite.y - 20);
+    this.helpSign.update(this.x, this.y - 20);
   }
 
   getClosestWeaponCoord() {
     var chosenDistance = 100;
     var chosenCoord = null;
-    var myCoord = this.sprite.getCenter();
+    var myCoord = this.getCenter();
 
     var weaponTiles = this.scene.forest.getWeapons();
     weaponTiles.forEach(function(tile){
@@ -106,9 +110,9 @@ class Ally extends Phaser.GameObjects.GameObject {
       }
     }, this,0,0,map.width,map.height,{isNotEmpty: true});
 
-    this.path = new Phaser.Curves.Path(this.sprite.x, this.sprite.y);
+    this.path = new Phaser.Curves.Path(this.x, this.y);
 
-    var startTile = map.worldToTileXY(this.sprite.x, this.sprite.y);
+    var startTile = map.worldToTileXY(this.x, this.y);
     var endTile = map.worldToTileXY(x, y);
 
     var tilePath = finder.findPath(startTile.x, startTile.y, endTile.x, endTile.y, grid);
@@ -127,13 +131,13 @@ class Ally extends Phaser.GameObjects.GameObject {
   followPath(callback, args) {
     this.state = this.states.MOVING;
 
-    this.sprite.anims.play('ally-walk', true);
+    this.anims.play('ally-walk', true);
     var curve = this.path.curves[this.pathIndex];
     var distance = curve.p0.distance(curve.p1);
     var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
-    this.sprite.setAngle(angle);
+    this.setAngle(angle);
     this.movingTween = this.scene.tweens.add({
-      targets: this.sprite,
+      targets: this,
       x: curve.p1.x,
       y: curve.p1.y,
       duration: distance / this.speed,
@@ -156,7 +160,7 @@ class Ally extends Phaser.GameObjects.GameObject {
 
   interact() {
     this.state = this.states.INTERACTING;
-    var tile = this.scene.forest.getObjectAt(this.sprite.getCenter());
+    var tile = this.scene.forest.getObjectAt(this.getCenter());
     if(tile) {
       this.pickObject(tile);
     }
@@ -168,7 +172,7 @@ class Ally extends Phaser.GameObjects.GameObject {
       case 18:
         this.healthbar.gainHp(50);
         this.updateHealthRelatedCondition();
-        this.scene.forest.objectsLayer.removeTileAtWorldXY(this.sprite.x, this.sprite.y, undefined, undefined, undefined, 1);
+        this.scene.forest.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
         break;
         case Pistols.index:
           this.weapon = new Pistols(this, this.scene, 100, 36);
@@ -197,13 +201,13 @@ class Ally extends Phaser.GameObjects.GameObject {
   }
 
   goNearAlly(ally) {
-    var tiles = this.scene.forest.getTilesAround(ally.sprite.getCenter());
+    var tiles = this.scene.forest.getTilesAround(ally.getCenter());
     var chosenTile = tiles[Math.floor(Math.random()*tiles.length)];
     this.moveTo(chosenTile.getCenterX(), chosenTile.getCenterY());
   }
 
   calledForHelp(ally) {
-    this.moveTo(ally.sprite.x, ally.sprite.y, this.helpAlly, ally);
+    this.moveTo(ally.x, ally.y, this.helpAlly, ally);
   }
 
   helpAlly(ally) {
@@ -214,8 +218,8 @@ class Ally extends Phaser.GameObjects.GameObject {
   }
 
   shootWeaponAt(point) {
-    this.sprite.rotateToward(point);
-    this.weapon.shoot(this.sprite);
+    this.rotateToward(point);
+    this.weapon.shoot();
   }
 
   isHit(damage) {
@@ -254,6 +258,6 @@ class Ally extends Phaser.GameObjects.GameObject {
   }
 
   die() {
-    this.sprite.destroy();
+    this.destroy();
   }
 }
