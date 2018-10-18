@@ -65,9 +65,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setFrame('bullet-impact.png');
     this.setScale(scale);
 
-    setTimeout(function(){
-      this.clear();
-    }.bind(this), 100);
+    this.scene.time.delayedCall(100, this.clear, [], this);
   }
 
   clear() {
