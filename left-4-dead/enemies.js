@@ -1,76 +1,20 @@
-class Enemies {
+class Enemies extends Phaser.GameObjects.Group {
   constructor(scene) {
-    this.scene = scene;
-    this.group = [];
-  }
-
-  add(enemy) {
-    this.group.push(enemy);
-  }
-
-  remove(enemy) {
-    this.group.splice(this.group.indexOf(enemy), 1);
-  }
-
-  removeMultiple(enemies) {
-    enemies.forEach(function(enemy) {
-        this.remove(enemy);
-    }.bind(this));
-  }
-
-  getAll() {
-    return this.group.slice();
-  }
-
-  count() {
-    return this.group.length;
-  }
-
-  contains(enemyType) {
-    return this.group.some(function(enemy) {
-      return enemy.config.key == enemyType;
-    }.bind(this));
-  }
-
-  getWanderersInside(point, radius) {
-    var wanderers = [];
-    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
-    this.group.forEach(function(enemy) {
-      if(!enemy.startsPursuit && circle.contains(enemy.x, enemy.y)) {
-        wanderers.push(enemy);
-      }
-    });
-    return wanderers;
-  }
-
-  getWanderersOutside(point, radius) {
-    var wanderers = [];
-    var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
-    this.group.forEach(function(enemy) {
-      if(!enemy.startsPursuit && !circle.contains(enemy.x, enemy.y)) {
-        wanderers.push(enemy);
-      }
-    });
-    return wanderers;
+    super(scene, { runChildUpdate: true });
+    scene.add.existing(this);
   }
 
   getEnemiesAround(point, radius) {
     var enemies = [];
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
 
-    this.group.forEach(function(enemy) {
+    this.getChildren().forEach(function(enemy) {
       if(circle.contains(enemy.x, enemy.y)) {
         enemies.push(enemy);
       }
     });
 
     return enemies;
-  }
-
-  update(time, delta) {
-    this.group.forEach(function(enemy) {
-      enemy.update(time, delta);
-    });
   }
 }
 
@@ -95,7 +39,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.config.attack['lastTime'] = this.scene.time.now;
 
-    this.config.hp *= 2;
+    this.config.hp *= 80;
 
     if(this.startsPursuit) {
       this.startPursuit();
@@ -212,6 +156,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
+    this.setTintFill(0xff0000);
+    setTimeout(function() {
+      this.clearTint();
+    }.bind(this), 50);
+
     if(!this.startsPursuit) {
       this.startPursuit()
     }

@@ -457,6 +457,7 @@ window.Game = new Phaser.Class({
     this.myLights = new Lights(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);
+    this.bullets = new Bullets(this);
     this.aidirector = new AIDirector(this, this.allies, this.enemies);
 
     this.camera = this.cameras.main;
@@ -466,7 +467,6 @@ window.Game = new Phaser.Class({
 
   update: function(time, delta) {
     this.allies.update();
-    this.enemies.update(time, delta);
     this.aidirector.update(time, delta);
     this.myLights.update();
   }

@@ -48,8 +48,8 @@ class Pistols extends Weapon {
   createBullets(x, y, rotation) {
     var randX = x + Math.random()*3 - Math.random()*3;
     var randY = y + Math.random()*3 - Math.random()*3;
-    var bullet1 = new Bullet(this.scene, randX, randY, rotation - 0.1, this.damage);
-    var bullet2 = new Bullet(this.scene, randX, randY, rotation + 0.1, this.damage);
+    this.scene.bullets.fire(randX, randY, rotation - 0.1, this.damage);
+    this.scene.bullets.fire(randX, randY, rotation + 0.1, this.damage);
   }
 }
 Pistols.index = 5;
@@ -64,13 +64,13 @@ class Shotgun extends Weapon {
     for(var i=0; i<10; i++) {
       var randX = x + Math.random()*3 - Math.random()*3;
       var randY = y + Math.random()*3 - Math.random()*3;
-      new Bullet(this.scene, randX, randY, rotation - 0.5 + i/10, this.damage);
+      this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage);
     }
     setTimeout(function() {
       for(var i=0; i<10; i++) {
         var randX = x + Math.random()*3 - Math.random()*3;
         var randY = y + Math.random()*3 - Math.random()*3;
-        new Bullet(this.scene, randX, randY, rotation - 0.5 + i/10, this.damage);
+        this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage);
       }
     }.bind(this), 100)
   }
@@ -86,7 +86,7 @@ class Uzi extends Weapon {
   createBullets(x, y, rotation) {
     var randX = x + Math.random()*3 - Math.random()*3;
     var randY = y + Math.random()*3 - Math.random()*3;
-    var bullet = new Bullet(this.scene, randX, randY, rotation, this.damage);
+    this.scene.bullets.fire(randX, randY, rotation, this.damage);
   }
 }
 Uzi.index = 15;
@@ -98,53 +98,7 @@ class Grenade extends Weapon {
   }
 
   createBullets(x, y, rotation) {
-    var bullet = new Bullet(this.scene, x, y, rotation, this.damage);
+    this.scene.bullets.fire(randX, randY, rotation, this.damage);
   }
 }
 Grenade.index = 20;
-
-
-class Bullet extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, rotation, damage) {
-    super(scene, x, y, 'bullet');
-    scene.physics.world.enable(this);
-    scene.add.existing(this);
-
-    this.scene = scene;
-    this.setPipeline("Light2D");
-    this.setDepth(3);
-
-    this.speed = Phaser.Math.GetSpeed(300000, 1);
-    this.body.setVelocity(Math.cos(rotation)*this.speed, Math.sin(rotation)*this.speed);
-    this.damage = damage;
-
-    scene.physics.add.overlap(this, scene.enemies.getAll(), this.hitEnemy, null, this);
-    scene.physics.add.collider(this, scene.forest.obstaclesLayer, this.die, null, this);
-
-    this.anims.play('bullet-fired', true);
-
-    setTimeout(function() {
-      this.die();
-    }.bind(this), 2000);
-  }
-
-  hitEnemy(bullet, enemy) {
-    enemy.isHit(bullet.damage);
-    this.die();
-  }
-
-  die() {
-    if(this.body)
-      this.body.setVelocity(0, 0);
-
-    this.x += Math.random()*5 - Math.random()*5;
-    this.y += Math.random()*5 - Math.random()*5;
-    var scale = Math.random();
-    this.setFrame('bullet-impact.png');
-    this.setScale(scale);
-
-    setTimeout(function(){
-      this.destroy();
-    }.bind(this), 100);
-  }
-}
