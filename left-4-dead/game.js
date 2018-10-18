@@ -462,7 +462,7 @@ window.Game = new Phaser.Class({
 
     this.camera = this.cameras.main;
     this.camera.startFollow(this.allies.player.sprite);
-    this.camera.setZoom(1);
+    this.camera.setZoom(2);
   },
 
   update: function(time, delta) {

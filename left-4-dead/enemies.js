@@ -159,7 +159,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setTintFill(0xff0000);
     setTimeout(function() {
       this.clearTint();
-    }.bind(this), 50);
+    }.bind(this), 10);
 
     if(!this.startsPursuit) {
       this.startPursuit()

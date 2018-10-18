@@ -1,8 +1,7 @@
 var config = {
   type: Phaser.AUTO,
-  width: 384,
-  height: 384,
-  zoom: 1,
+  width: 384*2,
+  height: 384*2,
   pixelArt: true,
   scene: [ window.Game, window.Pause ],
   physics: {

@@ -2,7 +2,7 @@ class Lights {
   constructor(scene) {
     this.scene = scene;
     this.group = [];
-    scene.lights.enable().setAmbientColor(0x020202);
+    scene.lights.enable().setAmbientColor(0x030303);
   }
 
   addLight(owner) {

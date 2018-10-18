@@ -30,7 +30,7 @@ class Weapon {
       this.createBullets(sprite.x, sprite.y, sprite.rotation);
 
       if(sprite.name == "player")
-        this.scene.camera.shake(100, 0.001);
+        this.scene.camera.shake(100, 0.0005);
     }
   }
 
