@@ -64,6 +64,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   whenDie() {}
 
   update(time, delta) {
+    this.clearTint()
     var targetCoord = this.target.getCenter();
     var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
@@ -156,10 +157,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
-    this.setTint(0xff0000);
-    setTimeout(function() {
-      this.clearTint();
-    }.bind(this), 10);
+    this.setTintFill(0xff0000);
 
     if(!this.startsPursuit) {
       this.startPursuit()

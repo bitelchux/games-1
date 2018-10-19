@@ -11,7 +11,7 @@ class Weapon {
   }
 
   // to override
-  createBullets(x, y, rotation) {}
+  createBullets(x, y, rotation, color) {}
 
   shoot() {
     if(this.isReloading)
@@ -27,7 +27,7 @@ class Weapon {
 
       this.scene.sounds[this.constructor.name.toLowerCase()].playInSpace(this.scene, this.owner.getCenter());
 
-      this.createBullets(this.owner.x, this.owner.y, this.owner.rotation, this.owner.tintBottomLeft);
+      this.createBullets(this.owner.x, this.owner.y, this.owner.rotation, this.owner.color);
 
       if(this.owner.name == "player")
         this.scene.camera.shake(100, 0.0005);

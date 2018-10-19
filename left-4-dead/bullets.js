@@ -37,8 +37,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.x = x;
     this.y = y;
     this.damage = damage;
-    console.log(color);
-    this.setTintFill(color);
+    this.setTint(color);
     this.body.setVelocity(Math.cos(rotation)*this.speed, Math.sin(rotation)*this.speed);
 
     var enemiesToCheck = this.scene.enemies.getEnemiesAround(new Phaser.Math.Vector2(x, y), 300);

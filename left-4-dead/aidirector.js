@@ -167,7 +167,7 @@ class AIDirector {
       for(var i=0; i<10; i++)
       {
         setTimeout(function(){
-          var mobSize = Math.floor(Math.exp(i/4)) + Math.floor(Math.random()*2);
+          var mobSize = Math.floor(Math.exp(i/6)) + Math.floor(Math.random()*2);
           this.spawnZombies(mobSize);
         }.bind(this), i*500);
       }

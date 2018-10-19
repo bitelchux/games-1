@@ -1,7 +1,6 @@
 class Allies {
   constructor(scene) {
     this.scene = scene;
-    // this.player = new Player(this.scene, 100, 200, 0xff00ff);
     this.player = new Player(this.scene, 100, 200, 0xff00ff);
     this.ally1 = new Ally(this.scene, 132, 200, "ally1", 0xffff00);
     this.ally2 = new Ally(this.scene, 30, 200, "ally2", 0x0000ff);

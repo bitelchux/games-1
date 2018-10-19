@@ -57,7 +57,7 @@ class BulletBar extends Phaser.GameObjects.GameObject {
       sprite.setVisible(this.visible);
     }.bind(this));
     this.reloadImage.displayWidth = 16;
-    this.reloadImage.x = 20;
+    this.reloadImage.x = 210;
     this.reloadImage.setVisible(false);
   }
 
