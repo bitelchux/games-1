@@ -24,6 +24,8 @@ class AIDirector {
     this.setupMob();
 
     this.setupEmotionalIntensityHookups();
+
+    this.spawnSmoker();
   }
 
   setupTank() {

@@ -286,12 +286,21 @@ window.Game = new Phaser.Class({
 
     // smoker
     this.anims.create({
-      key: 'smoker-walk',
+      key: 'smoker-walk-left-down',
       frames: this.anims.generateFrameNames('smoker', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'smoker-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'smoker-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'smoker-walk-left-up',
+      frames: this.anims.generateFrameNames('smoker', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'smoker-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
       yoyo: true
     });
 

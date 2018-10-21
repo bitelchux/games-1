@@ -364,6 +364,7 @@ class Smoker extends Enemy {
       }
     };
     super(scene, config);
+    this.setScale(2);
 
     this.draggingTarget = false;
     this.dragTween = null;
