@@ -171,7 +171,7 @@ window.Game = new Phaser.Class({
         start: 1, end: 2, zeroPad: 0,
         prefix: 'player-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
       yoyo: true
     });
     this.anims.create({
@@ -180,7 +180,7 @@ window.Game = new Phaser.Class({
         start: 1, end: 2, zeroPad: 0,
         prefix: 'player-walk-left-up-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
       yoyo: true
     });
 
@@ -191,7 +191,7 @@ window.Game = new Phaser.Class({
         start: 1, end: 2, zeroPad: 0,
         prefix: 'ally-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
       yoyo: true
     });
     this.anims.create({
@@ -200,7 +200,7 @@ window.Game = new Phaser.Class({
         start: 1, end: 2, zeroPad: 0,
         prefix: 'ally-walk-left-up-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
       yoyo: true
     });
 
@@ -226,12 +226,21 @@ window.Game = new Phaser.Class({
 
     // zombie
     this.anims.create({
-      key: 'zombie-walk',
+      key: 'zombie-walk-left-down',
       frames: this.anims.generateFrameNames('zombie', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'zombie-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'zombie-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'zombie-walk-left-up',
+      frames: this.anims.generateFrameNames('zombie', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'zombie-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
       yoyo: true
     });
 

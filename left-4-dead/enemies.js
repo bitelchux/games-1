@@ -133,15 +133,33 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   followPath(delta) {
     if(this.path && this.path.curves.length > 0) {
-      this.anims.play(this.config.key + '-walk', true);
 
       var curve = this.path.curves[this.pathIndex];
+      var distance = curve.p0.distance(curve.p1);
+
+      //going up
+      if(curve.p1.y < curve.p0.y) {
+        this.anims.play(this.config.key + '-walk-left-up', true);
+      }
+      //going down
+      else {
+        this.anims.play(this.config.key + '-walk-left-down', true);
+      }
+
+      //going right
+      if(curve.p1.x > curve.p0.x) {
+        this.setFlipX(1);
+      }
+      //going left
+      else {
+        this.setFlipX(0);
+      }
+
       var direction = new Phaser.Math.Vector2(curve.p1.x - curve.p0.x, curve.p1.y - curve.p0.y).normalize();
       var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
 
       this.x += delta*direction.x*this.config.speed;
       this.y += delta*direction.y*this.config.speed;
-      this.setAngle(angle);
 
       if(this.getCenter().distance(curve.p1) < 2) {
         this.pathIndex += 1;
@@ -207,6 +225,7 @@ class Zombie extends Enemy {
       }
     };
     super(scene, config, startsPursuit);
+    this.setScale(1.05);
   }
 
   spawn(x, y, startsPursuit) {

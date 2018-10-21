@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "zombie-walk-1.png",
+	"filename": "zombie-walk-left-down-1.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "zombie-walk-2.png",
+	"filename": "zombie-walk-left-down-2.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,8 +17,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "zombie-walk-3.png",
+	"filename": "zombie-walk-left-up-1.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "zombie-walk-left-up-2.png",
+	"frame": {"x":48,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -29,8 +37,8 @@
 	"version": "1.0",
 	"image": "zombie.png",
 	"format": "RGBA8888",
-	"size": {"w":48,"h":16},
+	"size": {"w":64,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5f3373f0fba49f4cd399e3e15ffc8ba0:c91601d58e6f3ceb3161678181a94cba:671cfcca2facf02865d2d7530477df67$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0c814df01be22a0659fce684938fd2e8:13b6c1cc66f2486686f87c7695c1b9c5:671cfcca2facf02865d2d7530477df67$"
 }
 }

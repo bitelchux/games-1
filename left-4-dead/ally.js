@@ -158,8 +158,6 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
       this.setFlipX(0);
     }
 
-    var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
-
     this.movingTween = this.scene.tweens.add({
       targets: this,
       x: curve.p1.x,
