@@ -181,9 +181,10 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">boomer-walk-1.png</key>
-            <key type="filename">boomer-walk-2.png</key>
-            <key type="filename">boomer-walk-3.png</key>
+            <key type="filename">boomer-walk-left-down-1.png</key>
+            <key type="filename">boomer-walk-left-down-2.png</key>
+            <key type="filename">boomer-walk-left-up-1.png</key>
+            <key type="filename">boomer-walk-left-up-2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -199,9 +200,10 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>boomer-walk-1.png</filename>
-            <filename>boomer-walk-2.png</filename>
-            <filename>boomer-walk-3.png</filename>
+            <filename>boomer-walk-left-down-1.png</filename>
+            <filename>boomer-walk-left-down-2.png</filename>
+            <filename>boomer-walk-left-up-1.png</filename>
+            <filename>boomer-walk-left-up-2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

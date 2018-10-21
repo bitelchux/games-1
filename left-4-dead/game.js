@@ -246,23 +246,41 @@ window.Game = new Phaser.Class({
 
     // boomer
     this.anims.create({
-      key: 'boomer-walk',
+      key: 'boomer-walk-left-down',
       frames: this.anims.generateFrameNames('boomer', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'boomer-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'boomer-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'boomer-walk-left-up',
+      frames: this.anims.generateFrameNames('boomer', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'boomer-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
       yoyo: true
     });
 
     // hunter
     this.anims.create({
-      key: 'hunter-walk',
+      key: 'hunter-walk-left-down',
       frames: this.anims.generateFrameNames('hunter', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'hunter-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'hunter-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'hunter-walk-left-up',
+      frames: this.anims.generateFrameNames('hunter', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'hunter-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
       yoyo: true
     });
 

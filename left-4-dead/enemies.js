@@ -270,6 +270,7 @@ class Boomer extends Enemy {
       }
     };
     super(scene, config);
+    this.setScale(1.5);
   }
 
   whenStartPursuit() {
@@ -305,8 +306,10 @@ class Hunter extends Enemy {
       }
     };
     super(scene, config);
+    this.setScale(1.3);
 
     this.isOnTarget = false;
+    this.jumpTimeout;
   }
 
   startPursuit() {
@@ -324,10 +327,12 @@ class Hunter extends Enemy {
     var targetCoord = this.target.getCenter();
     var meCoord = this.getCenter();
     var distance = meCoord.distance(targetCoord);
-    if(distance > 130) {
+    if(distance > 90) {
       this.followPath(delta);
-    } else if (!this.isOnTarget) {
-      this.jumpOnTarget(delta);
+    } else if (!this.isOnTarget && !this.jumpTimeout) {
+      this.jumpTimeout = setTimeout(function(){
+        this.jumpOnTarget(delta);
+      }.bind(this), 1000);
     }
   }
 
