@@ -431,6 +431,7 @@ class Tank extends Enemy {
       walkSound: scene.sounds.walkthrow
     };
     super(scene, config);
+    this.setScale(3);
     this.scene.sounds.changeMusic('tankmusic');
     this.rock = null;
     this.isThrowing = false;

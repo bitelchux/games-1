@@ -1,36 +1,44 @@
 {"frames": [
 
 {
-	"filename": "tank-walk-1.png",
-	"frame": {"x":0,"y":0,"w":32,"h":32},
+	"filename": "tank-walk-left-down-1.png",
+	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "tank-walk-2.png",
-	"frame": {"x":32,"y":0,"w":32,"h":32},
+	"filename": "tank-walk-left-down-2.png",
+	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "tank-walk-3.png",
-	"frame": {"x":64,"y":0,"w":32,"h":32},
+	"filename": "tank-walk-left-up-1.png",
+	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "tank-walk-left-up-2.png",
+	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 }],
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "tank_n.png",
+	"image": "tank.png",
 	"format": "RGBA8888",
-	"size": {"w":96,"h":32},
+	"size": {"w":64,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:df449025d6f071c3eb4c1dcabd289643:b7875f5654c5658170640bb081c83bf6:f51ca3fed5d3c2841304bf29c4df2e11$"
+	"smartupdate": "$TexturePacker:SmartUpdate:446cef4059648c05bd09bb27da3daf6a:0eb29dc71f9a50530c58cebcb7beccdb:e5746570371ae3e0565b6e20f5a72ab3$"
 }
 }

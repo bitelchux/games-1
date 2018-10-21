@@ -306,12 +306,21 @@ window.Game = new Phaser.Class({
 
     // tank
     this.anims.create({
-      key: 'tank-walk',
+      key: 'tank-walk-left-down',
       frames: this.anims.generateFrameNames('tank', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'tank-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'tank-walk-left-down-', suffix: '.png'
       }),
-      frameRate: 12,
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'tank-walk-left-up',
+      frames: this.anims.generateFrameNames('tank', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'tank-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
       yoyo: true
     });
 
@@ -322,7 +331,7 @@ window.Game = new Phaser.Class({
       frameRate: 6
     });
 
-    //grenade
+    //help sign
     this.anims.create({
       key: 'helpsign-anim',
       frames: this.anims.generateFrameNumbers('helpsign', {start:0, end:3}),
