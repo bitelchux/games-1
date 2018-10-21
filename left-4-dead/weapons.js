@@ -27,7 +27,35 @@ class Weapon {
 
       this.scene.sounds[this.constructor.name.toLowerCase()].playInSpace(this.scene, this.owner.getCenter());
 
-      this.createBullets(this.owner.x, this.owner.y, this.owner.rotation, this.owner.color);
+      var rotation;
+      switch(this.owner.direction) {
+        case "upleft":
+          rotation = -3*Math.PI/4;
+          break;
+        case "upright":
+          rotation = -Math.PI/4;
+          break;
+        case "downleft":
+          rotation = 3*Math.PI/4;
+          break;
+        case "downright":
+          rotation = Math.PI/4;
+          break;
+        case "up":
+          rotation = -Math.PI/2;
+          break;
+        case "down":
+          rotation = Math.PI/2;
+          break;
+        case "left":
+          rotation = Math.PI;
+          break;
+        case "right":
+          rotation = 0;
+          break;
+      }
+
+      this.createBullets(this.owner.x, this.owner.y, rotation, this.owner.color);
 
       if(this.owner.name == "player")
         this.scene.camera.shake(100, 0.0005);

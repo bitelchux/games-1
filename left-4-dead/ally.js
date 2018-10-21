@@ -131,11 +131,35 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   followPath(callback, args) {
     this.state = this.states.MOVING;
 
-    this.anims.play('ally-walk', true);
     var curve = this.path.curves[this.pathIndex];
     var distance = curve.p0.distance(curve.p1);
+
+    this.direction = "";
+
+    //going up
+    if(curve.p1.y < curve.p0.y) {
+      this.direction += "up";
+      this.anims.play('ally-walk-left-up', true);
+    }
+    //going down
+    else {
+      this.direction += "down";
+      this.anims.play('ally-walk-left-down', true);
+    }
+
+    //going right
+    if(curve.p1.x > curve.p0.x) {
+      this.direction += "right";
+      this.setFlipX(1);
+    }
+    //going left
+    else {
+      this.direction += "left";
+      this.setFlipX(0);
+    }
+
     var angle = Math.atan2(curve.p1.y - curve.p0.y, curve.p1.x - curve.p0.x) * 180 / Math.PI;
-    this.setAngle(angle);
+
     this.movingTween = this.scene.tweens.add({
       targets: this,
       x: curve.p1.x,
@@ -218,7 +242,37 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   shootWeaponAt(point) {
-    this.rotateToward(point);
+    var rotation = Phaser.Math.Angle.Between(this.x, this.y, point.x, point.y);
+    if(rotation > -Math.PI/8 && rotation < Math.PI/8) {
+      this.direction = "right";
+    } else if(rotation < -Math.PI/8 && rotation > -3*Math.PI/8) {
+      this.direction = "upright";
+    } else if(rotation < -3*Math.PI/8 && rotation > -5*Math.PI/8) {
+      this.direction = "up";
+    } else if(rotation < -5*Math.PI/8 && rotation > -7*Math.PI/8) {
+      this.direction = "upleft";
+    } else if(rotation > 7*Math.PI/8 && rotation < -7*Math.PI/8) {
+      this.direction = "left";
+    } else if(rotation < 7*Math.PI/8 && rotation > 5*Math.PI/8) {
+      this.direction = "downleft";
+    } else if(rotation < 5*Math.PI/8 && rotation > 3*Math.PI/8) {
+      this.direction = "down";
+    } else if(rotation < 3*Math.PI/8 && rotation > Math.PI/8) {
+      this.direction = "downright";
+    }
+
+    if(this.direction.includes("up")) {
+      this.anims.play('player-walk-left-up', true);
+    } else {
+      this.anims.play('player-walk-left-down', true);
+    }
+
+    if(this.direction.includes("left")) {
+      this.setFlipX(0);
+    } else {
+      this.setFlipX(1);
+    }
+
     this.weapon.shoot();
   }
 

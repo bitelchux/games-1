@@ -154,7 +154,7 @@ window.Game = new Phaser.Class({
   },
 
   createAnims: function() {
-    // bulelt
+    // bullet
     this.anims.create({
       key: 'bullet-fired',
       frames: this.anims.generateFrameNames('bullet', {
@@ -163,114 +163,45 @@ window.Game = new Phaser.Class({
       }),
       frameRate: 24
     });
+
     // player
     this.anims.create({
-      key: 'walk',
+      key: 'player-walk-left-down',
       frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'player-walk-left-down-', suffix: '.png'
       }),
       frameRate: 12,
       yoyo: true
     });
     this.anims.create({
-      key: 'walk-pistols',
+      key: 'player-walk-left-up',
       frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-walk-pistols-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'player-walk-left-up-', suffix: '.png'
       }),
       frameRate: 12,
       yoyo: true
-    });
-    this.anims.create({
-      key: 'walk-shotgun',
-      frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-walk-shotgun-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'walk-uzi',
-      frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-walk-uzi-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'walk-grenade',
-      frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-walk-grenade-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'die',
-      frames: this.anims.generateFrameNames('player', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'player-die-', suffix: '.png'
-      }),
-      frameRate: 12,
     });
 
     // ally
     this.anims.create({
-      key: 'ally-walk',
+      key: 'ally-walk-left-down',
       frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-walk-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'ally-walk-left-down-', suffix: '.png'
       }),
       frameRate: 12,
       yoyo: true
     });
     this.anims.create({
-      key: 'ally-walk-pistols',
+      key: 'ally-walk-left-up',
       frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-walk-pistols-', suffix: '.png'
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'ally-walk-left-up-', suffix: '.png'
       }),
       frameRate: 12,
       yoyo: true
-    });
-    this.anims.create({
-      key: 'ally-walk-shotgun',
-      frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-walk-shotgun-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'ally-walk-uzi',
-      frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-walk-uzi-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'ally-walk-grenade',
-      frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-walk-grenade-', suffix: '.png'
-      }),
-      frameRate: 12,
-      yoyo: true
-    });
-    this.anims.create({
-      key: 'ally-die',
-      frames: this.anims.generateFrameNames('ally', {
-        start: 1, end: 3, zeroPad: 0,
-        prefix: 'ally-die-', suffix: '.png'
-      }),
-      frameRate: 12,
     });
 
     // impact

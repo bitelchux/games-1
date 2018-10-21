@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "player-die-1.png",
+	"filename": "player-walk-left-down-1.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-die-2.png",
+	"filename": "player-walk-left-down-2.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-die-3.png",
+	"filename": "player-walk-left-up-1.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,128 +25,8 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "player-down.png",
+	"filename": "player-walk-left-up-2.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-1.png",
-	"frame": {"x":0,"y":16,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-2.png",
-	"frame": {"x":16,"y":16,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-3.png",
-	"frame": {"x":32,"y":16,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-grenade-1.png",
-	"frame": {"x":48,"y":16,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-grenade-2.png",
-	"frame": {"x":0,"y":32,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-grenade-3.png",
-	"frame": {"x":16,"y":32,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-pistols-1.png",
-	"frame": {"x":32,"y":32,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-pistols-2.png",
-	"frame": {"x":48,"y":32,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-pistols-3.png",
-	"frame": {"x":0,"y":48,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-shotgun-1.png",
-	"frame": {"x":16,"y":48,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-shotgun-2.png",
-	"frame": {"x":32,"y":48,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-shotgun-3.png",
-	"frame": {"x":48,"y":48,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-uzi-1.png",
-	"frame": {"x":0,"y":64,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-uzi-2.png",
-	"frame": {"x":16,"y":64,"w":16,"h":16},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
-	"sourceSize": {"w":16,"h":16}
-},
-{
-	"filename": "player-walk-uzi-3.png",
-	"frame": {"x":32,"y":64,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -157,8 +37,8 @@
 	"version": "1.0",
 	"image": "player.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":80},
+	"size": {"w":64,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:89a64fa4f164f0256d98dfb609335d1a:24c647aadca7f6eb167698be94772df4:86d5339b780aedd87b35e2b7c0a7e11b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a8edd10b82ba9a86e4bb4d94e0bd4a28:5a78ec23b827f89c996b0a81673a22e1:86d5339b780aedd87b35e2b7c0a7e11b$"
 }
 }

@@ -39,6 +39,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if(this.cursors.space.isDown && this.weapon) {
       this.weapon.shoot();
       this.turn();
+
+      if(this.direction.includes("up")) {
+        this.setFrame('player-walk-left-up-1.png');
+      } else {
+        this.setFrame('player-walk-left-down-1.png');
+      }
+
+      if(this.direction.includes("left")) {
+        this.setFlipX(0);
+      } else {
+        this.setFlipX(1);
+      }
     } else {
       this.turn();
       if(this.speed > 0)
@@ -52,28 +64,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   turn() {
     if(this.cursors.up.isDown && this.cursors.left.isDown) {
       this.direction = "upleft";
-      this.setAngle(-135);
     } else if(this.cursors.up.isDown && this.cursors.right.isDown) {
       this.direction = "upright";
-      this.setAngle(-45);
     } else if(this.cursors.down.isDown && this.cursors.left.isDown) {
       this.direction = "downleft";
-      this.setAngle(135);
     } else if(this.cursors.down.isDown && this.cursors.right.isDown) {
       this.direction = "downright";
-      this.setAngle(45);
     } else if(this.cursors.up.isDown) {
       this.direction = "up";
-      this.setAngle(-90);
     } else if(this.cursors.down.isDown) {
       this.direction = "down";
-      this.setAngle(90);
     } else if(this.cursors.left.isDown) {
       this.direction = "left";
-      this.setAngle(-180);
     } else if(this.cursors.right.isDown) {
       this.direction = "right";
-      this.setAngle(0);
     }
   }
 
@@ -110,10 +114,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if(!walkingSound.isPlaying)
       walkingSound.play();
 
-    if(this.weapon != null) {
-      this.anims.play('walk-' + this.weapon.name, true);
+    if(this.direction.includes("up")) {
+      this.anims.play('player-walk-left-up', true);
     } else {
-      this.anims.play('walk', true);
+      this.anims.play('player-walk-left-down', true);
+    }
+
+    if(this.direction.includes("left")) {
+      this.setFlipX(0);
+    } else {
+      this.setFlipX(1);
     }
   }
 

@@ -47,8 +47,6 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.enemiesCollider = this.scene.physics.add.overlap(this, enemiesToCheck, this.hitEnemy, null, this);
     this.mapCollider = this.scene.physics.add.collider(this, this.scene.forest.obstaclesLayer, this.die, null, this);
 
-    // console.log(this.scene.physics.world.colliders);
-
     this.anims.play('bullet-fired', true);
 
     this.lifetimeTimeout = setTimeout(function() {

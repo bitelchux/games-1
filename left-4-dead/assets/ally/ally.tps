@@ -88,9 +88,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>128</int>
+            <int>2048</int>
             <key>height</key>
-            <int>128</int>
+            <int>2048</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -181,25 +181,10 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">ally-die-1.png</key>
-            <key type="filename">ally-die-2.png</key>
-            <key type="filename">ally-die-3.png</key>
-            <key type="filename">ally-down.png</key>
-            <key type="filename">ally-walk-1.png</key>
-            <key type="filename">ally-walk-2.png</key>
-            <key type="filename">ally-walk-3.png</key>
-            <key type="filename">ally-walk-grenade-1.png</key>
-            <key type="filename">ally-walk-grenade-2.png</key>
-            <key type="filename">ally-walk-grenade-3.png</key>
-            <key type="filename">ally-walk-pistols-1.png</key>
-            <key type="filename">ally-walk-pistols-2.png</key>
-            <key type="filename">ally-walk-pistols-3.png</key>
-            <key type="filename">ally-walk-shotgun-1.png</key>
-            <key type="filename">ally-walk-shotgun-2.png</key>
-            <key type="filename">ally-walk-shotgun-3.png</key>
-            <key type="filename">ally-walk-uzi-1.png</key>
-            <key type="filename">ally-walk-uzi-2.png</key>
-            <key type="filename">ally-walk-uzi-3.png</key>
+            <key type="filename">ally-walk-left-down-1.png</key>
+            <key type="filename">ally-walk-left-down-2.png</key>
+            <key type="filename">ally-walk-left-up-1.png</key>
+            <key type="filename">ally-walk-left-up-2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -215,25 +200,10 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>ally-die-1.png</filename>
-            <filename>ally-die-2.png</filename>
-            <filename>ally-die-3.png</filename>
-            <filename>ally-walk-1.png</filename>
-            <filename>ally-walk-2.png</filename>
-            <filename>ally-walk-3.png</filename>
-            <filename>ally-walk-grenade-1.png</filename>
-            <filename>ally-walk-grenade-2.png</filename>
-            <filename>ally-walk-grenade-3.png</filename>
-            <filename>ally-walk-shotgun-1.png</filename>
-            <filename>ally-walk-shotgun-2.png</filename>
-            <filename>ally-walk-shotgun-3.png</filename>
-            <filename>ally-walk-uzi-1.png</filename>
-            <filename>ally-walk-uzi-2.png</filename>
-            <filename>ally-walk-uzi-3.png</filename>
-            <filename>ally-walk-pistols-1.png</filename>
-            <filename>ally-walk-pistols-2.png</filename>
-            <filename>ally-walk-pistols-3.png</filename>
-            <filename>ally-down.png</filename>
+            <filename>ally-walk-left-down-1.png</filename>
+            <filename>ally-walk-left-down-2.png</filename>
+            <filename>ally-walk-left-up-1.png</filename>
+            <filename>ally-walk-left-up-2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
