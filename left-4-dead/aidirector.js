@@ -157,7 +157,8 @@ class AIDirector {
     var spawns = this.getSpawnSpots();
     for(var i=0; i<n; i++) {
       var spawn = spawns[Math.floor(Math.random()*spawns.length)]
-      this.enemies.add(new Zombie(this.scene, spawn.x, spawn.y, true));
+      this.enemies.spawnZombie(spawn.x, spawn.y);
+      // this.enemies.add(new Zombie(this.scene, spawn.x, spawn.y, true));
     }
   }
 

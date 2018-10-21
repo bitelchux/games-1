@@ -2,6 +2,19 @@ class Enemies extends Phaser.GameObjects.Group {
   constructor(scene) {
     super(scene, { runChildUpdate: true });
     scene.add.existing(this);
+    this.scene = scene;
+  }
+
+  spawnZombie(x, y, startsPursuit) {
+    var inactiveZombie = this.getChildren().find(function(enemy) {
+      return enemy.config.key == 'zombie' && enemy.active == false;
+    });
+    if(inactiveZombie) {
+      inactiveZombie.spawn(x, y, startsPursuit);
+    }
+    else {
+      this.add(new Zombie(this.scene, x, y, startsPursuit));
+    }
   }
 
   getEnemiesAround(point, radius) {
@@ -9,7 +22,7 @@ class Enemies extends Phaser.GameObjects.Group {
     var circle = new Phaser.Geom.Circle(point.x, point.y, radius);
 
     this.getChildren().forEach(function(enemy) {
-      if(circle.contains(enemy.x, enemy.y)) {
+      if(enemy.active && circle.contains(enemy.x, enemy.y)) {
         enemies.push(enemy);
       }
     });
@@ -39,7 +52,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.config.attack['lastTime'] = this.scene.time.now;
 
-    this.config.hp *= 80;
+    // this.config.hp *= 80;
 
     if(this.startsPursuit) {
       this.startPursuit();
@@ -196,6 +209,14 @@ class Zombie extends Enemy {
     super(scene, config, startsPursuit);
   }
 
+  spawn(x, y, startsPursuit) {
+    this.x = x;
+    this.y = y;
+    this.setActive(true);
+    this.setVisible(true);
+    this.startsPursuit = startsPursuit;
+  }
+
   whenInRangeTarget(delta) {
     if(!this.startsPursuit) {
       this.startPursuit();
@@ -204,6 +225,14 @@ class Zombie extends Enemy {
 
   whenDistantTarget(delta) {
     this.followPath(delta);
+  }
+
+  die() {
+    clearInterval(this.pursuitInterval);
+    this.startsPursuit = false;
+    this.config.hp = 100;
+    this.setActive(false);
+    this.setVisible(false);
   }
 }
 

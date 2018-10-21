@@ -28,6 +28,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
     this.speed = Phaser.Math.GetSpeed(300000, 1);
     this.lifetimeTimeout;
+
+    this.enemiesCollider;
+    this.mapCollider;
   }
 
   fire(x, y, rotation, damage, color) {
@@ -41,8 +44,10 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.body.setVelocity(Math.cos(rotation)*this.speed, Math.sin(rotation)*this.speed);
 
     var enemiesToCheck = this.scene.enemies.getEnemiesAround(new Phaser.Math.Vector2(x, y), 300);
-    this.scene.physics.add.overlap(this, enemiesToCheck, this.hitEnemy, null, this);
-    this.scene.physics.add.collider(this, this.scene.forest.obstaclesLayer, this.die, null, this);
+    this.enemiesCollider = this.scene.physics.add.overlap(this, enemiesToCheck, this.hitEnemy, null, this);
+    this.mapCollider = this.scene.physics.add.collider(this, this.scene.forest.obstaclesLayer, this.die, null, this);
+
+    // console.log(this.scene.physics.world.colliders);
 
     this.anims.play('bullet-fired', true);
 
@@ -57,6 +62,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
+    this.scene.physics.world.removeCollider(this.enemiesCollider);
+    this.scene.physics.world.removeCollider(this.mapCollider);
+
     if(this.body)
       this.body.setVelocity(0, 0);
 
