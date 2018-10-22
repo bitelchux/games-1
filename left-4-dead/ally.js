@@ -9,7 +9,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     this.setPipeline("Light2D");
     this.setCollideWorldBounds(true);
     this.setDepth(2);
-    this.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+    this.body.world.setBounds(0,0,this.scene.level.tilemap.widthInPixels,this.scene.level.tilemap.heightInPixels);
     this.name = name;
     this.setTint(color);
 
@@ -52,7 +52,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
           this.shootWeaponAt(enemies[0].getCenter());
         }
 
-        var healthkitCoord = this.scene.forest.getClosestHealthKit(this.getCenter());
+        var healthkitCoord = this.scene.level.getClosestHealthKit(this.getCenter());
         //health kit is close by
         if(this.healthbar.isCritical() && healthkitCoord.distance(this.getCenter()) < 200) {
           this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
@@ -77,7 +77,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     var chosenCoord = null;
     var myCoord = this.getCenter();
 
-    var weaponTiles = this.scene.forest.getWeapons();
+    var weaponTiles = this.scene.level.getWeapons();
     weaponTiles.forEach(function(tile){
       var tileCoord = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
       var distance = myCoord.distance(tileCoord);
@@ -100,10 +100,10 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
       dontCrossCorners: true
     });
 
-    var forest = this.scene.forest;
-    var map = forest.tilemap;
+    var level = this.scene.level;
+    var map = level.tilemap;
     var grid = new PF.Grid(map.width, map.height);
-    forest.obstaclesLayer.forEachTile(function(tile){
+    level.obstaclesLayer.forEachTile(function(tile){
       if(tile.canCollide) {
         var random_boolean = Math.random() < 0.1;
         grid.setWalkableAt(tile.x, tile.y, false);
@@ -182,7 +182,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
 
   interact() {
     this.state = this.states.INTERACTING;
-    var tile = this.scene.forest.getObjectAt(this.getCenter());
+    var tile = this.scene.level.getObjectAt(this.getCenter());
     if(tile) {
       this.pickObject(tile);
     }
@@ -194,7 +194,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
       case 18:
         this.healthbar.gainHp(50);
         this.updateHealthRelatedCondition();
-        this.scene.forest.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
+        this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
         break;
         case Pistols.index:
           this.weapon = new Pistols(this, this.scene, 100, 36);
@@ -223,7 +223,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   goNearAlly(ally) {
-    var tiles = this.scene.forest.getTilesAround(ally.getCenter());
+    var tiles = this.scene.level.getTilesAround(ally.getCenter());
     var chosenTile = tiles[Math.floor(Math.random()*tiles.length)];
     this.moveTo(chosenTile.getCenterX(), chosenTile.getCenterY());
   }

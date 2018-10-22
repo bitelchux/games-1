@@ -14,8 +14,16 @@ window.Game = new Phaser.Class({
     this.load.image("bulletshell", ["bullet.png", "bullet_n.png"]);
     this.load.image("reload", ["reload.png", "reload_n.png"]);
     this.load.image("help", ["help.png", "help_n.png"]);
-    this.load.image("forest", ["forest.png", "forest_n.png"]);
-    this.load.tilemapTiledJSON("forestTilemap", "forest.json");
+
+    //levels
+    this.load.image("level", ["levels/level.png", "levels/level_n.png"]);
+    this.load.tilemapTiledJSON("levelTilemap", "levels/level.json");
+
+    // weapons
+    this.load.image("pistols", ["weapons/pistols.png", "weapons/pistols_n.png"]);
+    this.load.image("shotgun", ["weapons/shotgun.png", "weapons/shotgun_n.png"]);
+    this.load.image("uzi", ["weapons/uzi.png", "weapons/uzi_n.png"]);
+
     this.load.atlas({
       key: 'bullet',
       textureURL: 'bullet/bullet.png',
@@ -429,7 +437,7 @@ window.Game = new Phaser.Class({
     this.sounds.music.play();
 
 
-    this.forest = new Forest(this);
+    this.level = new Level(this);
     this.myLights = new Lights(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);

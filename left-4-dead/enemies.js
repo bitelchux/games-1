@@ -107,10 +107,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
       dontCrossCorners: true
     });
 
-    var forest = this.scene.forest;
-    var map = forest.tilemap;
+    var level = this.scene.level;
+    var map = level.tilemap;
     var grid = new PF.Grid(map.width, map.height);
-    forest.obstaclesLayer.forEachTile(function(tile){
+    level.obstaclesLayer.forEachTile(function(tile){
       if(tile.canCollide) {
         grid.setWalkableAt(tile.x, tile.y, false);
       }

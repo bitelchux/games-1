@@ -1,22 +1,12 @@
 class Level {
   constructor(scene) {
-    this.scene = scene;
-  }
-}
+    this.tilemap = scene.make.tilemap({ key: "levelTilemap", tileWidth: 16, tileHeight: 16 });
+    this.tileset = this.tilemap.addTilesetImage('level');
+    this.groundLayer = this.tilemap.createDynamicLayer(0, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
+    this.objectsLayer = this.tilemap.createDynamicLayer(1, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
+    this.obstaclesLayer = this.tilemap.createDynamicLayer(2, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
 
-class Forest extends Level {
-  constructor(scene) {
-    super(scene);
-
-    this.tilemap = scene.make.tilemap({ key: "forestTilemap", tileWidth: 16, tileHeight: 16 });
-    this.tileset = this.tilemap.addTilesetImage('forest');
-    this.areasLayer = this.tilemap.createDynamicLayer(0, this.tileset, 0, 0);
-    this.groundLayer = this.tilemap.createDynamicLayer(1, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
-    this.objectsLayer = this.tilemap.createDynamicLayer(2, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
-    this.obstaclesLayer = this.tilemap.createDynamicLayer(3, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
-
-    this.areasLayer.setVisible(false);
-    this.obstaclesLayer.setCollisionBetween(1,25);
+    this.obstaclesLayer.setCollisionBetween(1,45);
   }
 
   getAllSpawns() {

@@ -1,10 +1,10 @@
 class Allies {
   constructor(scene) {
     this.scene = scene;
-    this.player = new Player(this.scene, 100, 200, 0xff00ff);
-    this.ally1 = new Ally(this.scene, 132, 200, "ally1", 0xffff00);
-    this.ally2 = new Ally(this.scene, 30, 200, "ally2", 0x0000ff);
-    this.ally3 = new Ally(this.scene, 30, 230, "ally3", 0x00ff00);
+    this.player = new Player(this.scene, 5*16, 9*16, 0xff00ff);
+    this.ally1 = new Ally(this.scene, 4*16, 9*16, "ally1", 0xffff00);
+    this.ally2 = new Ally(this.scene, 5*16, 8*16, "ally2", 0x0000ff);
+    this.ally3 = new Ally(this.scene, 4*16, 8*16, "ally3", 0x00ff00);
 
     this.group = [];
     this.group.push(this.player);
@@ -25,7 +25,7 @@ class Allies {
 
   setupColliders() {
     this.group.forEach(function(ally) {
-      this.scene.physics.add.collider(ally, this.scene.forest.obstaclesLayer);
+      this.scene.physics.add.collider(ally, this.scene.level.obstaclesLayer);
     }.bind(this));
   }
 

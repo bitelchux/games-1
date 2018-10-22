@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setPipeline("Light2D");
     this.setCollideWorldBounds(true);
     this.setDepth(2);
-    this.body.world.setBounds(0,0,this.scene.forest.tilemap.widthInPixels,this.scene.forest.tilemap.heightInPixels);
+    this.body.world.setBounds(0,0,this.scene.level.tilemap.widthInPixels,this.scene.level.tilemap.heightInPixels);
     this.name = "player";
     this.setTint(color);
 
@@ -128,13 +128,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   interact() {
-    var tile = this.scene.forest.objectsLayer.getTileAtWorldXY(this.x, this.y, undefined, undefined, 1);
+    var tile = this.scene.level.objectsLayer.getTileAtWorldXY(this.x, this.y, undefined, undefined, 1);
     if(tile) {
       switch(tile.index) {
         case 18:
           this.healthbar.gainHp(50);
           this.updateHealthRelatedCondition();
-          this.scene.forest.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
+          this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
           break;
         default:
           var weapon = this.weapon;
