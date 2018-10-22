@@ -271,6 +271,14 @@ window.Game = new Phaser.Class({
       frameRate: 6,
       yoyo: true
     });
+    this.anims.create({
+      key: 'boomer-explode',
+      frames: this.anims.generateFrameNames('boomer', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'boomer-explode-', suffix: '.png'
+      }),
+      frameRate: 4
+    });
 
     // hunter
     this.anims.create({

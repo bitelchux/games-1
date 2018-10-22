@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "boomer-walk-left-down-1.png",
+	"filename": "boomer-explode-1.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-down-2.png",
+	"filename": "boomer-explode-2.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-up-1.png",
+	"filename": "boomer-walk-left-down-1.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,8 +25,24 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-up-2.png",
+	"filename": "boomer-walk-left-down-2.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "boomer-walk-left-up-1.png",
+	"frame": {"x":64,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "boomer-walk-left-up-2.png",
+	"frame": {"x":80,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -37,8 +53,8 @@
 	"version": "1.0",
 	"image": "boomer.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":16},
+	"size": {"w":96,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:10e58f72a84687c5f9d298e08a6b3693:bc96bf2f039e94088cbd0d0a67e5b4c7:6c64ba9078b3c417d90ef90856bf54dc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:41def125d29ddeabd2196d214436b3a4:4b910565f397f43ec1b386cd6c736031:6c64ba9078b3c417d90ef90856bf54dc$"
 }
 }

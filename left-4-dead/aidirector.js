@@ -24,6 +24,8 @@ class AIDirector {
     this.setupMob();
 
     this.setupEmotionalIntensityHookups();
+
+    // this.enemies.add(new Boomer(this.scene, 200, 200));
   }
 
   setupTank() {

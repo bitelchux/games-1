@@ -281,13 +281,25 @@ class Boomer extends Enemy {
     this.followPath(delta);
   }
 
-  whenDie() {
+  die() {
     var allies = this.scene.allies.getAlliesAround(this.getCenter(), 32);
-    this.scene.sounds.boomerexplode.playInSpace(this.scene, this.getCenter());
     if(allies.length > 0) {
       this.scene.aidirector.spawnMob();
       this.scene.sounds.changeMusic('boomermusic');
     }
+    this.scene.enemies.remove(this);
+    clearInterval(this.pursuitInterval);
+
+    this.setScale(2);
+    this.anims.play('boomer-explode');
+    this.scene.sounds.boomerexplode.playInSpace(this.scene, this.getCenter());
+    this.scene.camera.shake(100, 0.005);
+
+    this.on('animationcomplete', function(animation) {
+      if(animation.key == "boomer-explode") {
+        this.destroy();
+      }
+    }, this);
   }
 }
 
