@@ -16,3 +16,4 @@ game.scene.add('menuScene', MenuScene, true);
 
 window.timeouts = [];
 window.intervals = [];
+window.speed = 1.7;

@@ -22,8 +22,8 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     this.pathIndex = null;
     this.target = null;
 
-    this.normalspeed = 0.035;
-    this.halfspeed = 0.017;
+    this.normalspeed = 0.035 * window.speed;
+    this.halfspeed = 0.017 * window.speed;
     this.speed = this.normalspeed;
     this.weapon = null;
 

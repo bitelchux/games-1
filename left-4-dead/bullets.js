@@ -26,7 +26,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setVisible(false);
 
     this.scene = scene;
-    this.speed = Phaser.Math.GetSpeed(300000, 1);
+    this.speed = Phaser.Math.GetSpeed(300000 * window.speed, 1);
     this.lifetimeTimeout;
 
     this.enemiesCollider;

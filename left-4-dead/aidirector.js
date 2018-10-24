@@ -162,7 +162,6 @@ class AIDirector {
     for(var i=0; i<n; i++) {
       var spawn = spawns[Math.floor(Math.random()*spawns.length)]
       this.enemies.spawnZombie(spawn.x, spawn.y);
-      // this.enemies.add(new Zombie(this.scene, spawn.x, spawn.y, true));
     }
   }
 
@@ -171,7 +170,7 @@ class AIDirector {
     var t = window.setTimeout(function() {
       for(var i=0; i<10; i++)
       {
-        var t = rwindow.setTimeout(function(){
+        var t = window.setTimeout(function(){
           var mobSize = Math.floor(Math.exp(i/6)) + Math.floor(Math.random()*2);
           this.spawnZombies(mobSize);
         }.bind(this), i*500);

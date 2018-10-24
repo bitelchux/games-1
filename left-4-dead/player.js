@@ -21,8 +21,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-    this.normalspeed = 32;
-    this.halfspeed = 16;
+    this.normalspeed = 32 * window.speed;
+    this.halfspeed = 16 * window.speed;
     this.speed = this.normalspeed;
 
     this.scene.input.keyboard.on('keydown_CTRL', function(){

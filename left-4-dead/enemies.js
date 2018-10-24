@@ -226,7 +226,7 @@ class Zombie extends Enemy {
     var config = {
       key:'zombie',
       x: x, y: y,
-      speed: 0.035,
+      speed: 0.035 * window.speed,
       hp: 100,
       pathUpdateTime: 250,
       attack: {
@@ -276,7 +276,7 @@ class Boomer extends Enemy {
     var config = {
       key:'boomer',
       x: x, y: y,
-      speed: 0.025,
+      speed: 0.025 * window.speed,
       hp: 100,
       pathUpdateTime: 250,
       attack: {
@@ -324,7 +324,7 @@ class Hunter extends Enemy {
     var config = {
       key:'hunter',
       x: x, y: y,
-      speed: 0.015,
+      speed: 0.015 * window.speed,
       hp: 500,
       pathUpdateTime: 250,
       attack: {
@@ -384,7 +384,7 @@ class Smoker extends Enemy {
     var config = {
       key:'smoker',
       x: x, y: y,
-      speed: 0.025,
+      speed: 0.025 * window.speed,
       hp: 500,
       pathUpdateTime: 250,
       attack: {
@@ -448,7 +448,7 @@ class Tank extends Enemy {
     var config = {
       key:'tank',
       x: x, y: y,
-      speed: 0.040,
+      speed: 0.040 * window.speed,
       hp: 6000,
       pathUpdateTime: 250,
       attack: {
@@ -550,7 +550,7 @@ class Rock {
 
     this.scene.physics.add.overlap(this.scene.allies.group, this.sprite, this.damageTarget, null, this).name = 'rock_overlap';
 
-    var speed = 100;
+    var speed = 100 * window.speed;
     var targetCoord = target.getCenter();
     var direction = new Phaser.Math.Vector2(targetCoord.x - this.sprite.x, targetCoord.y - this.sprite.y).normalize();
     this.sprite.body.setVelocity(direction.x * speed, direction.y * speed);
