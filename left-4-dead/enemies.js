@@ -212,8 +212,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   kickback(bullet) {
     var kickbackVector = new Phaser.Math.Vector2(this.x - bullet.x, this.y - bullet.y);
-    this.x += kickbackVector.x;
-    this.y += kickbackVector.y;
+    this.x += kickbackVector.x/8;
+    this.y += kickbackVector.y/8;
   }
 
   die() {
