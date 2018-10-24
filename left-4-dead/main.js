@@ -3,7 +3,6 @@ var config = {
   width: 384*2,
   height: 384*2,
   pixelArt: true,
-  scene: [ window.Menu, window.Game, window.Pause ],
   physics: {
     default: 'arcade',
     arcade: {
@@ -13,3 +12,7 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+game.scene.add('menuScene', MenuScene, true);
+
+window.timeouts = [];
+window.intervals = [];

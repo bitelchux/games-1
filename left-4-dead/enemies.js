@@ -29,6 +29,12 @@ class Enemies extends Phaser.GameObjects.Group {
 
     return enemies;
   }
+
+  clear() {
+    this.getChildren().forEach(function(enemy) {
+      enemy.clear();
+    });
+  }
 }
 
 /* config = {key, x, y, speed, hp, attack:{damage, rate, sounds}}*/
@@ -95,10 +101,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.startsPursuit = true;
     this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
     this.whenStartPursuit();
-    this.pursuitInterval = setInterval(function(){
+    this.pursuitInterval = window.setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
       this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
+    window.intervals.push(this.pursuitInterval);
   }
 
   setPathTo(x, y) {
@@ -204,6 +211,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     this.whenDie();
+    this.clear();
+  }
+
+  clear() {
     this.scene.enemies.remove(this);
     clearInterval(this.pursuitInterval);
     this.destroy();
@@ -252,6 +263,11 @@ class Zombie extends Enemy {
     this.config.hp = 100;
     this.setActive(false);
     this.setVisible(false);
+  }
+
+  clear() {
+    this.scene.enemies.remove(this);
+    clearInterval(this.pursuitInterval);
   }
 }
 
@@ -329,10 +345,11 @@ class Hunter extends Enemy {
     this.scene.sounds.huntercry.playInSpace(this.scene, this.getCenter());
     this.startsPursuit = true;
     this.target = this.scene.allies.getWeakestAlly();
-    this.pursuitInterval = setInterval(function(){
+    this.pursuitInterval = window.setInterval(function(){
       this.target = this.scene.allies.getWeakestAlly(this.getCenter());
       this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
+    window.intervals.push(this.pursuitInterval);
   }
 
   update(time, delta) {
@@ -342,9 +359,10 @@ class Hunter extends Enemy {
     if(distance > 90) {
       this.followPath(delta);
     } else if (!this.isOnTarget && !this.jumpTimeout) {
-      this.jumpTimeout = setTimeout(function(){
+      this.jumpTimeout = window.setTimeout(function(){
         this.jumpOnTarget(delta);
       }.bind(this), 1000);
+      window.timeouts.push(this.jumpTimeout);
     }
   }
 
@@ -387,10 +405,11 @@ class Smoker extends Enemy {
     this.scene.sounds.smokercry.playInSpace(this.scene, this.getCenter());
     this.startsPursuit = true;
     this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
-    this.pursuitInterval = setInterval(function(){
+    this.pursuitInterval = window.setInterval(function(){
       this.target = this.scene.allies.getClosestAllyTo(this.getCenter());
       this.setPathTo(this.target.x, this.target.y);
     }.bind(this), this.config.pathUpdateTime);
+    window.intervals.push(this.pursuitInterval);
   }
 
   update(time, delta) {
@@ -535,7 +554,10 @@ class Rock {
     var targetCoord = target.getCenter();
     var direction = new Phaser.Math.Vector2(targetCoord.x - this.sprite.x, targetCoord.y - this.sprite.y).normalize();
     this.sprite.body.setVelocity(direction.x * speed, direction.y * speed);
-    setTimeout(function(){this.explode();}.bind(this), 1000);
+    var t = window.setTimeout(function(){
+      this.explode();
+    }.bind(this), 1000);
+    window.timeouts.push(t);
   }
 
   explode() {

@@ -29,16 +29,18 @@ class AIDirector {
   }
 
   setupTank() {
-    setInterval(function() {
+    var i = window.setInterval(function() {
       this.spawnTank();
     }.bind(this), 80000 + Math.random()*80000);
+    window.intervals.push(i);
   }
 
   setupMob() {
     if(!this.mobInterval) {
-      this.mobInterval = setInterval(function() {
+      this.mobInterval = window.setInterval(function() {
         this.spawnMob();
       }.bind(this), 40000 + Math.random()*40000);
+      window.intervals.push(this.mobInterval);
     }
   }
 
@@ -166,15 +168,17 @@ class AIDirector {
 
   spawnMob() {
     this.scene.sounds.zombiewave.play();
-    setTimeout(function() {
+    var t = window.setTimeout(function() {
       for(var i=0; i<10; i++)
       {
-        setTimeout(function(){
+        var t = rwindow.setTimeout(function(){
           var mobSize = Math.floor(Math.exp(i/6)) + Math.floor(Math.random()*2);
           this.spawnZombies(mobSize);
         }.bind(this), i*500);
+        window.timeouts.push(t);
       }
     }.bind(this), 2000 + Math.random()*3000);
+    window.timeouts.push(t);
   }
 
   spawnBoomer() {

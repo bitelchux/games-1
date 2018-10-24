@@ -1,13 +1,6 @@
-window.Game = new Phaser.Class({
-  Extends: Phaser.Scene,
+class GameScene extends Phaser.Scene {
 
-  initialize:
-
-  function Game () {
-    Phaser.Scene.call(this, { key: 'game' });
-  },
-
-  preload: function() {
+  preload() {
     this.load.setPath('assets/');
 
     // images
@@ -159,9 +152,9 @@ window.Game = new Phaser.Class({
     this.load.audio('tankpickrockSound', 'audio/tank/tank-pick-rock.wav');
     this.load.audio('tankthrowSound', 'audio/tank/tank-throw.wav');
     this.load.audio('tankrockexplodeSound', 'audio/tank/tank-rock-explode.wav');
-  },
+  }
 
-  createAnims: function() {
+  createAnims() {
     // bullet
     this.anims.create({
       key: 'bullet-fired',
@@ -355,9 +348,9 @@ window.Game = new Phaser.Class({
       yoyo: true,
       repeat: -1
     });
-  },
+  }
 
-  createAudio: function() {
+  createAudio() {
     this.sounds = {};
 
     //background music
@@ -436,9 +429,9 @@ window.Game = new Phaser.Class({
         this.sounds.music.resume();
       }, this);
     }.bind(this);
-  },
+  }
 
-  create: function () {
+  create() {
     this.createAnims();
     this.createAudio();
 
@@ -455,11 +448,43 @@ window.Game = new Phaser.Class({
     this.camera = this.cameras.main;
     this.camera.startFollow(this.allies.player);
     this.camera.setZoom(2);
-  },
 
-  update: function(time, delta) {
-    this.allies.update();
-    this.aidirector.update(time, delta);
-    this.myLights.update();
+    this.isBeingRemoved = false;
+
+    this.input.keyboard.on('keydown_ESC', function(){
+      this.isBeingRemoved = true;
+      this.scene.remove(this);
+      this.scene.add('menuScene', MenuScene, true);;
+    }, this);
   }
-});
+
+  update(time, delta) {
+    if(!this.isBeingRemoved) {
+      this.allies.update();
+      this.aidirector.update(time, delta);
+      this.myLights.update();
+    }
+  }
+
+  end() {
+    this.allies.clear();
+    this.enemies.clear();
+
+    // clear all timeouts
+    window.timeouts.forEach(function(t){
+      window.clearTimeout(t);
+    });
+
+    // clear all intervals
+    window.intervals.forEach(function(i){
+      window.clearInterval(i);
+    });
+
+    this.sounds.music.stop();
+    this.isBeingRemoved = true;
+    this.scene.remove(this);
+    if(!this.scene.get('endScene')) {
+      this.scene.add('endScene', EndScene, true);
+    }
+  }
+}

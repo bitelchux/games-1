@@ -47,6 +47,20 @@ class Allies {
     this.group.forEach(function(ally) {
       ally.update();
     });
+
+    if(this.areAtEndPosition()) {
+      this.scene.end();
+    }
+  }
+
+  clear() {
+    this.group.forEach(function(ally) {
+      ally.destroy();
+    });
+    this.player = null;
+    this.ally1 = null;
+    this.ally2 = null;
+    this.ally3 = null;
   }
 
   removeAlly(ally) {
@@ -111,5 +125,19 @@ class Allies {
       }
     });
     return allies;
+  }
+
+  areAtStartPosition() {
+    return this.group.every(function(ally) {
+      var tile = this.scene.level.triggersLayer.getTileAtWorldXY(ally.x, ally.y);
+      return (tile && tile.index == 24);
+    });
+  }
+
+  areAtEndPosition() {
+    return this.group.every(function(ally) {
+      var tile = this.scene.level.triggersLayer.getTileAtWorldXY(ally.x, ally.y);
+      return (tile && tile.index == 25);
+    }.bind(this));
   }
 }

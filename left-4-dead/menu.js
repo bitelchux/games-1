@@ -1,36 +1,26 @@
-window.Menu = new Phaser.Class({
-  Extends: Phaser.Scene,
+class MenuScene extends Phaser.Scene {
 
-  initialize:
-
-  function Menu () {
-    Phaser.Scene.call(this, { key: 'menu' });
-  },
-
-  preload: function() {
+  preload() {
     this.load.setPath('assets/');
     this.load.image('menuBkg', 'menu.png');
-  },
+  }
 
-  createBackground: function() {
+  createBackground() {
     this.add.image(384, 384, 'menuBkg');
-  },
+  }
 
-  createText: function() {
+  createText() {
     var textStyle = {fontStyle: 'bold', fontSize: '36px', fill: 'white'};
     var slashText = this.add.text(150, 300, 'Press Any Key To Start', textStyle);
-  },
+  }
 
-  create: function () {
+  create() {
     this.createBackground();
     this.createText();
-    this.events.on('wake', function(){
-      this.scene.start();
-    }, this);
 
-
-    this.input.keyboard.on('keydown', function(){
-      this.scene.switch("game")
+    this.input.keyboard.on('keydown', function() {
+      this.scene.remove(this);
+      this.scene.add('gameScene', GameScene, true);
     }, this);
   }
-});
+}

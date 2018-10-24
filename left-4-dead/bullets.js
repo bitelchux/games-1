@@ -49,9 +49,10 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
 
     this.anims.play('bullet-fired', true);
 
-    this.lifetimeTimeout = setTimeout(function() {
+    this.lifetimeTimeout = window.setTimeout(function() {
       this.die();
     }.bind(this), 500);
+    window.timeouts.push(this.lifetimeTimeout);
   }
 
   hitEnemy(bullet, enemy) {

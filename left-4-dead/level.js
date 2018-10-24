@@ -2,10 +2,12 @@ class Level {
   constructor(scene) {
     this.tilemap = scene.make.tilemap({ key: "levelTilemap", tileWidth: 16, tileHeight: 16 });
     this.tileset = this.tilemap.addTilesetImage('level');
-    this.groundLayer = this.tilemap.createDynamicLayer(0, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
-    this.objectsLayer = this.tilemap.createDynamicLayer(1, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
-    this.obstaclesLayer = this.tilemap.createDynamicLayer(2, this.tileset, 0, 0).setPipeline('Light2D'); // layer index, tileset, x, y
+    this.groundLayer = this.tilemap.createDynamicLayer(0, this.tileset, 0, 0).setPipeline('Light2D');
+    this.objectsLayer = this.tilemap.createDynamicLayer(1, this.tileset, 0, 0).setPipeline('Light2D');
+    this.obstaclesLayer = this.tilemap.createDynamicLayer(2, this.tileset, 0, 0).setPipeline('Light2D');
+    this.triggersLayer = this.tilemap.createDynamicLayer(3, this.tileset, 0, 0);
 
+    this.triggersLayer.setVisible(false);
     this.obstaclesLayer.setCollisionBetween(1,45);
   }
 

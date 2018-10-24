@@ -94,13 +94,14 @@ class Shotgun extends Weapon {
       var randY = y + Math.random()*3 - Math.random()*3;
       this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage, color);
     }
-    setTimeout(function() {
+    var t = window.setTimeout(function() {
       for(var i=0; i<10; i++) {
         var randX = x + Math.random()*3 - Math.random()*3;
         var randY = y + Math.random()*3 - Math.random()*3;
         this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage, color);
       }
-    }.bind(this), 50)
+    }.bind(this), 50);
+    window.timeouts.push(t);
   }
 }
 Shotgun.index = 10;
