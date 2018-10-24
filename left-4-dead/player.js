@@ -184,10 +184,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.weapon = new Uzi(this, this.scene, 63, 20);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000);
         break;
-      case Grenade.index:
-        this.weapon = new Grenade(this, this.scene, 1, 400);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 1, 3760);
-        break;
     }
 
     this.weapon.bulletBar.on("reload", function() {

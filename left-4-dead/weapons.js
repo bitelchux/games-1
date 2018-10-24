@@ -11,7 +11,7 @@ class Weapon {
   }
 
   // to override
-  createBullets(x, y, rotation, color) {}
+  createBullets(owner, rotation) {}
 
   shoot() {
     if(this.isReloading)
@@ -55,10 +55,10 @@ class Weapon {
           break;
       }
 
-      this.createBullets(this.owner.x, this.owner.y, rotation, this.owner.color);
+      this.createBullets(this.owner, rotation);
 
       if(this.owner.name == "player")
-        this.scene.camera.shake(100, 0.0005);
+        this.scene.camera.shake(100, 0.0001);
     }
   }
 
@@ -73,11 +73,11 @@ class Pistols extends Weapon {
     this.index = Pistols.index;
   }
 
-  createBullets(x, y, rotation, color) {
-    var randX = x + Math.random()*3 - Math.random()*3;
-    var randY = y + Math.random()*3 - Math.random()*3;
-    this.scene.bullets.fire(randX, randY, rotation - 0.1, this.damage, color);
-    this.scene.bullets.fire(randX, randY, rotation + 0.1, this.damage, color);
+  createBullets(owner, rotation) {
+    var randX = owner.x + Math.random()*3 - Math.random()*3;
+    var randY = owner.y + Math.random()*3 - Math.random()*3;
+    this.scene.bullets.fire(owner, randX, randY, rotation - 0.1, this.damage, owner.color);
+    this.scene.bullets.fire(owner, randX, randY, rotation + 0.1, this.damage, owner.color);
   }
 }
 Pistols.index = 5;
@@ -88,17 +88,17 @@ class Shotgun extends Weapon {
     this.index = Shotgun.index;
   }
 
-  createBullets(x, y, rotation, color) {
+  createBullets(owner, rotation) {
     for(var i=0; i<10; i++) {
-      var randX = x + Math.random()*3 - Math.random()*3;
-      var randY = y + Math.random()*3 - Math.random()*3;
-      this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage, color);
+      var randX = owner.x + Math.random()*3 - Math.random()*3;
+      var randY = owner.y + Math.random()*3 - Math.random()*3;
+      this.scene.bullets.fire(owner, randX, randY, rotation - 0.5 + i/10, this.damage, owner.color);
     }
     var t = window.setTimeout(function() {
       for(var i=0; i<10; i++) {
-        var randX = x + Math.random()*3 - Math.random()*3;
-        var randY = y + Math.random()*3 - Math.random()*3;
-        this.scene.bullets.fire(randX, randY, rotation - 0.5 + i/10, this.damage, color);
+        var randX = owner.x + Math.random()*3 - Math.random()*3;
+        var randY = owner.y + Math.random()*3 - Math.random()*3;
+        this.scene.bullets.fire(owner, randX, randY, rotation - 0.5 + i/10, this.damage, owner.color);
       }
     }.bind(this), 50);
     window.timeouts.push(t);
@@ -112,22 +112,10 @@ class Uzi extends Weapon {
     this.index = Uzi.index;
   }
 
-  createBullets(x, y, rotation, color) {
-    var randX = x + Math.random()*3 - Math.random()*3;
-    var randY = y + Math.random()*3 - Math.random()*3;
-    this.scene.bullets.fire(randX, randY, rotation, this.damage, color);
+  createBullets(owner, rotation) {
+    var randX = owner.x + Math.random()*3 - Math.random()*3;
+    var randY = owner.y + Math.random()*3 - Math.random()*3;
+    this.scene.bullets.fire(owner, randX, randY, rotation, this.damage, owner.color);
   }
 }
 Uzi.index = 15;
-
-class Grenade extends Weapon {
-  constructor(owner, scene, rate, damage) {
-    super(owner, scene, rate, damage, "grenade");
-    this.index = Grenade.index;
-  }
-
-  createBullets(x, y, rotation, color) {
-    this.scene.bullets.fire(randX, randY, rotation, this.damage, color);
-  }
-}
-Grenade.index = 20;

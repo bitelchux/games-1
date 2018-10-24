@@ -8,11 +8,11 @@ class Bullets {
     }
   }
 
-  fire(x, y, rotation, damage, color) {
+  fire(owner, x, y, rotation, damage, color) {
     var inactiveBullet = this.pool.find(function(bullet) {
       return bullet.active == false;
     });
-    inactiveBullet.fire(x, y, rotation, damage, color);
+    inactiveBullet.fire(owner, x, y, rotation, damage, color);
   }
 }
 
@@ -33,10 +33,11 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.mapCollider;
   }
 
-  fire(x, y, rotation, damage, color) {
+  fire(owner, x, y, rotation, damage, color) {
     this.setActive(true);
     this.setVisible(true);
 
+    this.owner = owner;
     this.x = x;
     this.y = y;
     this.damage = damage;
@@ -56,6 +57,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   hitEnemy(bullet, enemy) {
+    if(this.owner.name == "player")
+      this.scene.camera.shake(100, 0.0008);
+
     enemy.isHit(bullet.damage);
     this.die();
   }
