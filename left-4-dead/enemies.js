@@ -194,19 +194,26 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  isHit(damage) {
+  isHit(bullet) {
     this.setTintFill(0xff0000);
+    this.kickback(bullet);
 
     if(!this.startsPursuit) {
       this.startPursuit()
     }
 
     if(this.config.hp > 0) {
-      this.config.hp -= damage;
+      this.config.hp -= bullet.damage;
       if(this.config.hp <= 0) {
         this.die();
       }
     }
+  }
+
+  kickback(bullet) {
+    var kickbackVector = new Phaser.Math.Vector2(this.x - bullet.x, this.y - bullet.y);
+    this.x += kickbackVector.x;
+    this.y += kickbackVector.y;
   }
 
   die() {

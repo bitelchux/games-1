@@ -60,7 +60,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     if(this.owner.name == "player")
       this.scene.camera.shake(100, 0.001);
 
-    enemy.isHit(bullet.damage);
+    enemy.isHit(bullet);
     this.die();
   }
 
