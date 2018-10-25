@@ -1,5 +1,6 @@
 class HealthBar {
-  constructor(scene, visible = true) {
+  constructor(owner, scene, visible = true) {
+    this.owner = owner;
     this.scene = scene;
     this.hp = 100;
     this.extrahp = 300;
@@ -8,6 +9,7 @@ class HealthBar {
     this.sprite.setDepth(4);
     this.sprite.setScrollFactor(0);
     this.sprite.setVisible(this.visible);
+    this.sprite.setTint(owner.color);
   }
 
   gainHp(hp) {

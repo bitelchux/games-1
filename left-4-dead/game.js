@@ -446,7 +446,7 @@ class GameScene extends Phaser.Scene {
     this.aidirector = new AIDirector(this, this.allies, this.enemies);
 
     this.camera = this.cameras.main;
-    this.camera.startFollow(this.allies.player, false, 0.02);
+    this.camera.startFollow(this.allies.player, true, 0.02);
     this.camera.setZoom(2);
 
     this.isBeingRemoved = false;

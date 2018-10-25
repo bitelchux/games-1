@@ -1,10 +1,10 @@
 class Allies {
   constructor(scene) {
     this.scene = scene;
-    this.player = new Player(this.scene, 6*16, 8*16, 0xff00ff);
-    this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, "ally1", 0xffff00);
-    this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, "ally2", 0x0000ff);
-    this.ally3 = new Ally(this.scene, 3*16-8, 10*16-8, "ally3", 0x00ff00);
+    this.player = new Player(this.scene, 6*16, 8*16, 0xCB904D);
+    this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, "ally1", 0x59CD90);
+    this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, "ally2", 0xEE6352);
+    this.ally3 = new Ally(this.scene, 3*16-8, 10*16-8, "ally3", 0x24ACFC);
 
     this.group = [];
     this.group.push(this.player);

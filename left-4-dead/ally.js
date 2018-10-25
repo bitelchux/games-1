@@ -13,7 +13,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     this.name = name;
     this.setTint(color);
 
-    this.healthbar = new HealthBar(scene, false);
+    this.healthbar = new HealthBar(this, scene, false);
     this.helpBar = new HelpBar(scene);
     this.helpSign = new HelpSign(scene);
 

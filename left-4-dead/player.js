@@ -14,7 +14,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setTint(color);
     this.setFrame('player-walk-left-down-1.png');
 
-    this.healthbar = new HealthBar(scene);
+    this.healthbar = new HealthBar(this, scene);
     this.helpBar = new HelpBar(scene);
     this.helpSign = new HelpSign(scene);
 
