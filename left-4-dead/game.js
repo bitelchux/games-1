@@ -437,7 +437,6 @@ class GameScene extends Phaser.Scene {
 
     this.sounds.music.play();
 
-
     this.level = new Level(this);
     this.myLights = new Lights(this);
     this.allies = new Allies(this);

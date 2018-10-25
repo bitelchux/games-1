@@ -80,6 +80,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   whenAttack() {}
 
+  whenIsHit(bullet) {}
+
   whenDie() {}
 
   update(time, delta) {
@@ -195,8 +197,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(bullet) {
+    this.whenIsHit(bullet);
     this.setTintFill(0xff0000);
-    this.kickback(bullet);
 
     if(!this.startsPursuit) {
       this.startPursuit()
@@ -208,12 +210,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.die();
       }
     }
-  }
-
-  kickback(bullet) {
-    var kickbackVector = new Phaser.Math.Vector2(this.x - bullet.x, this.y - bullet.y);
-    this.x += kickbackVector.x/8;
-    this.y += kickbackVector.y/8;
   }
 
   die() {
@@ -262,6 +258,12 @@ class Zombie extends Enemy {
 
   whenDistantTarget(delta) {
     this.followPath(delta);
+  }
+
+  whenIsHit(bullet) {
+    var kickbackVector = new Phaser.Math.Vector2(this.x - bullet.x, this.y - bullet.y);
+    this.x += kickbackVector.x/10;
+    this.y += kickbackVector.y/10;
   }
 
   die() {
