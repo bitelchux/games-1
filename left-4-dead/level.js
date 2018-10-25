@@ -1,5 +1,6 @@
 class Level {
   constructor(scene) {
+    this.scene = scene;
     this.tilemap = scene.make.tilemap({ key: "levelTilemap", tileWidth: 16, tileHeight: 16 });
     this.tileset = this.tilemap.addTilesetImage('level');
     this.groundLayer = this.tilemap.createDynamicLayer(0, this.tileset, 0, 0).setPipeline('Light2D');
@@ -128,5 +129,34 @@ class Level {
     }.bind(this));
 
     return new Phaser.Math.Vector2(chosenTile.getCenterX(), chosenTile.getCenterY());
+  }
+
+  getCoordBeforeObstacleFromAtoB(a, b) {
+    var line = new Phaser.Geom.Line(a.x, a.y, b.x, b.y);
+    var obstacles = this.obstaclesLayer.getTilesWithinShape(line, {isNotEmpty: true});
+    if(obstacles && obstacles.length > 0) {
+      var points = line.getPoints(0, 16);
+      var firstObstacle;
+      var distance = 10000;
+      obstacles.forEach(function(obstacle) {
+        var obstacleCoord = new Phaser.Math.Vector2(obstacle.getCenterX(), obstacle.getCenterY());
+        var obstacleDistance = obstacleCoord.distance(a);
+
+        if(obstacleDistance < distance) {
+          distance  = obstacleDistance;
+          firstObstacle = obstacle;
+        }
+      }.bind(this));
+
+      var firstObstacleCoord = new Phaser.Math.Vector2(firstObstacle.getCenterX(), firstObstacle.getCenterY());
+      for(var i=0; i< points.length; i++) {
+        if(firstObstacleCoord.distance(new Phaser.Math.Vector2(points[i].x, points[i].y)) < 24) {
+          return points[i];
+        }
+      }
+    } else {
+      // no obstacles
+      return b;
+    }
   }
 }

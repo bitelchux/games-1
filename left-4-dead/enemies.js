@@ -435,11 +435,15 @@ class Smoker extends Enemy {
   dragTarget(delta) {
     this.draggingTarget = true;
     this.scene.sounds.smokerdrag.play();
+
+    var dragDestination = this.scene.level.getCoordBeforeObstacleFromAtoB(this.target.getCenter(), this.getCenter());
+    var dragDistance = this.target.getCenter().distance(dragDestination);
+
     this.scene.tweens.add({
         targets: this.target,
-        x: this.x,
-        y: this.y,
-        duration: 3000
+        x: dragDestination.x,
+        y: dragDestination.y,
+        duration: dragDistance / 0.1
     });
     this.target.isHit(100);
   }
