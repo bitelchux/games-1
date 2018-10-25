@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "ally-walk-left-down-1.png",
+	"filename": "ally-down.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "ally-walk-left-down-2.png",
+	"filename": "ally-walk-left-down-1.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "ally-walk-left-up-1.png",
+	"filename": "ally-walk-left-down-2.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,8 +25,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "ally-walk-left-up-2.png",
+	"filename": "ally-walk-left-up-1.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "ally-walk-left-up-2.png",
+	"frame": {"x":64,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -37,8 +45,8 @@
 	"version": "1.0",
 	"image": "ally.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":16},
+	"size": {"w":80,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a8edd10b82ba9a86e4bb4d94e0bd4a28:5a78ec23b827f89c996b0a81673a22e1:86d5339b780aedd87b35e2b7c0a7e11b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d1a2be0673f0044c09ce4752b7594307:8fd65df5d24cfc2fbe790c72790a0636:4f6f408e06bd336fb12071c22dd1ef32$"
 }
 }

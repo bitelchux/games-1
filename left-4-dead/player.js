@@ -12,6 +12,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.body.world.setBounds(0,0,this.scene.level.tilemap.widthInPixels,this.scene.level.tilemap.heightInPixels);
     this.name = "player";
     this.setTint(color);
+    this.setFrame('player-walk-left-down-1.png');
 
     this.healthbar = new HealthBar(scene);
     this.helpBar = new HelpBar(scene);
@@ -205,6 +206,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   isLifted() {
+    this.setFrame('player-walk-left-down-1.png');
     this.healthbar.recoverSomeHp();
     this.updateHealthRelatedCondition();
   }
@@ -215,6 +217,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.die();
     } else if(this.healthbar.isExtra()) {
       this.emit('askHelp', this);
+      this.setFrame('player-down.png');
       this.speed = 0;
       this.helpSign.show();
     } else if(this.healthbar.isCritical()){

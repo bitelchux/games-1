@@ -181,6 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">ally-down.png</key>
             <key type="filename">ally-walk-left-down-1.png</key>
             <key type="filename">ally-walk-left-down-2.png</key>
             <key type="filename">ally-walk-left-up-1.png</key>
@@ -204,6 +205,7 @@
             <filename>ally-walk-left-down-2.png</filename>
             <filename>ally-walk-left-up-1.png</filename>
             <filename>ally-walk-left-up-2.png</filename>
+            <filename>ally-down.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -277,6 +277,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   isLifted() {
+    this.setFrame('ally-walk-left-down-1.png');
     this.healthbar.recoverSomeHp();
     this.updateHealthRelatedCondition();
   }
@@ -287,6 +288,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
       this.die();
     } else if(this.healthbar.isExtra()) {
       this.emit('askHelp', this);
+      this.setFrame('ally-down.png');
       this.state = this.states.DOWN;
       this.speed = 0;
       this.helpSign.show();
