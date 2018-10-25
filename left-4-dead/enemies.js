@@ -439,11 +439,23 @@ class Smoker extends Enemy {
     var dragDestination = this.scene.level.getCoordBeforeObstacleFromAtoB(this.target.getCenter(), this.getCenter());
     var dragDistance = this.target.getCenter().distance(dragDestination);
 
+    this.graphics = this.scene.add.graphics();
+    this.graphics.lineStyle(2, 0xffffff);
+
     this.scene.tweens.add({
         targets: this.target,
         x: dragDestination.x,
         y: dragDestination.y,
-        duration: dragDistance / 0.1
+        duration: dragDistance / 0.1,
+        onUpdate: function() {
+          var line = new Phaser.Geom.Line(this.target.x, this.target.y, dragDestination.x, dragDestination.y);
+          this.graphics.clear();
+          this.graphics.strokeLineShape(line);
+        },
+        onComplete: function() {
+          this.graphics.clear();
+        },
+        callbackScope: this
     });
     this.target.isHit(100);
   }
