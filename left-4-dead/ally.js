@@ -192,22 +192,23 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   pickObject(tile) {
     switch(tile.index) {
       case 18:
+        window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
         this.healthbar.gainHp(50);
         this.updateHealthRelatedCondition();
         this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
         break;
-        case Pistols.index:
-          this.weapon = new Pistols(this, this.scene, 100, 36);
-          this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
-          break;
-        case Shotgun.index:
-          this.weapon = new Shotgun(this, this.scene, 1150, 24);
-          this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
-          break;
-        case Uzi.index:
-          this.weapon = new Uzi(this, this.scene, 63, 20);
-          this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
-          break;
+      case Pistols.index:
+        this.weapon = new Pistols(this, this.scene, 100, 36);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
+        break;
+      case Shotgun.index:
+        this.weapon = new Shotgun(this, this.scene, 1150, 24);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
+        break;
+      case Uzi.index:
+        this.weapon = new Uzi(this, this.scene, 63, 20);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
+        break;
     }
 
     this.weapon.bulletBar.on("reload", function() {
@@ -231,6 +232,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   helpAlly(ally) {
     this.helpBar.help();
     this.helpBar.on("helpComplete", function() {
+      window.gameplayStats[this.name].nbRevivedTeammate += 1;
       ally.isLifted();
     }.bind(this));
   }
@@ -271,6 +273,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
+    window.gameplayStats[this.name].nbDamageTaken += 1;
     this.emit("isHit", damage);
     this.healthbar.loseHp(damage);
     this.updateHealthRelatedCondition();
@@ -287,6 +290,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
       this.emit('die');
       this.die();
     } else if(this.healthbar.isExtra()) {
+      window.gameplayStats[this.name].nbTimesIncapacited += 1;
       this.emit('askHelp', this);
       this.setFrame('ally-down.png');
       this.state = this.states.DOWN;

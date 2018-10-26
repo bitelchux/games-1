@@ -2,25 +2,105 @@ class EndScene extends Phaser.Scene {
 
   preload() {
     this.load.setPath('assets/');
-    this.load.image('endBkg', 'end.png');
+    this.load.image('endBkg', 'end/end.png');
   }
 
   createBackground() {
-    this.add.image(384, 384, 'endBkg');
+    this.bkg = this.add.image(384, 384, 'endBkg');
+    this.bkg.setScrollFactor(0);
   }
 
-  createText() {
-    var textStyle = {fontStyle: 'bold', fontSize: '36px', fill: 'white'};
-    var slashText = this.add.text(150, 300, 'Press Any Key To Enter Menu', textStyle);
+  createStats() {
+    var titleStyle = {fontStyle: 'bold', fontSize: '36px', fill: 'white'};
+    var subtitleStyle = {fontStyle: 'bold', fontSize: '26px', fill: 'white'};
+    this.textStyle = {fontStyle: 'bold', fontSize: '18px', fill: 'white'};
+    this.playerStyle = {fontStyle: 'bold', fontSize: '18px', fill: '#CB904D'};
+
+    var title = this.add.text(0, 125, 'Gameplay Stats', titleStyle);
+    title.setX(384 - title.width/2);
+
+    var totalTime = Math.floor((Date.now() - window.gameplayStats.startGameTime) / 1000);
+    var totalText = this.add.text(0, 175, 'Total time: ' + totalTime, this.textStyle);
+    totalText.setX(384 - totalText.width/2);
+
+    // player stats
+    this.addSortedStats(250, "Number of times incapacited", "nbTimesIncapacited", false);
+    this.addSortedStats(350, "First aid kits used", "nbFirstAidKitsUsed", false);
+    this.addSortedStats(450, "Boomers killed", "nbBoomersKilled");
+    this.addSortedStats(550, "Hunters killed", "nbHuntersKilled");
+    this.addSortedStats(650, "Smokers killed", "nbSmokersKilled");
+    this.addSortedStats(750, "Common infected killed", "nbZombiesKilled");
+    this.addSortedStats(850, "Took the least amount of damage", "nbDamageTaken", false);
+    this.addSortedStats(950, "Healed the most teammates", "nbRevivedTeammate");
+
+    // var playerAccuracy = Math.floor(100 * window.gameplayStats.player.nbBulletsHit / window.gameplayStats.player.nbBulletsFired);
+    // this.add.text(150, 440, 'Overall accuracy: ' + playerAccuracy + "%", playerStyle);
+
+    // all zombies killed
+    var nbZombiesKilled = window.gameplayStats.player.nbZombiesKilled +
+      window.gameplayStats.player.nbBoomersKilled +
+      window.gameplayStats.player.nbHuntersKilled +
+      window.gameplayStats.player.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.ally1.nbZombiesKilled +
+        window.gameplayStats.ally1.nbBoomersKilled +
+        window.gameplayStats.ally1.nbHuntersKilled +
+        window.gameplayStats.ally1.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.ally2.nbZombiesKilled +
+        window.gameplayStats.ally2.nbBoomersKilled +
+        window.gameplayStats.ally2.nbHuntersKilled +
+        window.gameplayStats.ally2.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.ally3.nbZombiesKilled +
+        window.gameplayStats.ally3.nbBoomersKilled +
+        window.gameplayStats.ally3.nbHuntersKilled +
+        window.gameplayStats.ally3.nbSmokersKilled;
+
+
+    this.totalKills = this.add.text(0, 1250, nbZombiesKilled + ' zombies were harmed in the making of this film.', this.textStyle);
+    this.totalKills.setX(384 - this.totalKills.width/2);
+  }
+
+  addSortedStats(topLeft, statText, statName, desc = true) {
+    var playerStat = window.gameplayStats.player;
+    var ally1Stat = window.gameplayStats.ally1;
+    var ally2Stat = window.gameplayStats.ally2;
+    var ally3Stat = window.gameplayStats.ally3;
+
+    var stats = [playerStat, ally1Stat, ally2Stat, ally3Stat];
+    stats.sort(function(a, b)
+    {
+      return desc ? b[statName]-a[statName] : a[statName]-b[statName];
+    }.bind(this));
+
+    var title = this.add.text(150, topLeft, statText, style);
+    title.setX(384 - title.width);
+
+    for(var i=0; i<stats.length; i++) {
+      var style = stats[i].name == "player" ? this.playerStyle : this.textStyle;
+      this.add.text(384 + 16 , topLeft + i*20, stats[i][statName] + " " + stats[i].name, style);
+    }
   }
 
   create() {
     this.createBackground();
-    this.createText();
+    this.createStats();
 
-    this.input.keyboard.on('keydown', function(){
-      this.scene.remove(this);
-      this.scene.add('menuScene', MenuScene, true);
+    this.input.keyboard.on('keydown', function() {
+      this.backToMenu();
     }, this);
+  }
+
+  update() {
+    this.cameras.main.scrollY += 1;
+    if(this.cameras.main.scrollY > 100)
+      this.bkg.alpha -= 0.005;
+
+    if(this.cameras.main.scrollY > this.totalKills.y + 48) {
+      this.backToMenu();
+    }
+  }
+
+  backToMenu() {
+    this.scene.remove(this);
+    this.scene.add('menuScene', MenuScene, true);
   }
 }

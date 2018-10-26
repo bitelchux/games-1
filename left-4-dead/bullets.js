@@ -37,6 +37,8 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setActive(true);
     this.setVisible(true);
 
+    window.gameplayStats[owner.name].nbBulletsFired += 1;
+
     this.owner = owner;
     this.x = x;
     this.y = y;
@@ -57,6 +59,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   hitEnemy(bullet, enemy) {
+
+    window.gameplayStats[bullet.owner.name].nbBulletsHit += 1;
+
     if(this.owner.name == "player")
       this.scene.camera.shake(100, 0.001);
 

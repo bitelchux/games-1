@@ -133,6 +133,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if(tile) {
       switch(tile.index) {
         case 18:
+          window.gameplayStats.player.nbFirstAidKitsUsed += 1;
           this.healthbar.gainHp(50);
           this.updateHealthRelatedCondition();
           this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
@@ -161,6 +162,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.helpBar.help();
       this.helpBar.on("helpComplete", function() {
+        window.gameplayStats.player.nbRevivedTeammate += 1;
         chosenAlly.isLifted();
         this.isHelping = false;
         this.updateHealthRelatedCondition();
@@ -200,6 +202,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
+    window.gameplayStats.player.nbDamageTaken += 1;
     this.emit('isHit', damage);
     this.healthbar.loseHp(damage);
     this.updateHealthRelatedCondition();
@@ -216,6 +219,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.emit('die');
       this.die();
     } else if(this.healthbar.isExtra()) {
+      window.gameplayStats.player.nbTimesIncapacited += 1;
       this.emit('askHelp', this);
       this.setFrame('player-down.png');
       this.speed = 0;

@@ -82,7 +82,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   whenIsHit(bullet) {}
 
-  whenDie() {}
+  whenDie(killer) {}
 
   update(time, delta) {
     this.clearTint()
@@ -207,13 +207,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     if(this.config.hp > 0) {
       this.config.hp -= bullet.damage;
       if(this.config.hp <= 0) {
-        this.die();
+        this.die(bullet.owner);
       }
     }
   }
 
-  die() {
-    this.whenDie();
+  die(killer) {
+    this.whenDie(killer);
     this.clear();
   }
 
@@ -266,7 +266,8 @@ class Zombie extends Enemy {
     this.y += kickbackVector.y/10;
   }
 
-  die() {
+  die(killer) {
+    window.gameplayStats[killer.name].nbZombiesKilled += 1;
     clearInterval(this.pursuitInterval);
     this.startsPursuit = false;
     this.config.hp = 100;
@@ -306,7 +307,9 @@ class Boomer extends Enemy {
     this.followPath(delta);
   }
 
-  die() {
+  die(killer) {
+    window.gameplayStats[killer.name].nbBoomersKilled += 1;
+
     var allies = this.scene.allies.getAlliesAround(this.getCenter(), 32);
     if(allies.length > 0) {
       this.scene.aidirector.spawnMob();
@@ -386,6 +389,10 @@ class Hunter extends Enemy {
     });
     this.target.isHit(100);
   }
+
+  whenDie(killer) {
+    window.gameplayStats[killer.name].nbHuntersKilled += 1;
+  }
 }
 
 class Smoker extends Enemy {
@@ -462,7 +469,8 @@ class Smoker extends Enemy {
     this.target.isHit(100);
   }
 
-  whenDie() {
+  whenDie(killer) {
+    window.gameplayStats[killer.name].nbSmokersKilled += 1;
     if(this.dragTween)
       this.dragTween.stop();
   }
@@ -535,7 +543,7 @@ class Tank extends Enemy {
     }
   }
 
-  whenDie() {
+  whenDie(killer) {
     this.scene.sounds.tankmusic.stop();
     this.rock = null;
   }

@@ -434,6 +434,7 @@ class GameScene extends Phaser.Scene {
   create() {
     this.createAnims();
     this.createAudio();
+    this.createStats();
 
     this.sounds.music.play();
 
@@ -455,6 +456,71 @@ class GameScene extends Phaser.Scene {
       this.scene.remove(this);
       this.scene.add('menuScene', MenuScene, true);;
     }, this);
+
+    this.input.keyboard.on('keydown_ENTER', function(){
+      this.isBeingRemoved = true;
+      this.scene.remove(this);
+      this.scene.add('endScene', EndScene, true);;
+    }, this);
+  }
+
+  createStats() {
+    window.gameplayStats = {
+      startGameTime: Date.now(),
+      player: {
+        name: 'player',
+        nbTimesIncapacited: 0,
+        nbFirstAidKitsUsed: 0,
+        nbZombiesKilled: 0,
+        nbBoomersKilled: 0,
+        nbHuntersKilled: 0,
+        nbSmokersKilled: 0,
+        nbDamageTaken: 0,
+        nbRevivedTeammate: 0,
+        nbBulletsFired: 0,
+        nbBulletsHit: 0
+      },
+      ally1: {
+        name: 'ally1',
+        nbTimesIncapacited: 0,
+        nbFirstAidKitsUsed: 0,
+        nbZombiesKilled: 0,
+        nbBoomersKilled: 0,
+        nbHuntersKilled: 0,
+        nbSmokersKilled: 0,
+        nbDamageTaken: 0,
+        nbRevivedTeammate: 0,
+        nbBulletsShot: 0,
+        nbBulletsHit: 0
+      },
+      ally2: {
+        name: 'ally2',
+        nbTimesIncapacited: 0,
+        nbFirstAidKitsUsed: 0,
+        nbZombiesKilled: 0,
+        nbBoomersKilled: 0,
+        nbHuntersKilled: 0,
+        nbSmokersKilled: 0,
+        nbDamageTaken: 0,
+        nbRevivedTeammate: 0,
+        nbBulletsShot: 0,
+        nbBulletsHit: 0
+      },
+      ally3: {
+        name: 'ally3',
+        nbTimesIncapacited: 0,
+        nbFirstAidKitsUsed: 0,
+        nbZombiesKilled: 0,
+        nbBoomersKilled: 0,
+        nbHuntersKilled: 0,
+        nbSmokersKilled: 0,
+        nbDamageTaken: 0,
+        nbRevivedTeammate: 0,
+        nbBulletsShot: 0,
+        nbBulletsHit: 0
+      },
+    };
+
   }
 
   update(time, delta) {
@@ -481,6 +547,7 @@ class GameScene extends Phaser.Scene {
 
     this.sounds.music.stop();
     this.isBeingRemoved = true;
+
     this.scene.remove(this);
     if(!this.scene.get('endScene')) {
       this.scene.add('endScene', EndScene, true);
