@@ -78,7 +78,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
 
     this.x += Math.random()*5 - Math.random()*5;
     this.y += Math.random()*5 - Math.random()*5;
-    var scale = Math.random();
+    var scale = 0.5 + Math.random()*0.5;
     this.setFrame('bullet-impact.png');
     this.setScale(scale);
 
