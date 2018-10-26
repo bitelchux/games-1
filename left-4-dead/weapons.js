@@ -68,37 +68,37 @@ class Weapon {
 }
 
 class Pistols extends Weapon {
-  constructor(owner, scene, rate, damage) {
-    super(owner, scene, rate, damage, "pistols");
+  constructor(owner) {
+    super(owner, owner.scene, 100, 17, "pistols");
     this.index = Pistols.index;
   }
 
   createBullets(owner, rotation) {
     var randX = owner.x + Math.random()*3 - Math.random()*3;
     var randY = owner.y + Math.random()*3 - Math.random()*3;
-    this.scene.bullets.fire(owner, randX, randY, rotation - 0.1, this.damage, owner.color);
-    this.scene.bullets.fire(owner, randX, randY, rotation + 0.1, this.damage, owner.color);
+    this.scene.bullets.fire(owner, randX, randY, rotation - 0.2, this.damage, owner.color);
+    this.scene.bullets.fire(owner, randX, randY, rotation + 0.2, this.damage, owner.color);
   }
 }
 Pistols.index = 5;
 
 class Shotgun extends Weapon {
-  constructor(owner, scene, rate, damage) {
-    super(owner, scene, rate, damage, "shotgun");
+  constructor(owner) {
+    super(owner, owner.scene, 1150, 24, "shotgun");
     this.index = Shotgun.index;
   }
 
   createBullets(owner, rotation) {
-    for(var i=0; i<10; i++) {
+    for(var i=0; i<5; i++) {
       var randX = owner.x + Math.random()*3 - Math.random()*3;
       var randY = owner.y + Math.random()*3 - Math.random()*3;
-      this.scene.bullets.fire(owner, randX, randY, rotation - 0.5 + i/10, this.damage, owner.color);
+      this.scene.bullets.fire(owner, randX, randY, rotation - 0.7 + i*2/7, this.damage, owner.color);
     }
     var t = window.setTimeout(function() {
-      for(var i=0; i<10; i++) {
+      for(var i=0; i<5; i++) {
         var randX = owner.x + Math.random()*3 - Math.random()*3;
         var randY = owner.y + Math.random()*3 - Math.random()*3;
-        this.scene.bullets.fire(owner, randX, randY, rotation - 0.5 + i/10, this.damage, owner.color);
+        this.scene.bullets.fire(owner, randX, randY, rotation - 0.7 + i*2/7, this.damage, owner.color);
       }
     }.bind(this), 50);
     window.timeouts.push(t);
@@ -107,8 +107,8 @@ class Shotgun extends Weapon {
 Shotgun.index = 10;
 
 class Uzi extends Weapon {
-  constructor(owner, scene, rate, damage) {
-    super(owner, scene, rate, damage, "uzi");
+  constructor(owner) {
+    super(owner, owner.scene, 63, 20, "uzi");
     this.index = Uzi.index;
   }
 

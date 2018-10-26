@@ -198,15 +198,15 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
         this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
         break;
       case Pistols.index:
-        this.weapon = new Pistols(this, this.scene, 100, 36);
+        this.weapon = new Pistols(this);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
         break;
       case Shotgun.index:
-        this.weapon = new Shotgun(this, this.scene, 1150, 24);
+        this.weapon = new Shotgun(this);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
         break;
       case Uzi.index:
-        this.weapon = new Uzi(this, this.scene, 63, 20);
+        this.weapon = new Uzi(this);
         this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
         break;
     }
