@@ -36,6 +36,10 @@ class MenuScene extends Phaser.Scene {
       repeat: -1
     });
 
+    var x = config.width + 16;
+    var y = Math.random() * config.height;
+    this.addZombie(x, y);
+
     this.timeout();
   }
 
