@@ -90,7 +90,7 @@ class EndScene extends Phaser.Scene {
   }
 
   update() {
-    this.cameras.main.scrollY += 1;
+    this.cameras.main.scrollY += 0.5;
     if(this.cameras.main.scrollY > 100)
       this.bkg.alpha -= 0.005;
 
