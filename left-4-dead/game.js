@@ -24,12 +24,6 @@ class GameScene extends Phaser.Scene {
       atlasURL: 'bullet/bullet.json'
     });
     this.load.atlas({
-      key: 'player',
-      textureURL: 'player/player.png',
-      normalMap: 'player/player_n.png',
-      atlasURL: 'player/player.json'
-    });
-    this.load.atlas({
       key: 'bill',
       textureURL: 'bill/bill.png',
       normalMap: 'bill/bill_n.png',

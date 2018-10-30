@@ -5,6 +5,11 @@ class MenuScene extends Phaser.Scene {
 
     this.load.image('menuBkg', 'menu/menu.png');
 
+    this.load.image('billPhoto', 'bill/bill-photo.png');
+    this.load.image('zoeyPhoto', 'zoey/zoey-photo.png');
+    this.load.image('francisPhoto', 'francis/francis-photo.png');
+    this.load.image('louisPhoto', 'louis/louis-photo.png');
+
     this.load.atlas({
       key: 'zombie',
       textureURL: 'enemies/zombie/zombie.png',
@@ -18,9 +23,21 @@ class MenuScene extends Phaser.Scene {
   }
 
   createTexts() {
-    var textStyle = {fontStyle: 'bold', fontSize: '36px', fill: 'white'};
-    var slashText = this.add.text(150, 300, 'Press Any Key To Start', textStyle);
-    slashText.setDepth(300);
+    var textStyle = {fontStyle: 'bold', fontSize: '48px', fill: '#24281F'};
+    var slashText = this.add.text(150, 260, 'Choose a survivor', textStyle);
+    slashText.setDepth(250);
+  }
+
+  createSurvivors() {
+    this.survivors = ["bill", "zoey", "francis", "louis"];
+
+    this.bill = this.add.image(100, 400, 'billPhoto');
+    this.zoey = this.add.image(285, 400, 'zoeyPhoto');
+    this.francis = this.add.image(485, 400, 'francisPhoto');
+    this.louis = this.add.image(668, 400, 'louisPhoto');
+
+    this.survivorIndex = 0;
+    this.updateSurvivorSelection();
   }
 
   createZombies() {
@@ -55,11 +72,21 @@ class MenuScene extends Phaser.Scene {
   create() {
     this.createBackground();
     this.createTexts();
+    this.createSurvivors();
     this.createZombies();
 
-    this.input.keyboard.on('keydown', function() {
+    this.input.keyboard.on('keydown_ENTER', function() {
+      window.selectedName = this.survivors[this.survivorIndex];
       this.scene.remove(this);
       this.scene.add('gameScene', GameScene, true);
+    }, this);
+
+    this.input.keyboard.on('keydown_LEFT', function() {
+      this.moveSelectionLeft();
+    }, this);
+
+    this.input.keyboard.on('keydown_RIGHT', function() {
+      this.moveSelectionRight();
     }, this);
   }
 
@@ -69,5 +96,31 @@ class MenuScene extends Phaser.Scene {
     zombie.setVelocity(-16 + (Math.floor(Math.random()*-16*3)),0);
     zombie.setDepth(y);
     zombie.setScale(4);
+  }
+
+  updateSurvivorSelection() {
+    var selectedName = this.survivors[this.survivorIndex];
+    for(var i=0; i<this.survivors.length; i++) {
+      var name = this.survivors[i];
+      if(name == selectedName) {
+        this[name].setTint(0xFFFFFF);
+      } else {
+        this[name].setTint(0x666666);
+      }
+    };
+  }
+
+  modulo(x,n) {
+      return ((x%n)+n)%n;
+  }
+
+  moveSelectionRight() {
+    this.survivorIndex = this.modulo((this.survivorIndex + 1), this.survivors.length);
+    this.updateSurvivorSelection();
+  }
+
+  moveSelectionLeft() {
+    this.survivorIndex = this.modulo((this.survivorIndex - 1), this.survivors.length);
+    this.updateSurvivorSelection();
   }
 }
