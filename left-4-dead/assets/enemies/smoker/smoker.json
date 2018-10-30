@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "smoker-walk-left-down-1.png",
+	"filename": "smoker-dead.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "smoker-walk-left-down-2.png",
+	"filename": "smoker-walk-left-down-1.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "smoker-walk-left-up-1.png",
+	"filename": "smoker-walk-left-down-2.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,8 +25,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "smoker-walk-left-up-2.png",
+	"filename": "smoker-walk-left-up-1.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "smoker-walk-left-up-2.png",
+	"frame": {"x":64,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -37,8 +45,8 @@
 	"version": "1.0",
 	"image": "smoker.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":16},
+	"size": {"w":80,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:99dbb8031628dc29d7132d2369a68850:8d03c2877037c0ff374c736d2863da43:0d2d8f86bfc4661fb0f276fa43548ea8$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e785e0e28fc3e39e4a28e28b5f6586f2:85b8b3474928b548e156f8e3920d7dd4:0d2d8f86bfc4661fb0f276fa43548ea8$"
 }
 }

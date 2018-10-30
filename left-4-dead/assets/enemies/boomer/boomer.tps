@@ -181,6 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">boomer-dead.png</key>
             <key type="filename">boomer-explode-1.png</key>
             <key type="filename">boomer-explode-2.png</key>
             <key type="filename">boomer-walk-left-down-1.png</key>
@@ -208,6 +209,7 @@
             <filename>boomer-walk-left-up-2.png</filename>
             <filename>boomer-explode-1.png</filename>
             <filename>boomer-explode-2.png</filename>
+            <filename>boomer-dead.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

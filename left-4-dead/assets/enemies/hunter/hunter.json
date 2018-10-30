@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "hunter-walk-left-down-1.png",
+	"filename": "hunter-dead.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "hunter-walk-left-down-2.png",
+	"filename": "hunter-walk-left-down-1.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "hunter-walk-left-up-1.png",
+	"filename": "hunter-walk-left-down-2.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,8 +25,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "hunter-walk-left-up-2.png",
+	"filename": "hunter-walk-left-up-1.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "hunter-walk-left-up-2.png",
+	"frame": {"x":64,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -37,8 +45,8 @@
 	"version": "1.0",
 	"image": "hunter.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":16},
+	"size": {"w":80,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1e80882e9914fb4a83005e7414011f39:609a2c7b77b4cf08a2c6ce60cf81c932:40fdbf559f3075a633e0520e757bc258$"
+	"smartupdate": "$TexturePacker:SmartUpdate:4e954bdaf8733299dc236649b7bbb042:5c69b5f4cd099d477e9e6abdad58389d:40fdbf559f3075a633e0520e757bc258$"
 }
 }

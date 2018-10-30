@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "boomer-explode-1.png",
+	"filename": "boomer-dead.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-explode-2.png",
+	"filename": "boomer-explode-1.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-down-1.png",
+	"filename": "boomer-explode-2.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-down-2.png",
+	"filename": "boomer-walk-left-down-1.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-up-1.png",
+	"filename": "boomer-walk-left-down-2.png",
 	"frame": {"x":64,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -41,8 +41,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "boomer-walk-left-up-2.png",
+	"filename": "boomer-walk-left-up-1.png",
 	"frame": {"x":80,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "boomer-walk-left-up-2.png",
+	"frame": {"x":96,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -53,8 +61,8 @@
 	"version": "1.0",
 	"image": "boomer.png",
 	"format": "RGBA8888",
-	"size": {"w":96,"h":16},
+	"size": {"w":112,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:70a732f72f9f3c5015ec29412d9ca1aa:14457a31a3eb6ecad1d7a07caba68faa:6c64ba9078b3c417d90ef90856bf54dc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d99df23bc96a6d4bea0c2653774be5fe:817f5342efe51155486fa63f96ecbcd5:6c64ba9078b3c417d90ef90856bf54dc$"
 }
 }

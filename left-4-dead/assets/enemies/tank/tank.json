@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "tank-walk-left-down-1.png",
+	"filename": "tank-dead.png",
 	"frame": {"x":0,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "tank-walk-left-down-2.png",
+	"filename": "tank-walk-left-down-1.png",
 	"frame": {"x":16,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "tank-walk-left-up-1.png",
+	"filename": "tank-walk-left-down-2.png",
 	"frame": {"x":32,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
@@ -25,8 +25,16 @@
 	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "tank-walk-left-up-2.png",
+	"filename": "tank-walk-left-up-1.png",
 	"frame": {"x":48,"y":0,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "tank-walk-left-up-2.png",
+	"frame": {"x":64,"y":0,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -37,8 +45,8 @@
 	"version": "1.0",
 	"image": "tank.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":16},
+	"size": {"w":80,"h":16},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5c61e43f03be8ca95e274a0b5b085295:8e8aaf82293296eec96880f1103c7011:e5746570371ae3e0565b6e20f5a72ab3$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c520d937f5a7acf3bc3b020ee591bd2b:cc96906c5bf19a2442869b3d904b7594:e5746570371ae3e0565b6e20f5a72ab3$"
 }
 }

@@ -119,7 +119,7 @@
                 <key>sortBy</key>
                 <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
                 <key>order</key>
-                <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
+                <enum type="AlgorithmBasicSettings::Order">Descending</enum>
             </struct>
             <key>polygon</key>
             <struct type="AlgorithmPolygonSettings">
@@ -181,6 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">zombie-dead.png</key>
             <key type="filename">zombie-walk-left-down-1.png</key>
             <key type="filename">zombie-walk-left-down-2.png</key>
             <key type="filename">zombie-walk-left-up-1.png</key>
@@ -204,6 +205,7 @@
             <filename>zombie-walk-left-down-2.png</filename>
             <filename>zombie-walk-left-up-1.png</filename>
             <filename>zombie-walk-left-up-2.png</filename>
+            <filename>zombie-dead.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
