@@ -62,10 +62,10 @@ class EndScene extends Phaser.Scene {
   addSortedStats(topLeft, statText, statName, desc = true) {
     var billStat = window.gameplayStats.bill;
     var zoeyStat = window.gameplayStats.zoey;
-    var billStat = window.gameplayStats.bill;
     var francisStat = window.gameplayStats.francis;
+    var louisStat = window.gameplayStats.louis;
 
-    var stats = [billStat, zoeyStat, billStat, francisStat];
+    var stats = [billStat, zoeyStat, francisStat, louisStat];
     stats.sort(function(a, b)
     {
       return desc ? b[statName]-a[statName] : a[statName]-b[statName];
