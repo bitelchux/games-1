@@ -106,6 +106,7 @@ class GameScene extends Phaser.Scene {
     this.load.audio('pistolsSound', 'audio/pistols.wav');
     this.load.audio('shotgunSound', 'audio/shotgun.wav');
     this.load.audio('uziSound', 'audio/uzi.wav');
+    this.load.audio('rifleSound', 'audio/rifle.wav');
     this.load.audio('grenadeSound', 'audio/grenade.wav');
 
     //reloading
@@ -412,6 +413,7 @@ class GameScene extends Phaser.Scene {
     this.sounds["pistols"] = this.sound.add('pistolsSound');
     this.sounds["shotgun"] = this.sound.add('shotgunSound');
     this.sounds["uzi"] = this.sound.add('uziSound');
+    this.sounds["rifle"] = this.sound.add('rifleSound');
     this.sounds["grenade"] = this.sound.add('grenadeSound');
 
     //reloading

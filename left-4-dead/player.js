@@ -1,10 +1,10 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, name, color) {
+  constructor(scene, x, y, name, weaponName, color) {
     super(scene, x, y, name);
     scene.physics.world.enable(this);
     scene.add.existing(this);
     this.scene = scene;
-    this.color = color;
+    this.color = color
 
     window.gameplayStats[name].isPlayer = true;
 
@@ -13,7 +13,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setDepth(2);
     this.body.world.setBounds(0,0,this.scene.level.tilemap.widthInPixels,this.scene.level.tilemap.heightInPixels);
     this.name = name;
-    this.setTint(color);
     this.setFrame(name + '-walk-left-down-1.png');
 
     this.healthbar = new HealthBar(this, scene);
@@ -32,14 +31,40 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.interact();
     }, this);
 
-    this.weapon == null;
+    switch(weaponName) {
+      case "pistols":
+        this.weapon = new Pistols(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000);
+        break;
+      case "shotgun":
+        this.weapon = new Shotgun(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000);
+        break;
+      case "uzi":
+        this.weapon = new Uzi(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000);
+        break;
+      case "rifle":
+        this.weapon = new Rifle(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 15, 4000);
+        break;
+    }
+
+    this.weapon.bulletBar.on("reload", function() {
+      this.weapon.isReloading = true;
+    }.bind(this));
+    this.weapon.bulletBar.on("reloadFinished", function() {
+      this.weapon.isReloading = false;
+    }.bind(this));
+
+
     this.isHelping = false;
   }
 
   update() {
     this.setVelocity(0,0);
 
-    if(this.cursors.space.isDown && this.weapon) {
+    if(this.cursors.space.isDown) {
       this.weapon.shoot();
       this.turn();
 
@@ -132,18 +157,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   interact() {
     var tile = this.scene.level.objectsLayer.getTileAtWorldXY(this.x, this.y, undefined, undefined, 1);
-    if(tile) {
-      switch(tile.index) {
-        case 18:
-          window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
-          this.healthbar.gainHp(50);
-          this.updateHealthRelatedCondition();
-          this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
-          break;
-        default:
-          var weapon = this.weapon;
-          this.pick_weapon(tile);
-      }
+    if(tile && tile.index == 18) {
+      window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
+      this.healthbar.gainHp(50);
+      this.updateHealthRelatedCondition();
+      this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
     } else if(!this.isHelping) {
       this.helpAlly();
     }
@@ -170,33 +188,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.updateHealthRelatedCondition();
       }.bind(this));
     }
-  }
-
-  pick_weapon(tile) {
-    if(this.weapon)
-      this.weapon.bulletBar.kill();
-
-    switch(tile.index) {
-      case Pistols.index:
-        this.weapon = new Pistols(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000);
-        break;
-      case Shotgun.index:
-        this.weapon = new Shotgun(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000);
-        break;
-      case Uzi.index:
-        this.weapon = new Uzi(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000);
-        break;
-    }
-
-    this.weapon.bulletBar.on("reload", function() {
-      this.weapon.isReloading = true;
-    }.bind(this));
-    this.weapon.bulletBar.on("reloadFinished", function() {
-      this.weapon.isReloading = false;
-    }.bind(this));
   }
 
   calledForHelp(ally) {

@@ -119,3 +119,17 @@ class Uzi extends Weapon {
   }
 }
 Uzi.index = 15;
+
+class Rifle extends Weapon {
+  constructor(owner) {
+    super(owner, owner.scene, 200, 40, "rifle");
+    this.index = Rifle.index;
+  }
+
+  createBullets(owner, rotation) {
+    var randX = owner.x + Math.random()*3 - Math.random()*3;
+    var randY = owner.y + Math.random()*3 - Math.random()*3;
+    this.scene.bullets.fire(owner, randX, randY, rotation, this.damage, owner.color);
+  }
+}
+Rifle.index = 20;

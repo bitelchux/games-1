@@ -1,18 +1,23 @@
 class Allies {
   constructor(scene) {
     this.scene = scene;
-    // this.player = new Player(this.scene, 5*16-8, 9*16-8, "bill", 0xCB904D);
-    // this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, "louis", 0x59CD90);
-    // this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, "zoey", 0xEE6352);
-    // this.ally3 = new Ally(this.scene, 3*16-8, 10*16-8, "francis", 0x24ACFC);
 
-    var allyNames = ['bill', 'zoey', 'francis', 'louis'];
-    allyNames = allyNames.filter(item => item !== window.selectedName);
+    var allies = [
+      { name:'bill', weaponName:'shotgun' },
+      { name:'zoey', weaponName:'uzi' },
+      { name:'francis', weaponName:'rifle' },
+      { name:'louis', weaponName:'pistols' }
+    ];
 
-    this.player = new Player(this.scene, 5*16-8, 9*16-8, window.selectedName, 0xCB904D);
-    this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, allyNames[0], 0xFFFFFF);
-    this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, allyNames[1], 0xFFFFFF);
-    this.ally3 = new Ally(this.scene, 3*16-8, 10*16-8, allyNames[2], 0xFFFFFF);
+    var chosenAlly = allies.filter(item => item.name === window.selectedName)[0];
+    allies = allies.filter(item => item.name !== window.selectedName);
+
+    console.log(chosenAlly);
+
+    this.player = new Player(this.scene, 5*16-8, 9*16-8, chosenAlly.name, chosenAlly.weaponName, 0xCB904D);
+    this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, allies[0].name, allies[0].weaponName, 0xFFFFFF);
+    this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, allies[1].name, allies[1].weaponName, 0xFFFFFF);
+    this.ally3 = new Ally(this.scene, 3*16-8, 10*16-8, allies[2].name, allies[2].weaponName, 0xFFFFFF);
 
     this.group = [];
     this.group.push(this.player);

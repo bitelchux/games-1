@@ -10,6 +10,11 @@ class MenuScene extends Phaser.Scene {
     this.load.image('francisPhoto', 'francis/francis-photo.png');
     this.load.image('louisPhoto', 'louis/louis-photo.png');
 
+    this.load.image("pistolsPhoto", "weapons/pistols.png");
+    this.load.image("shotgunPhoto", "weapons/shotgun.png");
+    this.load.image("uziPhoto", "weapons/uzi.png");
+    this.load.image("riflePhoto", "weapons/rifle.png");
+
     this.load.atlas({
       key: 'zombie',
       textureURL: 'enemies/zombie/zombie.png',
@@ -35,6 +40,15 @@ class MenuScene extends Phaser.Scene {
     this.zoey = this.add.image(285, 400, 'zoeyPhoto');
     this.francis = this.add.image(485, 400, 'francisPhoto');
     this.louis = this.add.image(668, 400, 'louisPhoto');
+
+    this.bill["weapon"] = this.add.image(100, 450, 'shotgunPhoto');
+    this.zoey["weapon"] = this.add.image(285, 450, 'uziPhoto');
+    this.francis["weapon"] = this.add.image(485, 450, 'riflePhoto');
+    this.louis["weapon"] = this.add.image(668, 450, 'pistolsPhoto');
+    this.bill.weapon.setScale(4);
+    this.zoey.weapon.setScale(4);
+    this.francis.weapon.setScale(4);
+    this.louis.weapon.setScale(4);
 
     this.survivorIndex = 0;
     this.updateSurvivorSelection();
@@ -104,8 +118,10 @@ class MenuScene extends Phaser.Scene {
       var name = this.survivors[i];
       if(name == selectedName) {
         this[name].setTint(0xFFFFFF);
+        this[name].weapon.setTint(0xFFFFFF);
       } else {
         this[name].setTint(0x666666);
+        this[name].weapon.setTint(0x666666);
       }
     };
   }

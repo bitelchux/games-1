@@ -1,5 +1,5 @@
 class Ally extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, name, color) {
+  constructor(scene, x, y, name, weaponName, color) {
     super(scene, x, y, name);
     scene.physics.world.enable(this);
     scene.add.existing(this);
@@ -25,7 +25,32 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     this.normalspeed = 0.035 * window.speed;
     this.halfspeed = 0.017 * window.speed;
     this.speed = this.normalspeed;
-    this.weapon = null;
+
+    switch(weaponName) {
+      case "pistols":
+        this.weapon = new Pistols(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
+        break;
+      case "shotgun":
+        this.weapon = new Shotgun(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
+        break;
+      case "uzi":
+        this.weapon = new Uzi(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
+        break;
+      case "rifle":
+        this.weapon = new Rifle(this);
+        this.weapon.bulletBar = new BulletBar(this, this.scene, 15, 4000, false);
+        break;
+    }
+
+    this.weapon.bulletBar.on("reload", function() {
+      this.weapon.isReloading = true;
+    }.bind(this));
+    this.weapon.bulletBar.on("reloadFinished", function() {
+      this.weapon.isReloading = false;
+    }.bind(this));
 
     this.states = {
       IDLE: 0,
@@ -39,32 +64,25 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     if(this.state == this.states.IDLE) {
-      // unarmed
-      if(this.weapon == null) {
-        var point = this.getClosestWeaponCoord();
-        this.moveTo(point.x, point.y, this.interact);
+
+      var enemies = this.scene.enemies.getEnemiesAround(this.getCenter(), 90);
+      // enemies nearby
+      if(enemies.length > 0) {
+        this.shootWeaponAt(enemies[0].getCenter());
       }
-      // armed
-      else {
-        var enemies = this.scene.enemies.getEnemiesAround(this.getCenter(), 90);
-        // enemies nearby
-        if(enemies.length > 0) {
-          this.shootWeaponAt(enemies[0].getCenter());
-        }
 
-        var healthkitCoord = this.scene.level.getClosestHealthKit(this.getCenter());
-        //health kit is close by
-        if(this.healthbar.isCritical() && healthkitCoord.distance(this.getCenter()) < 200) {
-          this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
-        } else {
-          // var ally = this.scene.allies.getStrongestAlly();
-          var ally = this.scene.allies.player;
-          var distanceWithAlly = this.getCenter().distance(ally.getCenter());
+      var healthkitCoord = this.scene.level.getClosestHealthKit(this.getCenter());
+      //health kit is close by
+      if(this.healthbar.isCritical() && healthkitCoord.distance(this.getCenter()) < 200) {
+        this.moveTo(healthkitCoord.x, healthkitCoord.y, this.interact);
+      } else {
+        // var ally = this.scene.allies.getStrongestAlly();
+        var ally = this.scene.allies.player;
+        var distanceWithAlly = this.getCenter().distance(ally.getCenter());
 
-          // go near ally
-          if(distanceWithAlly > 70) {
-            this.goNearAlly(ally);
-          }
+        // go near ally
+        if(distanceWithAlly > 70) {
+          this.goNearAlly(ally);
         }
       }
     }
@@ -190,33 +208,12 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   pickObject(tile) {
-    switch(tile.index) {
-      case 18:
-        window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
-        this.healthbar.gainHp(50);
-        this.updateHealthRelatedCondition();
-        this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
-        break;
-      case Pistols.index:
-        this.weapon = new Pistols(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 20, 3000, false);
-        break;
-      case Shotgun.index:
-        this.weapon = new Shotgun(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 8, 4000, false);
-        break;
-      case Uzi.index:
-        this.weapon = new Uzi(this);
-        this.weapon.bulletBar = new BulletBar(this, this.scene, 50, 3000, false);
-        break;
+    if(tile.index == 18) {
+      window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
+      this.healthbar.gainHp(50);
+      this.updateHealthRelatedCondition();
+      this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
     }
-
-    this.weapon.bulletBar.on("reload", function() {
-      this.weapon.isReloading = true;
-    }.bind(this));
-    this.weapon.bulletBar.on("reloadFinished", function() {
-      this.weapon.isReloading = false;
-    }.bind(this));
   }
 
   goNearAlly(ally) {
