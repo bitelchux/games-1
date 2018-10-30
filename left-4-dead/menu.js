@@ -50,6 +50,16 @@ class MenuScene extends Phaser.Scene {
     this.francis.weapon.setScale(4);
     this.louis.weapon.setScale(4);
 
+    var textStyle = {fontStyle: 'bold', fontSize: '24px', fill: '#24281F'};
+    this.bill["title"] = this.add.text(75, 480, 'Bill', textStyle);
+    this.zoey["title"] = this.add.text(260, 480, 'Zoey', textStyle);
+    this.francis["title"] = this.add.text(440, 480, 'Francis', textStyle);
+    this.louis["title"] = this.add.text(630, 480, 'Louis', textStyle);
+    this.bill.title.setDepth(480);
+    this.zoey.title.setDepth(480);
+    this.francis.title.setDepth(480);
+    this.louis.title.setDepth(480);
+
     this.survivorIndex = 0;
     this.updateSurvivorSelection();
   }
@@ -119,9 +129,11 @@ class MenuScene extends Phaser.Scene {
       if(name == selectedName) {
         this[name].setTint(0xFFFFFF);
         this[name].weapon.setTint(0xFFFFFF);
+        this[name].title.setTint(0xFFFFFF);
       } else {
         this[name].setTint(0x666666);
         this[name].weapon.setTint(0x666666);
+        this[name].title.setTint(0x666666);
       }
     };
   }
