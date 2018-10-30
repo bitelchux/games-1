@@ -1,6 +1,6 @@
 class Ally extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, name, color) {
-    super(scene, x, y, 'ally');
+    super(scene, x, y, name);
     scene.physics.world.enable(this);
     scene.add.existing(this);
     this.scene = scene;
@@ -139,12 +139,12 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     //going up
     if(curve.p1.y < curve.p0.y) {
       this.direction += "up";
-      this.anims.play('ally-walk-left-up', true);
+      this.anims.play(this.name + '-walk-left-up', true);
     }
     //going down
     else {
       this.direction += "down";
-      this.anims.play('ally-walk-left-down', true);
+      this.anims.play(this.name + '-walk-left-down', true);
     }
 
     //going right
@@ -258,9 +258,9 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     }
 
     if(this.direction.includes("up")) {
-      this.anims.play('player-walk-left-up', true);
+      this.anims.play(this.name + '-walk-left-up', true);
     } else {
-      this.anims.play('player-walk-left-down', true);
+      this.anims.play(this.name + '-walk-left-down', true);
     }
 
     if(this.direction.includes("left")) {
@@ -280,7 +280,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   isLifted() {
-    this.setFrame('ally-walk-left-down-1.png');
+    this.setFrame(this.name + '-walk-left-down-1.png');
     this.healthbar.recoverSomeHp();
     this.updateHealthRelatedCondition();
   }
@@ -292,7 +292,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     } else if(this.healthbar.isExtra()) {
       window.gameplayStats[this.name].nbTimesIncapacited += 1;
       this.emit('askHelp', this);
-      this.setFrame('ally-down.png');
+      this.setFrame(this.name + '-down.png');
       this.state = this.states.DOWN;
       this.speed = 0;
       this.helpSign.show();

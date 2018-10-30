@@ -37,22 +37,22 @@ class EndScene extends Phaser.Scene {
     // this.add.text(150, 440, 'Overall accuracy: ' + playerAccuracy + "%", playerStyle);
 
     // all zombies killed
-    var nbZombiesKilled = window.gameplayStats.player.nbZombiesKilled +
-      window.gameplayStats.player.nbBoomersKilled +
-      window.gameplayStats.player.nbHuntersKilled +
-      window.gameplayStats.player.nbSmokersKilled;
-    nbZombiesKilled += window.gameplayStats.ally1.nbZombiesKilled +
-        window.gameplayStats.ally1.nbBoomersKilled +
-        window.gameplayStats.ally1.nbHuntersKilled +
-        window.gameplayStats.ally1.nbSmokersKilled;
-    nbZombiesKilled += window.gameplayStats.ally2.nbZombiesKilled +
-        window.gameplayStats.ally2.nbBoomersKilled +
-        window.gameplayStats.ally2.nbHuntersKilled +
-        window.gameplayStats.ally2.nbSmokersKilled;
-    nbZombiesKilled += window.gameplayStats.ally3.nbZombiesKilled +
-        window.gameplayStats.ally3.nbBoomersKilled +
-        window.gameplayStats.ally3.nbHuntersKilled +
-        window.gameplayStats.ally3.nbSmokersKilled;
+    var nbZombiesKilled = window.gameplayStats.bill.nbZombiesKilled +
+      window.gameplayStats.bill.nbBoomersKilled +
+      window.gameplayStats.bill.nbHuntersKilled +
+      window.gameplayStats.bill.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.zoey.nbZombiesKilled +
+        window.gameplayStats.zoey.nbBoomersKilled +
+        window.gameplayStats.zoey.nbHuntersKilled +
+        window.gameplayStats.zoey.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.louis.nbZombiesKilled +
+        window.gameplayStats.louis.nbBoomersKilled +
+        window.gameplayStats.louis.nbHuntersKilled +
+        window.gameplayStats.louis.nbSmokersKilled;
+    nbZombiesKilled += window.gameplayStats.francis.nbZombiesKilled +
+        window.gameplayStats.francis.nbBoomersKilled +
+        window.gameplayStats.francis.nbHuntersKilled +
+        window.gameplayStats.francis.nbSmokersKilled;
 
 
     this.totalKills = this.add.text(0, 1250, nbZombiesKilled + ' zombies were harmed in the making of this film.', this.textStyle);
@@ -60,12 +60,12 @@ class EndScene extends Phaser.Scene {
   }
 
   addSortedStats(topLeft, statText, statName, desc = true) {
-    var playerStat = window.gameplayStats.player;
-    var ally1Stat = window.gameplayStats.ally1;
-    var ally2Stat = window.gameplayStats.ally2;
-    var ally3Stat = window.gameplayStats.ally3;
+    var billStat = window.gameplayStats.bill;
+    var zoeyStat = window.gameplayStats.zoey;
+    var billStat = window.gameplayStats.bill;
+    var francisStat = window.gameplayStats.francis;
 
-    var stats = [playerStat, ally1Stat, ally2Stat, ally3Stat];
+    var stats = [billStat, zoeyStat, billStat, francisStat];
     stats.sort(function(a, b)
     {
       return desc ? b[statName]-a[statName] : a[statName]-b[statName];
@@ -75,7 +75,7 @@ class EndScene extends Phaser.Scene {
     title.setX(384 - title.width);
 
     for(var i=0; i<stats.length; i++) {
-      var style = stats[i].name == "player" ? this.playerStyle : this.textStyle;
+      var style = stats[i].isPlayer ? this.playerStyle : this.textStyle;
       this.add.text(384 + 16 , topLeft + i*20, stats[i][statName] + " " + stats[i].name, style);
     }
   }

@@ -30,10 +30,28 @@ class GameScene extends Phaser.Scene {
       atlasURL: 'player/player.json'
     });
     this.load.atlas({
-      key: 'ally',
-      textureURL: 'ally/ally.png',
-      normalMap: 'ally/ally_n.png',
-      atlasURL: 'ally/ally.json'
+      key: 'bill',
+      textureURL: 'bill/bill.png',
+      normalMap: 'bill/bill_n.png',
+      atlasURL: 'bill/bill.json'
+    });
+    this.load.atlas({
+      key: 'louis',
+      textureURL: 'louis/louis.png',
+      normalMap: 'louis/louis_n.png',
+      atlasURL: 'louis/louis.json'
+    });
+    this.load.atlas({
+      key: 'zoey',
+      textureURL: 'zoey/zoey.png',
+      normalMap: 'zoey/zoey_n.png',
+      atlasURL: 'zoey/zoey.json'
+    });
+    this.load.atlas({
+      key: 'francis',
+      textureURL: 'francis/francis.png',
+      normalMap: 'francis/francis_n.png',
+      atlasURL: 'francis/francis.json'
     });
     this.load.atlas({
       key: 'zombie',
@@ -165,41 +183,81 @@ class GameScene extends Phaser.Scene {
       frameRate: 24
     });
 
-    // player
+    // bill
     this.anims.create({
-      key: 'player-walk-left-down',
-      frames: this.anims.generateFrameNames('player', {
+      key: 'bill-walk-left-down',
+      frames: this.anims.generateFrameNames('bill', {
         start: 1, end: 2, zeroPad: 0,
-        prefix: 'player-walk-left-down-', suffix: '.png'
+        prefix: 'bill-walk-left-down-', suffix: '.png'
       }),
       frameRate: 6,
       yoyo: true
     });
     this.anims.create({
-      key: 'player-walk-left-up',
-      frames: this.anims.generateFrameNames('player', {
+      key: 'bill-walk-left-up',
+      frames: this.anims.generateFrameNames('bill', {
         start: 1, end: 2, zeroPad: 0,
-        prefix: 'player-walk-left-up-', suffix: '.png'
+        prefix: 'bill-walk-left-up-', suffix: '.png'
       }),
       frameRate: 6,
       yoyo: true
     });
 
-    // ally
+    // louis
     this.anims.create({
-      key: 'ally-walk-left-down',
-      frames: this.anims.generateFrameNames('ally', {
+      key: 'louis-walk-left-down',
+      frames: this.anims.generateFrameNames('louis', {
         start: 1, end: 2, zeroPad: 0,
-        prefix: 'ally-walk-left-down-', suffix: '.png'
+        prefix: 'louis-walk-left-down-', suffix: '.png'
       }),
       frameRate: 6,
       yoyo: true
     });
     this.anims.create({
-      key: 'ally-walk-left-up',
-      frames: this.anims.generateFrameNames('ally', {
+      key: 'louis-walk-left-up',
+      frames: this.anims.generateFrameNames('louis', {
         start: 1, end: 2, zeroPad: 0,
-        prefix: 'ally-walk-left-up-', suffix: '.png'
+        prefix: 'louis-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
+      yoyo: true
+    });
+
+    // zoey
+    this.anims.create({
+      key: 'zoey-walk-left-down',
+      frames: this.anims.generateFrameNames('zoey', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'zoey-walk-left-down-', suffix: '.png'
+      }),
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'zoey-walk-left-up',
+      frames: this.anims.generateFrameNames('zoey', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'zoey-walk-left-up-', suffix: '.png'
+      }),
+      frameRate: 6,
+      yoyo: true
+    });
+
+    // francis
+    this.anims.create({
+      key: 'francis-walk-left-down',
+      frames: this.anims.generateFrameNames('francis', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'francis-walk-left-down-', suffix: '.png'
+      }),
+      frameRate: 6,
+      yoyo: true
+    });
+    this.anims.create({
+      key: 'francis-walk-left-up',
+      frames: this.anims.generateFrameNames('francis', {
+        start: 1, end: 2, zeroPad: 0,
+        prefix: 'francis-walk-left-up-', suffix: '.png'
       }),
       frameRate: 6,
       yoyo: true
@@ -467,8 +525,9 @@ class GameScene extends Phaser.Scene {
   createStats() {
     window.gameplayStats = {
       startGameTime: Date.now(),
-      player: {
-        name: 'player',
+      bill: {
+        name: 'bill',
+        isPlayer: false,
         nbTimesIncapacited: 0,
         nbFirstAidKitsUsed: 0,
         nbZombiesKilled: 0,
@@ -480,8 +539,9 @@ class GameScene extends Phaser.Scene {
         nbBulletsFired: 0,
         nbBulletsHit: 0
       },
-      ally1: {
-        name: 'ally1',
+      louis: {
+        name: 'louis',
+        isPlayer: false,
         nbTimesIncapacited: 0,
         nbFirstAidKitsUsed: 0,
         nbZombiesKilled: 0,
@@ -493,8 +553,9 @@ class GameScene extends Phaser.Scene {
         nbBulletsShot: 0,
         nbBulletsHit: 0
       },
-      ally2: {
-        name: 'ally2',
+      zoey: {
+        name: 'zoey',
+        isPlayer: false,
         nbTimesIncapacited: 0,
         nbFirstAidKitsUsed: 0,
         nbZombiesKilled: 0,
@@ -506,8 +567,9 @@ class GameScene extends Phaser.Scene {
         nbBulletsShot: 0,
         nbBulletsHit: 0
       },
-      ally3: {
-        name: 'ally3',
+      francis: {
+        name: 'francis',
+        isPlayer: false,
         nbTimesIncapacited: 0,
         nbFirstAidKitsUsed: 0,
         nbZombiesKilled: 0,

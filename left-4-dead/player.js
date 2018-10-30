@@ -1,18 +1,20 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, color) {
-    super(scene, x, y, 'player');
+  constructor(scene, x, y, name, color) {
+    super(scene, x, y, name);
     scene.physics.world.enable(this);
     scene.add.existing(this);
     this.scene = scene;
     this.color = color;
 
+    window.gameplayStats[name].isPlayer = true;
+
     this.setPipeline("Light2D");
     this.setCollideWorldBounds(true);
     this.setDepth(2);
     this.body.world.setBounds(0,0,this.scene.level.tilemap.widthInPixels,this.scene.level.tilemap.heightInPixels);
-    this.name = "player";
+    this.name = name;
     this.setTint(color);
-    this.setFrame('player-walk-left-down-1.png');
+    this.setFrame(name + '-walk-left-down-1.png');
 
     this.healthbar = new HealthBar(this, scene);
     this.helpBar = new HelpBar(scene);
@@ -42,9 +44,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.turn();
 
       if(this.direction.includes("up")) {
-        this.setFrame('player-walk-left-up-1.png');
+        this.setFrame(this.name + '-walk-left-up-1.png');
       } else {
-        this.setFrame('player-walk-left-down-1.png');
+        this.setFrame(this.name + '-walk-left-down-1.png');
       }
 
       if(this.direction.includes("left")) {
@@ -116,9 +118,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       walkingSound.play();
 
     if(this.direction.includes("up")) {
-      this.anims.play('player-walk-left-up', true);
+      this.anims.play(this.name + '-walk-left-up', true);
     } else {
-      this.anims.play('player-walk-left-down', true);
+      this.anims.play(this.name + '-walk-left-down', true);
     }
 
     if(this.direction.includes("left")) {
@@ -133,7 +135,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if(tile) {
       switch(tile.index) {
         case 18:
-          window.gameplayStats.player.nbFirstAidKitsUsed += 1;
+          window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
           this.healthbar.gainHp(50);
           this.updateHealthRelatedCondition();
           this.scene.level.objectsLayer.removeTileAtWorldXY(this.x, this.y, undefined, undefined, undefined, 1);
@@ -162,7 +164,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.helpBar.help();
       this.helpBar.on("helpComplete", function() {
-        window.gameplayStats.player.nbRevivedTeammate += 1;
+        window.gameplayStats[this.name].nbRevivedTeammate += 1;
         chosenAlly.isLifted();
         this.isHelping = false;
         this.updateHealthRelatedCondition();
@@ -202,14 +204,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   isHit(damage) {
-    window.gameplayStats.player.nbDamageTaken += 1;
+    window.gameplayStats[this.name].nbDamageTaken += 1;
     this.emit('isHit', damage);
     this.healthbar.loseHp(damage);
     this.updateHealthRelatedCondition();
   }
 
   isLifted() {
-    this.setFrame('player-walk-left-down-1.png');
+    this.setFrame(this.name + '-walk-left-down-1.png');
     this.healthbar.recoverSomeHp();
     this.updateHealthRelatedCondition();
   }
@@ -219,9 +221,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.emit('die');
       this.die();
     } else if(this.healthbar.isExtra()) {
-      window.gameplayStats.player.nbTimesIncapacited += 1;
+      window.gameplayStats[this.name].nbTimesIncapacited += 1;
       this.emit('askHelp', this);
-      this.setFrame('player-down.png');
+      this.setFrame(this.name + '-down.png');
       this.speed = 0;
       this.helpSign.show();
     } else if(this.healthbar.isCritical()){

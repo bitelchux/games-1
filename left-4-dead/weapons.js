@@ -57,7 +57,7 @@ class Weapon {
 
       this.createBullets(this.owner, rotation);
 
-      if(this.owner.name == "player")
+      if(this.owner.name == this.scene.allies.player.name)
         this.scene.camera.shake(100, 0.0001);
     }
   }
