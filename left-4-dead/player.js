@@ -87,6 +87,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.helpBar.update(this.x, this.y - 20);
     this.helpSign.update(this.x, this.y - 20);
+    this.weapon.update();
   }
 
   turn() {

@@ -88,6 +88,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.helpSign.update(this.x, this.y - 20);
+    this.weapon.update();
   }
 
   getClosestWeaponCoord() {

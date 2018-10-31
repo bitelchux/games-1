@@ -1,5 +1,9 @@
-class Weapon {
+class Weapon extends Phaser.Physics.Arcade.Image {
   constructor(owner, scene, rate, damage, name) {
+    super(scene, owner.x, owner.y, name);
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
+
     this.owner = owner;
     this.scene = scene;
     this.rate = rate;
@@ -8,6 +12,25 @@ class Weapon {
     this.lastShotTime = scene.time.now;
     this.bulletBar = null;
     this.isReloading = false;
+    this.setScale(0.8);
+  }
+
+  update() {
+    this.y = this.owner.y + 3;
+
+    if(this.owner.frame.name.includes("down")) {
+      this.depth = this.y;
+    } else {
+      this.depth = 0;
+    }
+
+    this.setFlipX(!this.owner.flipX);
+
+    if(this.flipX) {
+      this.x = this.owner.x - 4;
+    } else {
+      this.x = this.owner.x + 4;
+    }
   }
 
   // to override

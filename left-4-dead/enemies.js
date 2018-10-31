@@ -326,7 +326,7 @@ class Boomer extends Enemy {
 
     this.on('animationcomplete', function(animation) {
       if(animation.key == "boomer-explode") {
-        this.scene.add.image(this.x, this.y, 'boomer', 'boomer-dead.png').setPipeline("Light2D").setScale(1.5);
+        this.scene.add.image(this.x, this.y, 'boomer', 'boomer-dead.png').setPipeline("Light2D").setScale(1.5).setDepth(this.y);
         this.destroy();
       }
     }, this);
@@ -394,7 +394,7 @@ class Hunter extends Enemy {
 
   whenDie(killer) {
     window.gameplayStats[killer.name].nbHuntersKilled += 1;
-    this.scene.add.image(this.x, this.y, 'hunter', 'hunter-dead.png').setPipeline("Light2D").setScale(1.3);
+    this.scene.add.image(this.x, this.y, 'hunter', 'hunter-dead.png').setPipeline("Light2D").setScale(1.3).setDepth(this.y);
   }
 }
 
@@ -477,7 +477,7 @@ class Smoker extends Enemy {
     if(this.dragTween)
       this.dragTween.stop();
 
-    this.scene.add.image(this.x, this.y, 'smoker', 'smoker-dead.png').setPipeline("Light2D").setScale(1.2);
+    this.scene.add.image(this.x, this.y, 'smoker', 'smoker-dead.png').setPipeline("Light2D").setScale(1.2).setDepth(this.y);
   }
 }
 
@@ -551,7 +551,7 @@ class Tank extends Enemy {
   whenDie(killer) {
     this.scene.sounds.tankmusic.stop();
     this.rock = null;
-    this.scene.add.image(this.x, this.y, 'tank', 'tank-dead.png').setPipeline("Light2D").setScale(2);
+    this.scene.add.image(this.x, this.y, 'tank', 'tank-dead.png').setPipeline("Light2D").setScale(2).setDepth(this.y);
   }
 }
 

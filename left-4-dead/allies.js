@@ -12,8 +12,6 @@ class Allies {
     var chosenAlly = allies.filter(item => item.name === window.selectedName)[0];
     allies = allies.filter(item => item.name !== window.selectedName);
 
-    console.log(chosenAlly);
-
     this.player = new Player(this.scene, 5*16-8, 9*16-8, chosenAlly.name, chosenAlly.weaponName, 0xCB904D);
     this.ally1 = new Ally(this.scene, 3*16-8, 7*16-8, allies[0].name, allies[0].weaponName, 0xFFFFFF);
     this.ally2 = new Ally(this.scene, 6*16-8, 7*16-8, allies[1].name, allies[1].weaponName, 0xFFFFFF);

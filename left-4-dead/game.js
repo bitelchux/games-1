@@ -16,6 +16,7 @@ class GameScene extends Phaser.Scene {
     this.load.image("pistols", ["weapons/pistols.png", "weapons/pistols_n.png"]);
     this.load.image("shotgun", ["weapons/shotgun.png", "weapons/shotgun_n.png"]);
     this.load.image("uzi", ["weapons/uzi.png", "weapons/uzi_n.png"]);
+    this.load.image("rifle", ["weapons/rifle.png", "weapons/rifle_n.png"]);
 
     this.load.atlas({
       key: 'bullet',
