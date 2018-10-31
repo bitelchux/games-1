@@ -502,7 +502,7 @@ class GameScene extends Phaser.Scene {
 
     this.camera = this.cameras.main;
     this.camera.startFollow(this.allies.player, true, 0.02);
-    this.camera.setZoom(2);
+    this.camera.setZoom(3);
 
     this.isBeingRemoved = false;
 
