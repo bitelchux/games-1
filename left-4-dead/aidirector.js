@@ -7,7 +7,7 @@ class AIDirector {
     this.spawnRadiusMin = 200;
     this.spawnRadiusMax = 400;
 
-    this.maxEnemies = 300;
+    this.maxEnemies = 100;
     this.spawnWanderers(this.maxEnemies);
 
     this.emotionalIntensity = 0;

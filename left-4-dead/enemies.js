@@ -230,10 +230,10 @@ class Zombie extends Enemy {
       key:'zombie',
       x: x, y: y,
       speed: 0.035 * window.speed,
-      hp: 100,
+      hp: 50,
       pathUpdateTime: 250,
       attack: {
-        damage: 2,
+        damage: 4,
         rate: 1000,
         sounds: scene.sounds.zombiefast
       }
@@ -339,7 +339,7 @@ class Hunter extends Enemy {
       key:'hunter',
       x: x, y: y,
       speed: 0.015 * window.speed,
-      hp: 500,
+      hp: 200,
       pathUpdateTime: 250,
       attack: {
         damage: 10,
@@ -404,7 +404,7 @@ class Smoker extends Enemy {
       key:'smoker',
       x: x, y: y,
       speed: 0.025 * window.speed,
-      hp: 500,
+      hp: 200,
       pathUpdateTime: 250,
       attack: {
         damage: 15,
@@ -487,7 +487,7 @@ class Tank extends Enemy {
       key:'tank',
       x: x, y: y,
       speed: 0.040 * window.speed,
-      hp: 6000,
+      hp: 3000,
       pathUpdateTime: 250,
       attack: {
         damage: 35,

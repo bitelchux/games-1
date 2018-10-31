@@ -107,7 +107,7 @@ Pistols.index = 5;
 
 class Shotgun extends Weapon {
   constructor(owner) {
-    super(owner, owner.scene, 1150, 24, "shotgun");
+    super(owner, owner.scene, 750, 30, "shotgun");
     this.index = Shotgun.index;
   }
 
