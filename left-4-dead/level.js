@@ -15,7 +15,7 @@ class Level {
   getAllSpawns() {
     var spawns = [];
     this.groundLayer.filterTiles(function(tile){
-      if(tile.index == 21) {
+      if(tile.index != 81) {
         var point = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
         spawns.push(point);
       }
@@ -28,7 +28,7 @@ class Level {
     var minCircle = new Phaser.Geom.Circle(playerCoord.x, playerCoord.y, minRange);
     var maxCircle = new Phaser.Geom.Circle(playerCoord.x, playerCoord.y, maxRange);
     this.groundLayer.filterTiles(function(tile){
-      if(tile.index == 21) {
+      if(tile.index != 81) {
         var tileCoord = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
         var insideMinCircle = minCircle.contains(tileCoord.x, tileCoord.y);
         var insideMaxCircle = maxCircle.contains(tileCoord.x, tileCoord.y);
@@ -39,61 +39,6 @@ class Level {
       }
     }, this);
     return spawns;
-  }
-
-  getSpawnsInArea(point) {
-    var alpha = this.areaLayer.getTileAtWorldXY(point.x, point.y).alpha;
-    var spawns = [];
-
-    this.groundLayer.filterTiles(function(tile){
-      var tileAlpha = this.areaLayer.getTileAt(tile.x, tile.y).alpha;
-      if(tile.index == 21 && tileAlpha == alpha) {
-        var point = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
-        spawns.push(point);
-      }
-    }, this);
-
-    return spawns;
-  }
-
-  getSpawnsBeforeArea(point) {
-    var alpha = this.areaLayer.getTileAtWorldXY(point.x, point.y).alpha;
-    var spawns = [];
-
-    this.groundLayer.filterTiles(function(tile){
-      var tileAlpha = this.areaLayer.getTileAt(tile.x, tile.y).alpha;
-      if(tile.index == 21 && tileAlpha > alpha) {
-        var point = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
-        spawns.push(point);
-      }
-    }, this);
-
-    return spawns;
-  }
-
-  getSpawnsAfterArea(point) {
-    var alpha = this.areaLayer.getTileAtWorldXY(point.x, point.y).alpha;
-    var spawns = [];
-
-    this.groundLayer.filterTiles(function(tile){
-      var tileAlpha = this.areaLayer.getTileAt(tile.x, tile.y).alpha;
-      if(tile.index == 21 && tileAlpha < alpha) {
-        var point = new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY());
-        spawns.push(point);
-      }
-    }, this);
-
-    return spawns;
-  }
-
-  getWeapons() {
-    var weapons = [];
-    this.objectsLayer.filterTiles(function(tile){
-      if(tile.index == 5 || tile.index == 10 || tile.index == 15 || tile.index == 20) {
-        weapons.push(tile);
-      }
-    }, this);
-    return weapons;
   }
 
   getTilesAround(coord) {
@@ -114,7 +59,7 @@ class Level {
 
   getClosestHealthKit(point) {
     var healthkitTiles = this.objectsLayer.filterTiles(function(tile){
-      return tile.index == 18;
+      return tile.index == 101;
     });
 
     var distanceToHealthkit = 10000;

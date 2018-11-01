@@ -209,7 +209,7 @@ class Ally extends Phaser.Physics.Arcade.Sprite {
   }
 
   pickObject(tile) {
-    if(tile.index == 18) {
+    if(tile.index == 101) {
       window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
       this.healthbar.gainHp(50);
       this.updateHealthRelatedCondition();

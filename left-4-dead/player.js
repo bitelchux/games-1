@@ -158,7 +158,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   interact() {
     var tile = this.scene.level.objectsLayer.getTileAtWorldXY(this.x, this.y, undefined, undefined, 1);
-    if(tile && tile.index == 18) {
+    if(tile && tile.index == 101) {
       window.gameplayStats[this.name].nbFirstAidKitsUsed += 1;
       this.healthbar.gainHp(50);
       this.updateHealthRelatedCondition();
