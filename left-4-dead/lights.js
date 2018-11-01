@@ -2,14 +2,19 @@ class Lights {
   constructor(scene) {
     this.scene = scene;
     this.group = [];
-    scene.lights.enable().setAmbientColor(0x030303);
+    scene.lights.enable().setAmbientColor(0x060606);
   }
 
-  addLight(owner) {
+  addOwnerLight(owner) {
     var light = this.scene.lights.addLight(owner.x, owner.y, 125);
     light.setColor(0xffffff).setIntensity(.5);
     light['owner'] = owner;
     this.group.push(light);
+  }
+
+  addLight(x, y, range = 100, intensity = 1, color = 0xffffff) {
+    var light = this.scene.lights.addLight(x, y, range);
+    light.setColor(color).setIntensity(intensity);
   }
 
   update() {

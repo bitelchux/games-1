@@ -493,8 +493,8 @@ class GameScene extends Phaser.Scene {
 
     this.sounds.music.play();
 
-    this.level = new Level(this);
     this.myLights = new Lights(this);
+    this.level = new Level(this);
     this.allies = new Allies(this);
     this.enemies = new Enemies(this);
     this.bullets = new Bullets(this);

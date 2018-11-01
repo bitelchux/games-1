@@ -30,7 +30,7 @@ class Allies {
 
   setupLights() {
     this.group.forEach(function(ally) {
-      this.scene.myLights.addLight(ally);
+      this.scene.myLights.addOwnerLight(ally);
     }.bind(this));
   }
 

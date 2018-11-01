@@ -9,7 +9,16 @@ class Level {
     this.triggersLayer = this.tilemap.createDynamicLayer(3, this.tileset, 0, 0);
 
     this.triggersLayer.setVisible(false);
-    this.obstaclesLayer.setCollisionBetween(1,45);
+    this.obstaclesLayer.setCollisionBetween(1,400);
+
+    this.setupLights();
+  }
+
+  setupLights() {
+    this.groundLayer.forEachTile(function(tile) {
+      if(tile.index == 42)
+        this.scene.myLights.addLight(tile.getCenterX(), tile.getCenterY())
+    }.bind(this));
   }
 
   getAllSpawns() {
